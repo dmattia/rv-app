@@ -55,7 +55,6 @@ const client = new aws.cognito.UserPoolClient("client", {
     bucket.bucketRegionalDomainName
   ].map(output => pulumi.interpolate`https://${output}`),
   explicitAuthFlows: [
-    'USER_PASSWORD_AUTH',
     'ALLOW_USER_PASSWORD_AUTH',
     'ALLOW_REFRESH_TOKEN_AUTH',
     'ALLOW_ADMIN_USER_PASSWORD_AUTH',
