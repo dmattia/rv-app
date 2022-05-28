@@ -48,6 +48,7 @@ const client = new aws.cognito.UserPoolClient("client", {
   userPoolId: pool.id,
   callbackUrls: [pulumi.interpolate`https://${bucket.websiteDomain}`],
   logoutUrls: [pulumi.interpolate`https://${bucket.websiteDomain}`],
+  defaultRedirectUri: pulumi.interpolate`https://${bucket.websiteDomain}`,
   allowedOauthFlowsUserPoolClient: true,
   allowedOauthFlows: ['code'],
   allowedOauthScopes: ['openid', 'profile'],
