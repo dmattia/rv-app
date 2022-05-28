@@ -22,6 +22,30 @@ const bucket = new aws.s3.Bucket('website-contents', {
   }),
 });
 
+const distribution = new aws.cloudfront.Distribution('cdn', {
+  origins: [{
+    domainName: bucket.bucketRegionalDomainName,
+    originId: bucket.bucket,
+  }],
+  enabled: true,
+  defaultRootObject: 'index.html',
+  defaultCacheBehavior: {
+    allowedMethods: ["GET", "HEAD", "OPTIONS", "POST"],
+    cachedMethods: ["GET", "HEAD"],
+    targetOriginId: bucket.bucket,
+    viewerProtocolPolicy: 'redirect-to-https',
+  },
+  viewerCertificate: {
+    cloudfrontDefaultCertificate: true,
+  },
+  restrictions: {
+    geoRestriction: {
+      restrictionType: 'whitelist',
+      locations: ['US'],
+    },
+  },
+})
+
 // Create a map in the Location service
 const map = new aws.location.Map('main-map', {
   mapName: 'rv-app-primary',
@@ -47,8 +71,8 @@ const client = new aws.cognito.UserPoolClient("client", {
   name: 'rv-app',
   userPoolId: pool.id,
   callbackUrls: [pulumi.interpolate`https://${bucket.websiteEndpoint}`],
-  logoutUrls: [pulumi.interpolate`https://${bucket.websiteEndpoint}/index.html`],
-  defaultRedirectUri: pulumi.interpolate`https://${bucket.websiteEndpoint}/index.html`,
+  logoutUrls: [pulumi.interpolate`https://${bucket.websiteEndpoint}`],
+  defaultRedirectUri: pulumi.interpolate`https://${bucket.websiteEndpoint}`,
   allowedOauthFlowsUserPoolClient: true,
   allowedOauthFlows: ['code'],
   allowedOauthScopes: ['openid', 'profile'],
@@ -83,3 +107,4 @@ export const bucketName = bucket.bucket;
 export const bucketUrl = pulumi.interpolate`https://${bucket.bucketDomainName}/index.html`;
 export const mapName = map.mapName;
 export const cognitoDomain = userPoolDomain.cloudfrontDistributionArn;
+export const cdnDomain = distribution.domainName;
