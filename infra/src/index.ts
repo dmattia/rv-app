@@ -30,7 +30,7 @@ const distribution = new aws.cloudfront.Distribution('cdn', {
   enabled: true,
   defaultRootObject: 'index.html',
   defaultCacheBehavior: {
-    allowedMethods: ["GET", "HEAD", "OPTIONS", "POST"],
+    allowedMethods: ['HEAD', 'DELETE', 'POST', 'GET', 'OPTIONS', 'PUT', 'PATCH'],
     cachedMethods: ["GET", "HEAD"],
     targetOriginId: bucket.bucket,
     viewerProtocolPolicy: 'redirect-to-https',
