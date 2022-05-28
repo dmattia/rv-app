@@ -58,6 +58,7 @@ const client = new aws.cognito.UserPoolClient("client", {
   ],
   generateSecret: true,
   preventUserExistenceErrors: 'ENABLED',
+  supportedIdentityProviders: ['COGNITO'],
 });
 
 const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
@@ -67,12 +68,14 @@ const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
 
 new aws.cognito.IdentityPool("main", {
   identityPoolName: 'rv-app',
+  allowClassicFlow: false,
   allowUnauthenticatedIdentities: false,
   cognitoIdentityProviders: [{
     clientId: client.id,
     providerName: pulumi.interpolate`cognito-idp.us-east-1.amazonaws.com/${pool.id}`,
     serverSideTokenCheck: true,
-  }]
+  }],
+  developerProviderName: bucket.websiteDomain,
 });
 
 export const bucketName = bucket.bucket;
