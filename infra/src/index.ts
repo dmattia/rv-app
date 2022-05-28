@@ -32,8 +32,43 @@ const map = new aws.location.Map('main-map', {
 })
 
 // Create the Authentication config
-const pool = new aws.cognito.UserPool("pool", {});
-const client = new aws.cognito.UserPoolClient("client", {userPoolId: pool.id});
+const pool = new aws.cognito.UserPool("pool", {
+  // accountRecoverySetting: {},
+  // emailConfiguration: {
+  //   emailSendingAccount: 'COGNITO_DEFAULT',
+  // }
+  name: 'rv-app',
+  passwordPolicy: {
+    minimumLength: 14,
+    requireLowercase: true,
+    requireNumbers: true,
+    requireSymbols: true,
+    requireUppercase: true,
+  },
+});
+
+const client = new aws.cognito.UserPoolClient("client", {
+  name: 'rv-app',
+  userPoolId: pool.id,
+  callbackUrls: [
+    bucket.websiteDomain,
+    bucket.bucketRegionalDomainName
+  ].map(output => pulumi.interpolate`https://${output}`),
+  explicitAuthFlows: [
+    'USER_PASSWORD_AUTH',
+    'ALLOW_USER_PASSWORD_AUTH',
+    'ALLOW_REFRESH_TOKEN_AUTH',
+    'ALLOW_ADMIN_USER_PASSWORD_AUTH',
+  ],
+  generateSecret: true,
+  preventUserExistenceErrors: 'ENABLED',
+});
+
+const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
+  domain: "rv-app",
+  userPoolId: pool.id,
+});
+
 new aws.cognito.IdentityPool("main", {
   identityPoolName: 'rv-app',
   allowUnauthenticatedIdentities: false,
@@ -47,3 +82,4 @@ new aws.cognito.IdentityPool("main", {
 export const bucketName = bucket.bucket;
 export const bucketUrl = pulumi.interpolate`https://${bucket.bucketDomainName}/index.html`;
 export const mapName = map.mapName;
+export const cognitoDomain = userPoolDomain.cloudfrontDistributionArn;
