@@ -46,9 +46,9 @@ const pool = new aws.cognito.UserPool("pool", {
 const client = new aws.cognito.UserPoolClient("client", {
   name: 'rv-app',
   userPoolId: pool.id,
-  callbackUrls: [pulumi.interpolate`https://${bucket.websiteDomain}`],
-  logoutUrls: [pulumi.interpolate`https://${bucket.websiteDomain}`],
-  defaultRedirectUri: pulumi.interpolate`https://${bucket.websiteDomain}`,
+  callbackUrls: [pulumi.interpolate`https://${bucket.bucketRegionalDomainName}`],
+  logoutUrls: [pulumi.interpolate`https://${bucket.bucketRegionalDomainName}`],
+  defaultRedirectUri: pulumi.interpolate`https://${bucket.bucketRegionalDomainName}`,
   allowedOauthFlowsUserPoolClient: true,
   allowedOauthFlows: ['code'],
   allowedOauthScopes: ['openid', 'profile'],
