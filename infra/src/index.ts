@@ -21,5 +21,14 @@ const bucket = new aws.s3.Bucket('website-contents', {
   }),
 });
 
+const map = new aws.location.Map('main-map', {
+  mapName: 'rv-app-primary',
+  description: 'Primary map for the app',
+  configuration: {
+    style: 'VectorHereExploreTruck',
+  }
+})
+
 export const bucketName = bucket.bucket;
 export const bucketUrl = pulumi.interpolate`https://${bucket.bucketDomainName}/index.html`;
+export const mapName = map.mapName;
