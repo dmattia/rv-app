@@ -33,10 +33,6 @@ const map = new aws.location.Map('main-map', {
 
 // Create the Authentication config
 const pool = new aws.cognito.UserPool("pool", {
-  // accountRecoverySetting: {},
-  // emailConfiguration: {
-  //   emailSendingAccount: 'COGNITO_DEFAULT',
-  // }
   name: 'rv-app',
   passwordPolicy: {
     minimumLength: 14,
@@ -50,10 +46,11 @@ const pool = new aws.cognito.UserPool("pool", {
 const client = new aws.cognito.UserPoolClient("client", {
   name: 'rv-app',
   userPoolId: pool.id,
-  callbackUrls: [
-    bucket.websiteDomain,
-    bucket.bucketRegionalDomainName
-  ].map(output => pulumi.interpolate`https://${output}`),
+  callbackUrls: [pulumi.interpolate`https://${bucket.websiteDomain}`],
+  logoutUrls: [pulumi.interpolate`https://${bucket.websiteDomain}`],
+  allowedOauthFlowsUserPoolClient: true,
+  allowedOauthFlows: ['code'],
+  allowedOauthScopes: ['openid', 'profile'],
   explicitAuthFlows: [
     'ALLOW_USER_PASSWORD_AUTH',
     'ALLOW_REFRESH_TOKEN_AUTH',
