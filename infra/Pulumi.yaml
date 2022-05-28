@@ -1,0 +1,7 @@
+name: Rv-App-Infra
+description: Infra created for the RV App
+runtime:
+  name: nodejs
+  options:
+    typescript: true
+main: src/

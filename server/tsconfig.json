@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../build/@rv-app/server",
+    "tsBuildInfoFile": "../build/@rv-app/server.tsbuildinfo",
+    "rootDir": "src"
+  },
+  "references": [{ "path": "../utils" }]
+}

@@ -1,0 +1,29 @@
+name: Deploy all services
+on:
+  push:
+    branches:
+      - main
+env:
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: yarn
+
+      # Setup AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Install Pulumi and deploy the infra code
+      - uses: pulumi/action-install-pulumi-cli@v1.0.1
+      - run: yarn workspace @rv-app/infra exec pulumi up --stack prod --yes
+
+      # Build and deploy the frontend code
+      - run: yarn workspace @rv-app/frontend build
+      - run: aws s3 sync frontend/dist "s3://$GITHUB_USERNAME-onboarding-site-transcend-io"

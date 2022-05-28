@@ -1,0 +1,13 @@
+{
+  "name": "@rv-app/root",
+  "packageManager": "yarn@3.1.0",
+  "workspaces": [
+    "server",
+    "frontend",
+    "infra",
+    "utils"
+  ],
+  "devDependencies": {
+    "typescript": "=4.4.4"
+  }
+}
