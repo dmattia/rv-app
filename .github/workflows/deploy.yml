@@ -26,4 +26,4 @@ jobs:
 
       # Build and deploy the frontend code
       - run: yarn workspace @rv-app/frontend build
-      - run: aws s3 sync frontend/dist "s3://$GITHUB_USERNAME-onboarding-site-transcend-io"
+      - run: aws s3 sync frontend/dist s3://rv-app-origin-bucket --delete
