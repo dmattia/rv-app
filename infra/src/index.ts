@@ -74,9 +74,9 @@ const pool = new aws.cognito.UserPool("pool", {
 const client = new aws.cognito.UserPoolClient("client", {
   name: 'rv-app',
   userPoolId: pool.id,
-  callbackUrls: [pulumi.interpolate`https://${bucket.websiteEndpoint}`],
-  logoutUrls: [pulumi.interpolate`https://${bucket.websiteEndpoint}`],
-  defaultRedirectUri: pulumi.interpolate`https://${bucket.websiteEndpoint}`,
+  callbackUrls: [pulumi.interpolate`https://${distribution.domainName}`],
+  logoutUrls: [pulumi.interpolate`https://${distribution.domainName}`],
+  defaultRedirectUri: pulumi.interpolate`https://${distribution.domainName}`,
   allowedOauthFlowsUserPoolClient: true,
   allowedOauthFlows: ['code'],
   allowedOauthScopes: ['openid', 'profile'],
@@ -104,11 +104,10 @@ new aws.cognito.IdentityPool("main", {
     providerName: pulumi.interpolate`cognito-idp.us-east-1.amazonaws.com/${pool.id}`,
     serverSideTokenCheck: true,
   }],
-  developerProviderName: bucket.websiteEndpoint,
+  developerProviderName: distribution.domainName,
 });
 
 export const bucketName = bucket.bucket;
-export const bucketUrl = pulumi.interpolate`https://${bucket.bucketDomainName}/index.html`;
 export const mapName = map.mapName;
 export const cognitoDomain = userPoolDomain.cloudfrontDistributionArn;
 export const cdnDomain = distribution.domainName;
