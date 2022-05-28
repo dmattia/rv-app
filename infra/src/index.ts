@@ -34,6 +34,10 @@ const distribution = new aws.cloudfront.Distribution('cdn', {
     cachedMethods: ["GET", "HEAD"],
     targetOriginId: bucket.bucket,
     viewerProtocolPolicy: 'redirect-to-https',
+    forwardedValues: {
+      queryString: false,
+      cookies: { forward: 'none' },
+    },
   },
   viewerCertificate: {
     cloudfrontDefaultCertificate: true,
