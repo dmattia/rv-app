@@ -61,13 +61,17 @@ const distribution = new aws.cloudfront.Distribution("cdn", {
 });
 
 // Create a map in the Location service
-const map = new aws.location.Map("main-map", {
-  mapName: "rv-app-primary",
-  description: "Primary map for the app",
-  configuration: {
-    style: "VectorEsriStreets",
+const map = new aws.location.Map(
+  "main-map",
+  {
+    mapName: "rv-app-primary",
+    description: "Primary map for the app",
+    configuration: {
+      style: "VectorEsriStreets",
+    },
   },
-});
+  { deleteBeforeReplace: true }
+);
 
 // Create the Authentication config
 const pool = new aws.cognito.UserPool("pool", {
