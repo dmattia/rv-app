@@ -188,6 +188,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@aws-sdk/credential-provider-cognito-identity", "npm:3.6.1"],\
             ["@aws-sdk/types", "npm:3.6.1"],\
             ["@aws-sdk/util-hex-encoding", "npm:3.6.1"],\
+            ["process", "npm:0.11.10"],\
             ["universal-cookie", "npm:4.0.4"],\
             ["zen-observable-ts", "npm:0.8.19"]\
           ],\
@@ -5931,7 +5932,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mapbox-gl", "npm:2.8.2"],\
             ["maplibre-gl", "npm:2.1.9"],\
             ["parcel", "npm:2.6.0"],\
-            ["process", "npm:0.11.10"],\
             ["react", "npm:18.1.0"],\
             ["react-dom", "virtual:75f53384b479a073449d45d89caa429f60ea7eba7254039dc376876e1b88da0964819d32848c00e8a1245145ebb47a3bbdb6586ad334a0e751c00c1525580648#npm:18.1.0"],\
             ["react-hook-form", "virtual:75f53384b479a073449d45d89caa429f60ea7eba7254039dc376876e1b88da0964819d32848c00e8a1245145ebb47a3bbdb6586ad334a0e751c00c1525580648#npm:7.31.3"],\

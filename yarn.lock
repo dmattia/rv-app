@@ -4990,7 +4990,6 @@ __metadata:
     mapbox-gl: ^2.8.2
     maplibre-gl: ^2.1.9
     parcel: ^2.6.0
-    process: ^0.11.10
     react: ^18.0.0
     react-dom: ^18.1.0
     react-hook-form: ^7.31.3
@@ -8479,7 +8478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"process@npm:^0.11.10":
+"process@npm:*, process@npm:^0.11.10":
   version: 0.11.10
   resolution: "process@npm:0.11.10"
   checksum: bfcce49814f7d172a6e6a14d5fa3ac92cc3d0c3b9feb1279774708a719e19acd673995226351a082a9ae99978254e320ccda4240ddc474ba31a76c79491ca7c3
