@@ -4,8 +4,8 @@ import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
-  UserPoolId: import.meta.env.VITE_USER_POOL_ID,
-  ClientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
+  UserPoolId: process.env.VITE_USER_POOL_ID,
+  ClientId: process.env.VITE_COGNITO_CLIENT_ID,
 });
 
 const cognitoIdentityClient = new CognitoIdentityClient({
@@ -91,11 +91,10 @@ function useProvideAuth() {
   const signInUser = async (username: string, password: string) => {
     const user = await signIn(username, password);
     const credsProvider = await fromCognitoIdentityPool({
-      identityPoolId: import.meta.env.VITE_IDENTITY_POOL_ID,
+      identityPoolId: process.env.VITE_IDENTITY_POOL_ID,
       logins: {
-        [`cognito-idp.${import.meta.env.VITE_AWS_REGION}.amazonaws.com/${
-          import.meta.env.VITE_USER_POOL_ID
-        }`]: user.getIdToken().getJwtToken(),
+        [`cognito-idp.${process.env.VITE_AWS_REGION}.amazonaws.com/${process.env.VITE_USER_POOL_ID}`]:
+          user.getIdToken().getJwtToken(),
       },
       client: cognitoIdentityClient,
     });

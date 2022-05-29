@@ -1,5 +1,8 @@
 import { useAuth } from "./hooks/use_auth";
 import { LoginPage } from "./components";
+import Amplify from "aws-amplify";
+
+Amplify.configure({});
 
 function App() {
   const auth = useAuth();
