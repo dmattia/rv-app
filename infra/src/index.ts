@@ -85,7 +85,7 @@ const client = new aws.cognito.UserPoolClient("client", {
     'ALLOW_REFRESH_TOKEN_AUTH',
     'ALLOW_ADMIN_USER_PASSWORD_AUTH',
   ],
-  generateSecret: true,
+  generateSecret: false, // The browser SDK does not support sending a secret
   preventUserExistenceErrors: 'ENABLED',
   supportedIdentityProviders: ['COGNITO'],
 });
