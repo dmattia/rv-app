@@ -96,7 +96,7 @@ const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
   userPoolId: pool.id,
 });
 
-new aws.cognito.IdentityPool("main", {
+const identityPool = new aws.cognito.IdentityPool("main", {
   identityPoolName: 'rv-app',
   allowClassicFlow: false,
   allowUnauthenticatedIdentities: false,
@@ -106,6 +106,65 @@ new aws.cognito.IdentityPool("main", {
     serverSideTokenCheck: true,
   }],
   developerProviderName: distribution.domainName,
+});
+const authenticatedRole = new aws.iam.Role("authenticatedRole", {assumeRolePolicy: pulumi.interpolate`{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "cognito-identity.amazonaws.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "cognito-identity.amazonaws.com:aud": "${identityPool.id}"
+        },
+        "ForAnyValue:StringLike": {
+          "cognito-identity.amazonaws.com:amr": "authenticated"
+        }
+      }
+    }
+  ]
+}
+`});
+const authenticatedRolePolicy = new aws.iam.RolePolicy("authenticatedRolePolicy", {
+  role: authenticatedRole.id,
+  policy: `{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Effect": "Allow",
+    "Action": [
+      "mobileanalytics:PutEvents",
+      "cognito-sync:*",
+      "cognito-identity:*"
+    ],
+    "Resource": [
+      "*"
+    ]
+  }
+]
+}
+`,
+});
+const mainIdentityPoolRoleAttachment = new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
+  identityPoolId: identityPool.id,
+  // roleMappings: [{
+  //     // DO NOT SUBMIT: remove hardcode
+  //     identityProvider: "cognito-idp.us-east-1.amazonaws.com/us-east-1_Sle6F4QqC",
+  //     ambiguousRoleResolution: "AuthenticatedRole",
+  //     type: "Rules",
+  //     mappingRules: [{
+  //         claim: "isAdmin",
+  //         matchType: "Equals",
+  //         roleArn: authenticatedRole.arn,
+  //         value: "paid",
+  //     }],
+  // }],
+  roles: {
+      authenticated: authenticatedRole.arn,
+  },
 });
 
 export const bucketName = bucket.bucket;
