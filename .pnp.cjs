@@ -188,7 +188,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@aws-sdk/credential-provider-cognito-identity", "npm:3.6.1"],\
             ["@aws-sdk/types", "npm:3.6.1"],\
             ["@aws-sdk/util-hex-encoding", "npm:3.6.1"],\
-            ["process", "npm:0.11.10"],\
             ["universal-cookie", "npm:4.0.4"],\
             ["zen-observable-ts", "npm:0.8.19"]\
           ],\

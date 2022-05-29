@@ -2,11 +2,10 @@
   "name": "@rv-app/frontend",
   "private": true,
   "version": "0.0.0",
-  "source": "index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "parcel",
-    "build": "parcel build"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "dependencies": {
     "@aws-amplify/core": "^4.5.6",
