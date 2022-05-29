@@ -6,11 +6,15 @@ export function LoginPage() {
   const { register, handleSubmit } = useForm();
 
   if (auth?.credentials) {
-    <p>Already logged in</p>
+    <p>Already logged in</p>;
   }
 
   return (
-    <form onSubmit={handleSubmit(({ username, password }) => auth?.signIn(username, password))}>
+    <form
+      onSubmit={handleSubmit(({ username, password }) =>
+        auth?.signIn(username, password)
+      )}
+    >
       <input {...register("username")} placeholder="Username" />
       <input {...register("password")} placeholder="Password" type="password" />
       <input type="submit" />

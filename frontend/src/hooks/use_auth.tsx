@@ -12,11 +12,14 @@ const cognitoIdentityClient = new CognitoIdentityClient({
   region: "us-east-1",
 });
 
-const authContext = createContext<{
-  credentials: CognitoIdentityCredentials | null,
-  signIn: (username: string, password: string) => Promise<void>,
-  signOut: () => void,
-} | undefined>(undefined);
+const authContext = createContext<
+  | {
+      credentials: CognitoIdentityCredentials | null;
+      signIn: (username: string, password: string) => Promise<void>;
+      signOut: () => void;
+    }
+  | undefined
+>(undefined);
 
 // CognitoIdentityCredentials is not exported :(
 type CognitoIdentityCredentials = Awaited<
@@ -27,11 +30,7 @@ type CognitoIdentityCredentials = Awaited<
 // ... available to any child component that calls useAuth().
 export function ProvideAuth({ children }: { children: JSX.Element }) {
   const auth = useProvideAuth();
-  return (
-    <authContext.Provider value={auth}>
-      {children}
-    </authContext.Provider>
-  );
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
 // Hook for child components to get the auth object ...

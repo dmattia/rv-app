@@ -8,6 +8,8 @@
     "utils"
   ],
   "devDependencies": {
+    "@types/prettier": "^2",
+    "prettier": "^2.6.2",
     "typescript": "=4.7.2"
   }
 }
