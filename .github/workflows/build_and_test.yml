@@ -10,7 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: yarn
-      - run: yarn workspace @rv-app/frontend build
+      - run: yarn build
+        working-directory: frontend
 
   build-typescript:
     runs-on: ubuntu-latest

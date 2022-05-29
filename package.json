@@ -1,9 +1,6 @@
 {
   "name": "@rv-app/root",
   "packageManager": "yarn@3.1.0",
-  "alias": {
-    "process": false
-  },
   "workspaces": [
     "server",
     "frontend",
