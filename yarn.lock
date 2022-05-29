@@ -4990,6 +4990,7 @@ __metadata:
     mapbox-gl: ^2.8.2
     maplibre-gl: ^2.1.9
     parcel: ^2.6.0
+    process: ^0.11.10
     react: ^18.0.0
     react-dom: ^18.1.0
     react-hook-form: ^7.31.3
