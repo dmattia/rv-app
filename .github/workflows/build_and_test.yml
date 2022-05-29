@@ -12,6 +12,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.17.3
+      - run: npm install -g "yarn@1.22.5"
       - run: yarn
       - run: yarn workspace @rv-app/frontend build
 
