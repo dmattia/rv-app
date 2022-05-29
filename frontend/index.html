@@ -9,5 +9,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- See: https://ui.docs.amplify.aws/react/getting-started/troubleshooting#vite -->
+    <script>
+      window.global = window;
+      window.process = {
+        env: { DEBUG: undefined },
+      };
+      var exports = {};
+    </script>
   </body>
 </html>

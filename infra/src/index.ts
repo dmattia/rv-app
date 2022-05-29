@@ -1,42 +1,52 @@
-import * as pulumi from '@pulumi/pulumi';
-import * as aws from '@pulumi/aws';
+import * as pulumi from "@pulumi/pulumi";
+import * as aws from "@pulumi/aws";
 
 // Create the frontend infra
-const bucket = new aws.s3.Bucket('website-contents', {
+const bucket = new aws.s3.Bucket("website-contents", {
   bucket: `rv-app-origin-bucket`,
-  acl: 'public-read',
+  acl: "public-read",
   website: {
-    indexDocument: 'index.html',
-    errorDocument: 'index.html',
+    indexDocument: "index.html",
+    errorDocument: "index.html",
   },
   policy: JSON.stringify({
-    Version: '2012-10-17',
+    Version: "2012-10-17",
     Statement: [
       {
-        Effect: 'Allow',
-        Principal: '*',
-        Action: ['s3:GetObject'],
+        Effect: "Allow",
+        Principal: "*",
+        Action: ["s3:GetObject"],
         Resource: [`arn:aws:s3:::rv-app-origin-bucket/*`],
       },
     ],
   }),
 });
 
-const distribution = new aws.cloudfront.Distribution('cdn', {
-  origins: [{
-    domainName: bucket.bucketRegionalDomainName,
-    originId: bucket.bucket,
-  }],
+const distribution = new aws.cloudfront.Distribution("cdn", {
+  origins: [
+    {
+      domainName: bucket.bucketRegionalDomainName,
+      originId: bucket.bucket,
+    },
+  ],
   enabled: true,
-  defaultRootObject: 'index.html',
+  defaultRootObject: "index.html",
   defaultCacheBehavior: {
-    allowedMethods: ['HEAD', 'DELETE', 'POST', 'GET', 'OPTIONS', 'PUT', 'PATCH'],
+    allowedMethods: [
+      "HEAD",
+      "DELETE",
+      "POST",
+      "GET",
+      "OPTIONS",
+      "PUT",
+      "PATCH",
+    ],
     cachedMethods: ["GET", "HEAD"],
     targetOriginId: bucket.bucket,
-    viewerProtocolPolicy: 'redirect-to-https',
+    viewerProtocolPolicy: "redirect-to-https",
     forwardedValues: {
       queryString: false,
-      cookies: { forward: 'none' },
+      cookies: { forward: "none" },
     },
   },
   viewerCertificate: {
@@ -44,24 +54,24 @@ const distribution = new aws.cloudfront.Distribution('cdn', {
   },
   restrictions: {
     geoRestriction: {
-      restrictionType: 'whitelist',
-      locations: ['US'],
+      restrictionType: "whitelist",
+      locations: ["US"],
     },
   },
-})
+});
 
 // Create a map in the Location service
-const map = new aws.location.Map('main-map', {
-  mapName: 'rv-app-primary',
-  description: 'Primary map for the app',
+const map = new aws.location.Map("main-map", {
+  mapName: "rv-app-primary",
+  description: "Primary map for the app",
   configuration: {
-    style: 'VectorHereExploreTruck',
-  }
-})
+    style: "VectorHereExploreTruck",
+  },
+});
 
 // Create the Authentication config
 const pool = new aws.cognito.UserPool("pool", {
-  name: 'rv-app',
+  name: "rv-app",
   passwordPolicy: {
     minimumLength: 14,
     requireLowercase: true,
@@ -72,102 +82,96 @@ const pool = new aws.cognito.UserPool("pool", {
 });
 
 const client = new aws.cognito.UserPoolClient("client", {
-  name: 'rv-app',
+  name: "rv-app",
   userPoolId: pool.id,
   callbackUrls: [pulumi.interpolate`https://${distribution.domainName}`],
   logoutUrls: [pulumi.interpolate`https://${distribution.domainName}`],
   defaultRedirectUri: pulumi.interpolate`https://${distribution.domainName}`,
   allowedOauthFlowsUserPoolClient: true,
-  allowedOauthFlows: ['code'],
-  allowedOauthScopes: ['openid', 'profile'],
+  allowedOauthFlows: ["code"],
+  allowedOauthScopes: ["openid", "profile"],
   explicitAuthFlows: [
-    'ALLOW_USER_SRP_AUTH',
-    'ALLOW_USER_PASSWORD_AUTH',
-    'ALLOW_REFRESH_TOKEN_AUTH',
-    'ALLOW_ADMIN_USER_PASSWORD_AUTH',
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH",
+    "ALLOW_ADMIN_USER_PASSWORD_AUTH",
   ],
   generateSecret: false, // The browser SDK does not support sending a secret
-  preventUserExistenceErrors: 'ENABLED',
-  supportedIdentityProviders: ['COGNITO'],
+  preventUserExistenceErrors: "ENABLED",
+  supportedIdentityProviders: ["COGNITO"],
 });
 
-const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
-  domain: "rv-app",
-  userPoolId: pool.id,
-});
+// Do we want to use the hosted UI ever?
+// const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
+//   domain: "rv-app",
+//   userPoolId: pool.id,
+// });
 
 const identityPool = new aws.cognito.IdentityPool("main", {
-  identityPoolName: 'rv-app',
+  identityPoolName: "rv-app",
   allowClassicFlow: false,
   allowUnauthenticatedIdentities: false,
-  cognitoIdentityProviders: [{
-    clientId: client.id,
-    providerName: pulumi.interpolate`cognito-idp.us-east-1.amazonaws.com/${pool.id}`,
-    serverSideTokenCheck: true,
-  }],
+  cognitoIdentityProviders: [
+    {
+      clientId: client.id,
+      providerName: pulumi.interpolate`cognito-idp.us-east-1.amazonaws.com/${pool.id}`,
+      serverSideTokenCheck: true,
+    },
+  ],
   developerProviderName: distribution.domainName,
 });
-const authenticatedRole = new aws.iam.Role("authenticatedRole", {assumeRolePolicy: pulumi.interpolate`{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "cognito-identity.amazonaws.com"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "cognito-identity.amazonaws.com:aud": "${identityPool.id}"
+
+const authenticatedRole = new aws.iam.Role("authenticatedRole", {
+  assumeRolePolicy: {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Principal: {
+          Federated: "cognito-identity.amazonaws.com",
         },
-        "ForAnyValue:StringLike": {
-          "cognito-identity.amazonaws.com:amr": "authenticated"
-        }
-      }
-    }
-  ]
-}
-`});
-const authenticatedRolePolicy = new aws.iam.RolePolicy("authenticatedRolePolicy", {
-  role: authenticatedRole.id,
-  policy: `{
-"Version": "2012-10-17",
-"Statement": [
-  {
-    "Effect": "Allow",
-    "Action": [
-      "mobileanalytics:PutEvents",
-      "cognito-sync:*",
-      "cognito-identity:*"
+        Action: "sts:AssumeRoleWithWebIdentity",
+        Condition: {
+          StringEquals: {
+            "cognito-identity.amazonaws.com:aud": identityPool.id,
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "authenticated",
+          },
+        },
+      },
     ],
-    "Resource": [
-      "*"
-    ]
-  }
-]
-}
-`,
-});
-const mainIdentityPoolRoleAttachment = new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
-  identityPoolId: identityPool.id,
-  // roleMappings: [{
-  //     // DO NOT SUBMIT: remove hardcode
-  //     identityProvider: "cognito-idp.us-east-1.amazonaws.com/us-east-1_Sle6F4QqC",
-  //     ambiguousRoleResolution: "AuthenticatedRole",
-  //     type: "Rules",
-  //     mappingRules: [{
-  //         claim: "isAdmin",
-  //         matchType: "Equals",
-  //         roleArn: authenticatedRole.arn,
-  //         value: "paid",
-  //     }],
-  // }],
-  roles: {
-      authenticated: authenticatedRole.arn,
   },
 });
 
-export const bucketName = bucket.bucket;
+new aws.iam.RolePolicy("authenticatedRolePolicy", {
+  role: authenticatedRole.id,
+  policy: {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Action: [
+          "mobileanalytics:PutEvents",
+          "cognito-sync:*",
+          "cognito-identity:*",
+        ],
+        Resource: "*",
+      },
+    ],
+  },
+});
+
+new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
+  identityPoolId: identityPool.id,
+  roles: {
+    authenticated: authenticatedRole.arn,
+  },
+});
+
 export const mapName = map.mapName;
-export const cognitoDomain = userPoolDomain.cloudfrontDistributionArn;
 export const cdnDomain = distribution.domainName;
+export const region = bucket.region;
+export const userPoolId = pool.id;
+export const clientId = client.id;
+export const identityPoolId = identityPool.id;
