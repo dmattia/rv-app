@@ -26,12 +26,12 @@ jobs:
 
       # Set the env vars that the frontend needs
       - run: |
-          rm .env.local && touch .env.local
-          echo "RV_APP_USER_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output userPoolId --stack prod)" >> .env.local
-          echo "RV_APP_AWS_REGION=$(yarn workspace @rv-app/infra exec pulumi stack output region --stack prod)" >> .env.local
-          echo "RV_APP_COGNITO_CLIENT_ID=$(yarn workspace @rv-app/infra exec pulumi stack output clientId --stack prod)" >> .env.local
-          echo "RV_APP_IDENTITY_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output identityPoolId --stack prod)" >> .env.local
-          echo "RV_APP_MAP_NAME=$(yarn workspace @rv-app/infra exec pulumi stack output mapName --stack prod)" >> .env.local
+          echo "RV_APP_USER_POOL_ID=$(yarn exec pulumi stack output userPoolId --stack prod)" > .env
+          echo "RV_APP_AWS_REGION=$(yarn exec pulumi stack output region --stack prod)" >> .env
+          echo "RV_APP_COGNITO_CLIENT_ID=$(yarn exec pulumi stack output clientId --stack prod)" >> .env
+          echo "RV_APP_IDENTITY_POOL_ID=$(yarn exec pulumi stack output identityPoolId --stack prod)" >> .env
+          echo "RV_APP_MAP_NAME=$(yarn workspace pulumi stack output mapName --stack prod)" >> .env
+        working-directory: frontend
 
       # Build and deploy the frontend code
       - run: yarn workspace @rv-app/frontend build
