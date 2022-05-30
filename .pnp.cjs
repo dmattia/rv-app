@@ -4000,10 +4000,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@pulumi/aws", [\
-        ["npm:5.5.0", {\
-          "packageLocation": "./.yarn/unplugged/@pulumi-aws-npm-5.5.0-45b042b2e7/node_modules/@pulumi/aws/",\
+        ["npm:5.6.0", {\
+          "packageLocation": "./.yarn/unplugged/@pulumi-aws-npm-5.6.0-e98adc9cab/node_modules/@pulumi/aws/",\
           "packageDependencies": [\
-            ["@pulumi/aws", "npm:5.5.0"],\
+            ["@pulumi/aws", "npm:5.6.0"],\
             ["@pulumi/pulumi", "npm:3.33.2"],\
             ["aws-sdk", "npm:2.1145.0"],\
             ["builtin-modules", "npm:3.0.0"],\
@@ -4919,7 +4919,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./infra/",\
           "packageDependencies": [\
             ["@rv-app/infra", "workspace:infra"],\
-            ["@pulumi/aws", "npm:5.5.0"],\
+            ["@pulumi/aws", "npm:5.6.0"],\
             ["@pulumi/pulumi", "npm:3.33.2"],\
             ["@types/node", "npm:14.14.31"],\
             ["ts-node", "virtual:8cf029b51a60dd6500adf3c7e3d746f249dfafb991fa8c1b17e29b3f5ddf8989e7d217e8c5585bf69953130e0f6eae066bdf0823227d31145ad776a10e322f56#npm:8.10.2"],\

@@ -73,6 +73,11 @@ const map = new aws.location.Map(
   { deleteBeforeReplace: true }
 );
 
+const mapIndex = new aws.location.PlaceIndex("index", {
+  dataSource: "Esri",
+  indexName: "esri",
+});
+
 // Create the Authentication config
 const pool = new aws.cognito.UserPool("pool", {
   name: "rv-app",
@@ -104,12 +109,6 @@ const client = new aws.cognito.UserPoolClient("client", {
   preventUserExistenceErrors: "ENABLED",
   supportedIdentityProviders: ["COGNITO"],
 });
-
-// Do we want to use the hosted UI ever?
-// const userPoolDomain = new aws.cognito.UserPoolDomain("main", {
-//   domain: "rv-app",
-//   userPoolId: pool.id,
-// });
 
 const identityPool = new aws.cognito.IdentityPool("main", {
   identityPoolName: "rv-app",
@@ -148,15 +147,6 @@ const authenticatedRole = new aws.iam.Role("authenticatedRole", {
   },
 });
 
-// The ESRI place index is created automatically
-const esriIndex = pulumi.output(
-  aws.location.getPlaceIndex(
-    {
-      indexName: "explore.place",
-    },
-    { dependsOn: [map] }
-  )
-);
 new aws.iam.RolePolicy("authenticatedRolePolicy", {
   role: authenticatedRole.id,
   policy: {
@@ -183,7 +173,7 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
           "geo:SearchPlaceIndexForPosition",
           "geo:SearchPlaceIndexForText",
         ],
-        Resource: esriIndex.indexArn,
+        Resource: mapIndex.indexArn,
       },
     ],
   },
