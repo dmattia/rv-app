@@ -183,7 +183,7 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
           "geo:SearchPlaceIndexForPosition",
           "geo:SearchPlaceIndexForText",
         ],
-        Resource: esriIndex.arn,
+        Resource: esriIndex.indexArn,
       },
     ],
   },
