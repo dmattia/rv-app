@@ -32,7 +32,7 @@ jobs:
           echo "RV_APP_COGNITO_CLIENT_ID=$(yarn workspace @rv-app/infra exec pulumi stack output clientId --stack prod)" >> frontend/.env
           echo "RV_APP_IDENTITY_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output identityPoolId --stack prod)" >> frontend/.env
           echo "RV_APP_MAP_NAME=$(yarn workspace @rv-app/infra exec pulumi stack output mapName --stack prod)" >> frontend/.env
-          echo "RV_APP_SEARCH_INDEX=$(yarn workspace @rv-app/infra exec pulumi stack output mapIndex --stack prod)" >> frontend/.env
+          echo "RV_APP_SEARCH_INDEX=$(yarn workspace @rv-app/infra exec pulumi stack output mapIndexName --stack prod)" >> frontend/.env
           cat frontend/.env
 
       # Build and deploy the frontend code

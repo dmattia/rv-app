@@ -187,7 +187,7 @@ new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
 });
 
 export const mapName = map.mapName;
-export const mapIndex = mapIndex.indexName;
+export const mapIndexName = mapIndex.indexName;
 export const cdnDomain = distribution.domainName;
 export const region = bucket.region;
 export const userPoolId = pool.id;
