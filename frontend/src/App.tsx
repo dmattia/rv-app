@@ -30,6 +30,10 @@ Amplify.configure({
         },
         default: process.env.RV_APP_MAP_NAME,
       },
+      search_indices: {
+        items: [process.env.RV_APP_SEARCH_INDEX],
+        default: process.env.RV_APP_SEARCH_INDEX,
+      },
       region: process.env.RV_APP_AWS_REGION,
     },
   },
