@@ -61,13 +61,17 @@ const distribution = new aws.cloudfront.Distribution("cdn", {
 });
 
 // Create a map in the Location service
-const map = new aws.location.Map("main-map", {
-  mapName: "rv-app-primary",
-  description: "Primary map for the app",
-  configuration: {
-    style: "VectorHereExploreTruck",
+const map = new aws.location.Map(
+  "main-map",
+  {
+    mapName: "rv-app-primary",
+    description: "Primary map for the app",
+    configuration: {
+      style: "VectorEsriStreets",
+    },
   },
-});
+  { deleteBeforeReplace: true }
+);
 
 // Create the Authentication config
 const pool = new aws.cognito.UserPool("pool", {
@@ -151,12 +155,18 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
     Statement: [
       {
         Effect: "Allow",
-        Action: [
-          "mobileanalytics:PutEvents",
-          "cognito-sync:*",
-          "cognito-identity:*",
-        ],
+        Action: ["cognito-sync:*", "cognito-identity:*"],
         Resource: "*",
+      },
+      {
+        Effect: "Allow",
+        Action: [
+          "geo:GetMapTile",
+          "geo:GetMapSprites",
+          "geo:GetMapGlyphs",
+          "geo:GetMapStyleDescriptor",
+        ],
+        Resource: map.mapArn,
       },
     ],
   },
