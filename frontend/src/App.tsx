@@ -1,5 +1,14 @@
 import Amplify from "aws-amplify";
-import { Authenticator, MapView } from "@aws-amplify/ui-react";
+import {
+  Authenticator,
+  Badge,
+  Button,
+  LocationSearch,
+  MapView,
+} from "@aws-amplify/ui-react";
+import { useRef, useCallback } from "react";
+import type { MapRef } from "react-map-gl";
+
 import "@aws-amplify/ui-react/styles.css";
 
 Amplify.configure({
@@ -9,20 +18,6 @@ Amplify.configure({
     userPoolId: process.env.RV_APP_USER_POOL_ID,
     userPoolWebClientId: process.env.RV_APP_COGNITO_CLIENT_ID,
     mandatorySignIn: true,
-    // cookieStorage: {
-    //   domain: window.location.host,
-    //   expires: 7,
-    //   sameSite: 'strict',
-    //   secure: true,
-    // },
-    // authenticationFlowType: 'USER_PASSWORD_AUTH',
-    //   oauth: {
-    //     domain: 'your_cognito_domain',
-    //     scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
-    //     redirectSignIn: 'http://localhost:3000/',
-    //     redirectSignOut: 'http://localhost:3000/',
-    //     responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
-    // }
   },
   // See: https://docs.amplify.aws/lib/geo/existing-resources/q/platform/js/#authorization-permissions
   geo: {
@@ -41,13 +36,20 @@ Amplify.configure({
 });
 
 function App() {
+  const mapRef = useRef<MapRef>();
+
+  const flyHome = useCallback(() => {
+    mapRef.current?.flyTo({ center: [-93.201399, 44.812432], zoom: 15 });
+  }, []);
+
   return (
     <Authenticator>
       {({ signOut, user }) => (
         <div>
           <p>Bri and David's RV Website</p>
 
-          <p>{user?.username}</p>
+          <Badge>{user?.username}</Badge>
+          <Button onClick={signOut}>Log Out</Button>
 
           <MapView
             initialViewState={{
@@ -55,7 +57,12 @@ function App() {
               longitude: -122.4,
               zoom: 14,
             }}
-          />
+            ref={mapRef as any}
+            style={{ width: "600px", height: "300px" }}
+          >
+            <LocationSearch />
+          </MapView>
+          <Button onClick={flyHome}>Fly Home</Button>
         </div>
       )}
     </Authenticator>

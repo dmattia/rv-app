@@ -148,6 +148,15 @@ const authenticatedRole = new aws.iam.Role("authenticatedRole", {
   },
 });
 
+// The ESRI place index is created automatically
+const esriIndex = pulumi.output(
+  aws.location.getPlaceIndex(
+    {
+      indexName: "explore.place",
+    },
+    { dependsOn: [map] }
+  )
+);
 new aws.iam.RolePolicy("authenticatedRolePolicy", {
   role: authenticatedRole.id,
   policy: {
@@ -167,6 +176,14 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
           "geo:GetMapStyleDescriptor",
         ],
         Resource: map.mapArn,
+      },
+      {
+        Effect: "Allow",
+        Action: [
+          "geo:SearchPlaceIndexForPosition",
+          "geo:SearchPlaceIndexForText",
+        ],
+        Resource: esriIndex.arn,
       },
     ],
   },
