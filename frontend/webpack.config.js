@@ -10,11 +10,8 @@ module.exports = {
     new Dotenv({
       path: "./.env",
     }),
-    // new webpack.ProvidePlugin({
-    //   process: 'process/browser',
-    // }),
     new HtmlWebpackPlugin({
-      template: "public-test/index.html",
+      template: "public/index.html",
     }),
   ],
   module: {
@@ -34,15 +31,11 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
-    // static: {
-    //   directory: path.join(__dirname, 'public'),
-    // },
     compress: true,
     hot: true,
   },
   output: {
     filename: "main.js",
-    // publicPath: path.resolve(__dirname, 'public'),
     path: path.resolve(__dirname, "dist"),
   },
 };
