@@ -186,6 +186,158 @@ new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
   },
 });
 
+// Dynamo DB table to hold data for the GraphQL endpoint
+const destinations = new aws.dynamodb.Table("destinations", {
+  hashKey: "id",
+  name: "destinations",
+  attributes: [
+    { name: "id", type: "S" },
+    { name: "name", type: "S" },
+    { name: "latitude", type: "S" },
+    { name: "longitude", type: "S" },
+  ],
+  billingMode: "PAY_PER_REQUEST",
+  pointInTimeRecovery: { enabled: false },
+  serverSideEncryption: { enabled: true },
+});
+
+const apiLogGroup = new aws.cloudwatch.LogGroup("api", {
+  namePrefix: "rv-app-api",
+  retentionInDays: 30,
+});
+
+const appSyncRole = new aws.iam.Role("appSyncRole", {
+  namePrefix: "appSyncRole",
+  assumeRolePolicy: JSON.stringify({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Action: "sts:AssumeRole",
+        Effect: "Allow",
+        Principal: {
+          Service: "appsync.amazonaws.com",
+        },
+      },
+    ],
+  }),
+});
+
+const appSyncPolicy = new aws.iam.Policy("appSyncPolicy", {
+  policy: {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Action: ["logs:*"],
+        Resource: apiLogGroup.arn,
+      },
+      {
+        Action: ["dynamodb:PutItem", "dynamodb:GetItem"],
+        Resource: [destinations.arn],
+        Effect: "Allow",
+      },
+    ],
+  },
+});
+
+new aws.iam.PolicyAttachment("appSyncRolePolicy", {
+  roles: [appSyncRole],
+  policyArn: appSyncPolicy.arn,
+});
+
+const api = new aws.appsync.GraphQLApi("api", {
+  name: "rv-app-backend",
+  authenticationType: "AMAZON_COGNITO_USER_POOLS",
+  schema: `
+    type Query {
+        getDestinationById(id: ID!): Destination
+    }
+    type Mutation {
+        addDestination(input: CreateDestinationInput!): Destination!
+    }
+    input CreateDestinationInput {
+        name: String!
+        latitude: String!
+        longitude: String!
+    }
+    type Destination {
+        id: ID!
+        name: String
+        latitude: String
+        longitude: String
+    }
+    schema {
+        query: Query
+        mutation: Mutation
+    }
+  `
+    .split("\n")
+    .map((line) => line.trim())
+    .join("\n")
+    .trim(),
+  xrayEnabled: true,
+  userPoolConfig: {
+    appIdClientRegex: client.id,
+    awsRegion: bucket.region,
+    defaultAction: "DENY",
+    userPoolId: pool.id,
+  },
+  // TODO: Where do I specify the log group to actually log to?
+  logConfig: {
+    cloudwatchLogsRoleArn: appSyncRole.arn,
+    excludeVerboseContent: true,
+    fieldLogLevel: "ALL",
+  },
+});
+
+// Link a data source to the Dynamo DB Table
+const destinationsDataSource = new aws.appsync.DataSource("destinations", {
+  name: destinations.name,
+  apiId: api.id,
+  type: "AMAZON_DYNAMODB",
+  dynamodbConfig: {
+    tableName: destinations.name,
+  },
+  serviceRoleArn: appSyncRole.arn,
+});
+
+new aws.appsync.Resolver("get_destinations", {
+  apiId: api.id,
+  dataSource: destinationsDataSource.name,
+  type: "Query",
+  field: "getDestinationById",
+  requestTemplate: `{
+      "version": "2017-02-28",
+      "operation": "GetItem",
+      "key": {
+          "id": $util.dynamodb.toDynamoDBJson($ctx.args.id),
+      }
+  }`,
+  responseTemplate: `$util.toJson($ctx.result)`,
+});
+
+new aws.appsync.Resolver("add_destination", {
+  apiId: api.id,
+  dataSource: destinationsDataSource.name,
+  type: "Mutation",
+  field: "addDestination",
+  requestTemplate: `{
+      "version" : "2017-02-28",
+      "operation" : "PutItem",
+      "key" : {
+          "id" : $util.dynamodb.toDynamoDBJson($util.autoId())
+      },
+      "attributeValues": $util.dynamodb.toMapValuesJson($ctx.args.input),
+      "condition": {
+        "expression": "attribute_not_exists(#id)",
+        "expressionNames": {
+          "#id": "id",
+        },
+      },
+  }`,
+  responseTemplate: `$util.toJson($ctx.result)`,
+});
+
 export const mapName = map.mapName;
 export const mapIndexName = mapIndex.indexName;
 export const cdnDomain = distribution.domainName;
@@ -193,3 +345,4 @@ export const region = bucket.region;
 export const userPoolId = pool.id;
 export const clientId = client.id;
 export const identityPoolId = identityPool.id;
+export const endpoint = api.uris["GRAPHQL"];
