@@ -190,12 +190,7 @@ new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
 const destinations = new aws.dynamodb.Table("destinations", {
   hashKey: "id",
   name: "destinations",
-  attributes: [
-    { name: "id", type: "S" },
-    { name: "name", type: "S" },
-    { name: "latitude", type: "S" },
-    { name: "longitude", type: "S" },
-  ],
+  attributes: [{ name: "id", type: "S" }],
   billingMode: "PAY_PER_REQUEST",
   pointInTimeRecovery: { enabled: false },
   serverSideEncryption: { enabled: true },
