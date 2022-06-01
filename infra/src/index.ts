@@ -278,11 +278,11 @@ const api = new aws.appsync.GraphQLApi("api", {
     userPoolId: pool.id,
   },
   // TODO: Where do I specify the log group to actually log to?
-  logConfig: {
-    cloudwatchLogsRoleArn: appSyncRole.arn,
-    excludeVerboseContent: true,
-    fieldLogLevel: "ALL",
-  },
+  // logConfig: {
+  //   cloudwatchLogsRoleArn: appSyncRole.arn,
+  //   excludeVerboseContent: true,
+  //   fieldLogLevel: "ALL",
+  // },
 });
 
 // Link a data source to the Dynamo DB Table
