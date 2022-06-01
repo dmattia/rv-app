@@ -1,4 +1,4 @@
-import Amplify from "aws-amplify";
+import Amplify, { API } from "aws-amplify";
 import {
   Authenticator,
   Badge,
@@ -37,6 +37,10 @@ Amplify.configure({
       region: process.env.RV_APP_AWS_REGION,
     },
   },
+  aws_appsync_graphqlEndpoint:
+    "https://4ep2n2qgszeorjvntr4lw5prsy.appsync-api.us-east-1.amazonaws.com/graphql",
+  aws_appsync_region: process.env.RV_APP_AWS_REGION,
+  aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
 });
 
 function App() {
@@ -44,6 +48,27 @@ function App() {
 
   const flyHome = useCallback(() => {
     mapRef.current?.flyTo({ center: [-93.201399, 44.812432], zoom: 15 });
+  }, []);
+
+  const createDestination = useCallback(async () => {
+    await API.graphql({
+      query: `
+        mutation MyMutation($input: CreateDestinationInput!) {
+          addDestination(input: $input) {
+            id
+            name
+            latitude
+            longitude
+          }
+        }`.trim(),
+      variables: {
+        input: {
+          latitude: "44.5854031",
+          longitude: "-111.0744797",
+          name: "Yellowstone National Park",
+        },
+      },
+    });
   }, []);
 
   return (
@@ -67,6 +92,7 @@ function App() {
             <LocationSearch />
           </MapView>
           <Button onClick={flyHome}>Fly Home</Button>
+          <Button onClick={createDestination}>Add Destination</Button>
         </div>
       )}
     </Authenticator>

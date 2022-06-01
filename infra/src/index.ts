@@ -175,6 +175,12 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
         ],
         Resource: mapIndex.indexArn,
       },
+      // TODO: Restrict
+      {
+        Effect: "Allow",
+        Action: ["appsync:*"],
+        Resource: ["*"],
+      },
     ],
   },
 });
@@ -272,7 +278,8 @@ const api = new aws.appsync.GraphQLApi("api", {
     .trim(),
   xrayEnabled: true,
   userPoolConfig: {
-    appIdClientRegex: client.id,
+    // Can I enable this?
+    // appIdClientRegex: client.id,
     awsRegion: bucket.region,
     defaultAction: "DENY",
     userPoolId: pool.id,
