@@ -22,7 +22,7 @@ jobs:
 
       # Install Pulumi and deploy the infra code
       - uses: pulumi/action-install-pulumi-cli@v1.0.1
-      - run: yarn workspace @rv-app/infra exec pulumi up --stack prod --yes
+      - run: yarn workspace @rv-app/infra exec pulumi up --stack prod --yes --refresh
 
       # Set the env vars that the frontend needs
       - run: |
@@ -33,6 +33,7 @@ jobs:
           echo "RV_APP_IDENTITY_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output identityPoolId --stack prod)" >> frontend/.env
           echo "RV_APP_MAP_NAME=$(yarn workspace @rv-app/infra exec pulumi stack output mapName --stack prod)" >> frontend/.env
           echo "RV_APP_SEARCH_INDEX=$(yarn workspace @rv-app/infra exec pulumi stack output mapIndexName --stack prod)" >> frontend/.env
+          echo "RV_APP_API_ENDPOINT=$(yarn workspace @rv-app/infra exec pulumi stack output endpoint --stack prod)" >> frontend/.env
           cat frontend/.env
 
       # Build and deploy the frontend code

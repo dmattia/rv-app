@@ -87,6 +87,7 @@ const pool = new aws.cognito.UserPool("pool", {
     requireNumbers: true,
     requireSymbols: true,
     requireUppercase: true,
+    temporaryPasswordValidityDays: 7,
   },
 });
 
@@ -175,13 +176,6 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
         ],
         Resource: mapIndex.indexArn,
       },
-      // TODO: Restrict
-      {
-        Effect: "Allow",
-        Action: ["*"],
-        // Action: ["appsync:*"],
-        Resource: ["*"],
-      },
     ],
   },
 });
@@ -203,11 +197,6 @@ const destinations = new aws.dynamodb.Table("destinations", {
   serverSideEncryption: { enabled: true },
 });
 
-const apiLogGroup = new aws.cloudwatch.LogGroup("api", {
-  namePrefix: "rv-app-api",
-  retentionInDays: 30,
-});
-
 const appSyncRole = new aws.iam.Role("appSyncRole", {
   namePrefix: "appSyncRole",
   assumeRolePolicy: JSON.stringify({
@@ -222,29 +211,6 @@ const appSyncRole = new aws.iam.Role("appSyncRole", {
       },
     ],
   }),
-});
-
-const appSyncPolicy = new aws.iam.Policy("appSyncPolicy", {
-  policy: {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Effect: "Allow",
-        Action: ["logs:*"],
-        Resource: apiLogGroup.arn,
-      },
-      {
-        Action: ["dynamodb:PutItem", "dynamodb:GetItem"],
-        Resource: [destinations.arn],
-        Effect: "Allow",
-      },
-    ],
-  },
-});
-
-new aws.iam.PolicyAttachment("appSyncRolePolicy", {
-  roles: [appSyncRole],
-  policyArn: appSyncPolicy.arn,
 });
 
 const api = new aws.appsync.GraphQLApi("api", {
@@ -279,18 +245,40 @@ const api = new aws.appsync.GraphQLApi("api", {
     .trim(),
   xrayEnabled: true,
   userPoolConfig: {
-    // Can I enable this?
-    // appIdClientRegex: client.id,
+    appIdClientRegex: client.id,
     awsRegion: bucket.region,
-    defaultAction: "DENY",
+    defaultAction: "ALLOW",
     userPoolId: pool.id,
   },
-  // TODO: Where do I specify the log group to actually log to?
-  // logConfig: {
-  //   cloudwatchLogsRoleArn: appSyncRole.arn,
-  //   excludeVerboseContent: true,
-  //   fieldLogLevel: "ALL",
-  // },
+  logConfig: {
+    cloudwatchLogsRoleArn: appSyncRole.arn,
+    excludeVerboseContent: true,
+    fieldLogLevel: "ALL",
+  },
+});
+
+const accountId = aws.getCallerIdentity({}).then(({ accountId }) => accountId);
+const appSyncPolicy = new aws.iam.Policy("appSyncPolicy", {
+  policy: {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Action: ["logs:*"],
+        Resource: pulumi.interpolate`arn:aws:logs:us-east-1:${accountId}:log-group:/aws/appsync/apis/${api.id}`,
+      },
+      {
+        Action: ["dynamodb:PutItem", "dynamodb:GetItem"],
+        Resource: [destinations.arn],
+        Effect: "Allow",
+      },
+    ],
+  },
+});
+
+new aws.iam.RolePolicyAttachment("appSyncRolePolicy", {
+  role: appSyncRole,
+  policyArn: appSyncPolicy.arn,
 });
 
 // Link a data source to the Dynamo DB Table

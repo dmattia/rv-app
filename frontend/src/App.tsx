@@ -5,11 +5,19 @@ import {
   Button,
   LocationSearch,
   MapView,
+  Alert,
 } from "@aws-amplify/ui-react";
-import { useRef, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import type { MapRef } from "react-map-gl";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 import "@aws-amplify/ui-react/styles.css";
+
+type Inputs = {
+  name: string;
+  latitude: string;
+  longitude: string;
+};
 
 Amplify.configure({
   Auth: {
@@ -37,21 +45,24 @@ Amplify.configure({
       region: process.env.RV_APP_AWS_REGION,
     },
   },
-  aws_appsync_graphqlEndpoint:
-    "https://4ep2n2qgszeorjvntr4lw5prsy.appsync-api.us-east-1.amazonaws.com/graphql",
+  aws_appsync_graphqlEndpoint: process.env.RV_APP_API_ENDPOINT,
   aws_appsync_region: process.env.RV_APP_AWS_REGION,
   aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
 });
 
 function App() {
   const mapRef = useRef<MapRef>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
 
-  const flyHome = useCallback(() => {
-    mapRef.current?.flyTo({ center: [-93.201399, 44.812432], zoom: 15 });
-  }, []);
-
-  const createDestination = useCallback(async () => {
-    await API.graphql({
+  const [newDestinationId, setDestinationId] = useState<string | undefined>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const {
+      data: { addDestination },
+    } = await API.graphql({
       query: `
         mutation MyMutation($input: CreateDestinationInput!) {
           addDestination(input: $input) {
@@ -68,7 +79,13 @@ function App() {
           name: "Yellowstone National Park",
         },
       },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
     });
+    setDestinationId(addDestination.id);
+  };
+
+  const flyHome = useCallback(() => {
+    mapRef.current?.flyTo({ center: [-93.201399, 44.812432], zoom: 15 });
   }, []);
 
   return (
@@ -92,7 +109,37 @@ function App() {
             <LocationSearch />
           </MapView>
           <Button onClick={flyHome}>Fly Home</Button>
-          <Button onClick={createDestination}>Add Destination</Button>
+
+          <h2>Create a destination</h2>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              {...register("name", { required: true })}
+              placeholder="Destination name"
+            />
+            {errors.name && <span>This field is required</span>}
+            <input
+              {...register("latitude", { required: true })}
+              placeholder="latitude"
+            />
+            {errors.latitude && <span>This field is required</span>}
+            <input
+              {...register("longitude", { required: true })}
+              placeholder="longitude"
+            />
+            {errors.longitude && <span>This field is required</span>}
+
+            <input type="submit" />
+          </form>
+          {newDestinationId && (
+            <Alert
+              isDismissible={true}
+              hasIcon={true}
+              variation="success"
+              heading="Success!"
+            >
+              Created a new destination with ID: {newDestinationId}
+            </Alert>
+          )}
         </div>
       )}
     </Authenticator>
