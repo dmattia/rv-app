@@ -178,7 +178,8 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
       // TODO: Restrict
       {
         Effect: "Allow",
-        Action: ["appsync:*"],
+        Action: ["*"],
+        // Action: ["appsync:*"],
         Resource: ["*"],
       },
     ],
