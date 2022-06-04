@@ -1,0 +1,18 @@
+name: Install Yarn Dependencies
+description: Installs Yarn Dependencies
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v3.0.1
+      id: yarn-cache
+      with:
+        path: |
+          .yarn/cache
+          .yarn/unplugged
+          .yarn/install-state.gz
+          .pnp.cjs
+        key: yarn-${{ hashFiles('**/yarn.lock', '**/package.json') }}
+        restore-keys: yarn-
+    - run: yarn install --immutable
+      shell: bash
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
