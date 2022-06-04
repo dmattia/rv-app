@@ -268,12 +268,6 @@ new LambdaResolver("listDestinations", {
   type: "Query",
   appSyncApi: api,
   code: new pulumi.asset.FileArchive(outputDir),
-  handler: "index.listDestinations",
-  memorySize: 256,
-  name: "listDestinations",
-  type: "Query",
-  appSyncApi: api,
-  code: new pulumi.asset.FileArchive(outputDir),
   iamPermissions: [
     {
       Action: ["dynamodb:Scan"],
