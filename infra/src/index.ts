@@ -235,32 +235,6 @@ const api = new aws.appsync.GraphQLApi("api", {
   },
 });
 
-// Link a data source to the Dynamo DB Table
-const destinationsDataSource = new aws.appsync.DataSource("destinations", {
-  name: destinations.name,
-  apiId: api.id,
-  type: "AMAZON_DYNAMODB",
-  dynamodbConfig: {
-    tableName: destinations.name,
-  },
-  serviceRoleArn: appSyncRole.arn,
-});
-
-new aws.appsync.Resolver("get_destinations", {
-  apiId: api.id,
-  dataSource: destinationsDataSource.name,
-  type: "Query",
-  field: "getDestinationById",
-  requestTemplate: `{
-      "version": "2017-02-28",
-      "operation": "GetItem",
-      "key": {
-          "id": $util.dynamodb.toDynamoDBJson($ctx.args.id),
-      }
-  }`,
-  responseTemplate: `$util.toJson($ctx.result)`,
-});
-
 // Build our lambda code
 const buildOutput = build({
   plugins: [pnpPlugin()],
@@ -272,7 +246,30 @@ const buildOutput = build({
 });
 const outputDir = buildOutput.then(() => "dist");
 
+new LambdaResolver("getDestinationById", {
+  name: "getDestinationById",
+  type: "Query",
+  appSyncApi: api,
+  code: new pulumi.asset.FileArchive(outputDir),
+  iamPermissions: [
+    {
+      Action: ["dynamodb:GetItem"],
+      Resource: [destinations.arn],
+      Effect: "Allow",
+    },
+  ],
+  environment: {
+    DESTINATIONS_TABLE: destinations.name,
+  },
+});
+
 new LambdaResolver("listDestinations", {
+  name: "listDestinations",
+  type: "Query",
+  appSyncApi: api,
+  code: new pulumi.asset.FileArchive(outputDir),
+  handler: "index.listDestinations",
+  memorySize: 256,
   name: "listDestinations",
   type: "Query",
   appSyncApi: api,
@@ -315,11 +312,6 @@ const appSyncPolicy = new aws.iam.Policy("appSyncPolicy", {
         Effect: "Allow",
         Action: ["logs:*"],
         Resource: pulumi.interpolate`arn:aws:logs:us-east-1:${accountId}:log-group:/aws/appsync/apis/${api.id}`,
-      },
-      {
-        Action: ["dynamodb:GetItem"],
-        Resource: [destinations.arn],
-        Effect: "Allow",
       },
     ],
   },
