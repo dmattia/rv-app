@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: yarn
+      - uses: ./.github/commands/yarn_install
       - run: yarn workspace @rv-app/schema generate
 
       # Setup AWS Credentials

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: yarn
+      - uses: ./.github/commands/yarn_install
       - run: yarn workspace @rv-app/schema generate
       - run: yarn workspace @rv-app/frontend build
 
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: yarn
+      - uses: ./.github/commands/yarn_install
       - run: yarn workspace @rv-app/schema generate
       - run: yarn tsc --build
 
