@@ -7070,10 +7070,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/aws-lambda", "npm:8.10.98"],\
             ["@types/express", "npm:4.17.13"],\
             ["@types/node", "npm:17.0.39"],\
+            ["@types/uuid", "npm:8.3.4"],\
             ["aws-lambda", "npm:1.0.7"],\
             ["express", "npm:4.17.1"],\
             ["ts-node", "virtual:3609885524b61e9abf11b8c23baa685bbb50fc6b2c8f6fb7b3c7468120fc58c9cedc8f96c1ece9fcb8566417377322764dbb6e24fd9c13f6cd19fd4793a662bf#npm:10.4.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"]\
+            ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"],\
+            ["uuid", "npm:8.3.2"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -7841,6 +7843,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/sockjs", "npm:0.3.33"],\
             ["@types/node", "npm:17.0.35"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/uuid", [\
+        ["npm:8.3.4", {\
+          "packageLocation": "./.yarn/cache/@types-uuid-npm-8.3.4-7547f4402c-6f11f3ff70.zip/node_modules/@types/uuid/",\
+          "packageDependencies": [\
+            ["@types/uuid", "npm:8.3.4"]\
           ],\
           "linkType": "HARD"\
         }]\

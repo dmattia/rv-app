@@ -3,13 +3,15 @@ import { gql } from "apollo-server";
 export const schema = gql`
   type Destination {
     id: ID!
-    name: String
+    # Name is a reserved keyword
+    destinationName: String
     latitude: String
     longitude: String
   }
 
-  input CreateDestinationInput {
-    name: String!
+  input CreateOrUpdateDestinationInput {
+    id: String
+    destinationName: String!
     latitude: String!
     longitude: String!
   }
@@ -20,7 +22,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    addDestination(input: CreateDestinationInput!): Destination!
+    createOrUpdateDestination(
+      input: CreateOrUpdateDestinationInput!
+    ): Destination!
   }
 
   schema {
