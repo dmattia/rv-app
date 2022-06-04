@@ -1,7 +1,5 @@
 name: Deploy all services
 on:
-  # DO NOT SUBMIT: remove
-  pull_request:
   push:
     branches:
       - main
