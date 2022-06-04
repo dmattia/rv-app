@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../build/@rv-app/infra",
     "tsBuildInfoFile": "../build/@rv-app/infra.tsbuildinfo",
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": ["node"]
   }
 }

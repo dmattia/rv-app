@@ -10,6 +10,7 @@ import {
 import { useRef, useState, useCallback } from "react";
 import type { MapRef } from "react-map-gl";
 import { useForm, SubmitHandler } from "react-hook-form";
+import type { Destination } from "@rv-app/schema";
 
 import "@aws-amplify/ui-react/styles.css";
 
@@ -58,7 +59,7 @@ function App() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const [newDestinationId, setDestinationId] = useState<string | undefined>();
+  const [newDestination, setDestination] = useState<Destination | undefined>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const {
       data: { addDestination },
@@ -81,7 +82,7 @@ function App() {
       },
       authMode: "AMAZON_COGNITO_USER_POOLS",
     });
-    setDestinationId(addDestination.id);
+    setDestination(addDestination);
   };
 
   const flyHome = useCallback(() => {
@@ -130,14 +131,14 @@ function App() {
 
             <input type="submit" />
           </form>
-          {newDestinationId && (
+          {newDestination && (
             <Alert
               isDismissible={true}
               hasIcon={true}
               variation="success"
               heading="Success!"
             >
-              Created a new destination with ID: {newDestinationId}
+              Created a new destination with ID: {newDestination.id}
             </Alert>
           )}
         </div>

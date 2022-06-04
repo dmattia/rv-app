@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../build/@rv-app/schema",
+    "tsBuildInfoFile": "../build/@rv-app/schema.tsbuildinfo",
+    "rootDir": "src"
+  }
+}

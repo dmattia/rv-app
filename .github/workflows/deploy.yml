@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: yarn
+      - run: yarn workspace @rv-app/schema generate
 
       # Setup AWS Credentials
       - name: Configure AWS Credentials
