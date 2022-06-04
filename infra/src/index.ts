@@ -3,6 +3,7 @@ import * as aws from "@pulumi/aws";
 import { build } from "esbuild";
 import { pnpPlugin } from "@yarnpkg/esbuild-plugin-pnp";
 import { schema } from "@rv-app/schema";
+import { LambdaResolver } from "./components";
 
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
@@ -234,68 +235,7 @@ const api = new aws.appsync.GraphQLApi("api", {
   },
 });
 
-// Link a data source to the Dynamo DB Table
-const destinationsDataSource = new aws.appsync.DataSource("destinations", {
-  name: destinations.name,
-  apiId: api.id,
-  type: "AMAZON_DYNAMODB",
-  dynamodbConfig: {
-    tableName: destinations.name,
-  },
-  serviceRoleArn: appSyncRole.arn,
-});
-
-new aws.appsync.Resolver("get_destinations", {
-  apiId: api.id,
-  dataSource: destinationsDataSource.name,
-  type: "Query",
-  field: "getDestinationById",
-  requestTemplate: `{
-      "version": "2017-02-28",
-      "operation": "GetItem",
-      "key": {
-          "id": $util.dynamodb.toDynamoDBJson($ctx.args.id),
-      }
-  }`,
-  responseTemplate: `$util.toJson($ctx.result)`,
-});
-
-new aws.appsync.Resolver("add_destination", {
-  apiId: api.id,
-  dataSource: destinationsDataSource.name,
-  type: "Mutation",
-  field: "addDestination",
-  requestTemplate: `{
-      "version" : "2017-02-28",
-      "operation" : "PutItem",
-      "key" : {
-          "id" : $util.dynamodb.toDynamoDBJson($util.autoId())
-      },
-      "attributeValues": $util.dynamodb.toMapValuesJson($ctx.args.input),
-      "condition": {
-        "expression": "attribute_not_exists(#id)",
-        "expressionNames": {
-          "#id": "id",
-        },
-      },
-  }`,
-  responseTemplate: `$util.toJson($ctx.result)`,
-});
-
-const iamForLambda = new aws.iam.Role("iamForLambda", {
-  assumeRolePolicy: {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Action: "sts:AssumeRole",
-        Principal: { Service: "lambda.amazonaws.com" },
-        Effect: "Allow",
-      },
-    ],
-  },
-});
-
-// Build our lambda with esbuild
+// Build our lambda code
 const buildOutput = build({
   plugins: [pnpPlugin()],
   bundle: true,
@@ -304,80 +244,57 @@ const buildOutput = build({
   minify: true,
   platform: "node",
 });
-// We just want the `outputDir` value to wait for the `build` call to complete before pulumi can consume it
 const outputDir = buildOutput.then(() => "dist");
 
-const listDestinations = new aws.lambda.Function("listDestinations", {
-  architectures: ["arm64"],
-  code: new pulumi.asset.FileArchive(outputDir),
-  handler: "index.listDestinations",
-  memorySize: 256,
-  name: "listDestinations",
-  role: iamForLambda.arn,
-  runtime: "nodejs16.x",
-  environment: {
-    variables: {
-      DESTINATIONS_TABLE: destinations.name,
-    },
-  },
-});
-
-const listDestinationsDataSource = new aws.appsync.DataSource(
-  "listDestinations",
-  {
-    name: "listDestinations",
-    apiId: api.id,
-    type: "AWS_LAMBDA",
-    lambdaConfig: {
-      functionArn: listDestinations.arn,
-    },
-    serviceRoleArn: appSyncRole.arn,
-  }
-);
-
-new aws.appsync.Resolver("listDestinations", {
-  apiId: api.id,
-  dataSource: listDestinationsDataSource.name,
+new LambdaResolver("getDestinationById", {
+  name: "getDestinationById",
   type: "Query",
-  field: listDestinations.name,
-  requestTemplate: pulumi.interpolate`{
-    "version": "2017-02-28",
-    "operation": "Invoke",
-    "payload": {
-      "field": "${listDestinations.name}",
-      "arguments":  $utils.toJson($context.arguments)
-    }
-  }`,
-  responseTemplate: `$util.toJson($ctx.result)`,
-});
-
-const lambdaPolicy = new aws.iam.Policy("lambdaPolicy", {
-  policy: {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Effect: "Allow",
-        Action: [
-          "logs:CreateLogStream",
-          "logs:CreateLogGroup",
-          "logs:PutLogEvents",
-          "xray:PutTraceSegments",
-          "xray:PutTelemetryRecords",
-        ],
-        Resource: "*",
-      },
-      {
-        Action: ["dynamodb:Scan"],
-        Resource: [destinations.arn],
-        Effect: "Allow",
-      },
-    ],
+  appSyncApi: api,
+  code: new pulumi.asset.FileArchive(outputDir),
+  iamPermissions: [
+    {
+      Action: ["dynamodb:GetItem"],
+      Resource: [destinations.arn],
+      Effect: "Allow",
+    },
+  ],
+  environment: {
+    DESTINATIONS_TABLE: destinations.name,
   },
 });
 
-new aws.iam.RolePolicyAttachment("lambdaRolePolicy", {
-  role: iamForLambda,
-  policyArn: lambdaPolicy.arn,
+new LambdaResolver("listDestinations", {
+  name: "listDestinations",
+  type: "Query",
+  appSyncApi: api,
+  code: new pulumi.asset.FileArchive(outputDir),
+  iamPermissions: [
+    {
+      Action: ["dynamodb:Scan"],
+      Resource: [destinations.arn],
+      Effect: "Allow",
+    },
+  ],
+  environment: {
+    DESTINATIONS_TABLE: destinations.name,
+  },
+});
+
+new LambdaResolver("createOrUpdateDestination", {
+  name: "createOrUpdateDestination",
+  type: "Mutation",
+  appSyncApi: api,
+  code: new pulumi.asset.FileArchive(outputDir),
+  iamPermissions: [
+    {
+      Action: ["dynamodb:UpdateItem"],
+      Resource: [destinations.arn],
+      Effect: "Allow",
+    },
+  ],
+  environment: {
+    DESTINATIONS_TABLE: destinations.name,
+  },
 });
 
 const accountId = aws.getCallerIdentity({}).then(({ accountId }) => accountId);
@@ -389,16 +306,6 @@ const appSyncPolicy = new aws.iam.Policy("appSyncPolicy", {
         Effect: "Allow",
         Action: ["logs:*"],
         Resource: pulumi.interpolate`arn:aws:logs:us-east-1:${accountId}:log-group:/aws/appsync/apis/${api.id}`,
-      },
-      {
-        Action: ["dynamodb:PutItem", "dynamodb:GetItem"],
-        Resource: [destinations.arn],
-        Effect: "Allow",
-      },
-      {
-        Action: ["lambda:InvokeFunction"],
-        Resource: [listDestinations.arn],
-        Effect: "Allow",
       },
     ],
   },

@@ -62,27 +62,27 @@ function App() {
   const [newDestination, setDestination] = useState<Destination | undefined>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const {
-      data: { addDestination },
+      data: { createOrUpdateDestination },
     } = await API.graphql({
       query: `
-        mutation MyMutation($input: CreateDestinationInput!) {
-          addDestination(input: $input) {
+        mutation MyMutation($input: CreateOrUpdateDestinationInput!) {
+          createOrUpdateDestination(input: $input) {
             id
-            name
+            destinationName
             latitude
             longitude
           }
         }`.trim(),
       variables: {
         input: {
-          latitude: "44.5854031",
-          longitude: "-111.0744797",
-          name: "Yellowstone National Park",
+          latitude: data.latitude,
+          longitude: data.longitude,
+          destinationName: data.name,
         },
       },
       authMode: "AMAZON_COGNITO_USER_POOLS",
     });
-    setDestination(addDestination);
+    setDestination(createOrUpdateDestination);
   };
 
   const flyHome = useCallback(() => {

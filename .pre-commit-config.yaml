@@ -6,7 +6,7 @@ repos:
     hooks:
       - id: prettier
         args: [--write, --list-different]
-        exclude: (.pnp.cjs|.pnp.loader.mjs)
+        exclude: (.pnp.cjs|.pnp.loader.mjs|generated)
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
