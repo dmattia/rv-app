@@ -7,6 +7,9 @@
     "infra",
     "schema"
   ],
+  "resolutions": {
+    "@pulumi/pulumi": "npm:@transcend-io/pulumi@=1.0.5"
+  },
   "devDependencies": {
     "@types/events": "^3",
     "@types/prettier": "^2",

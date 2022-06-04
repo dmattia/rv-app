@@ -5023,27 +5023,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pulumi/pulumi@npm:^3.0.0, @pulumi/pulumi@npm:^3.32.3":
-  version: 3.33.2
-  resolution: "@pulumi/pulumi@npm:3.33.2"
+"@pulumi/pulumi@npm:@transcend-io/pulumi@=1.0.5":
+  version: 1.0.5
+  resolution: "@transcend-io/pulumi@npm:1.0.5"
   dependencies:
     "@grpc/grpc-js": ~1.3.8
     "@logdna/tail-file": ^2.0.6
     "@pulumi/query": ^0.3.0
     google-protobuf: ^3.5.0
-    ini: ^2.0.0
     js-yaml: ^3.14.0
-    minimist: ^1.2.6
+    minimist: ^1.2.0
     normalize-package-data: ^2.4.0
     protobufjs: ^6.8.6
     read-package-tree: ^5.3.1
     require-from-string: ^2.0.1
     semver: ^6.1.0
     source-map-support: ^0.4.16
-    ts-node: ^7.0.1
-    typescript: ~3.7.3
     upath: ^1.1.0
-  checksum: 936b86ae355d054188d0a3b1eab71b8e2455152678c3a18eea7ca30800af533c2c969f8249c1224283155f4b03e0f71ce089cbf9f164b62121a5db8021b92dbb
+  peerDependencies:
+    ts-node: ">7.0.1"
+    typescript: ">3.7.3"
+  checksum: 5d94e8473aa934034922d0e16cb4a5d85d328b6ad7aa7a1a0e7937b6a0307de3e6c22b54077e941a01cf7565a1584fa9699616b1fa167b6ecef10f9c181775b6
   languageName: node
   linkType: hard
 
@@ -7143,13 +7143,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arrify@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "arrify@npm:1.0.1"
-  checksum: 745075dd4a4624ff0225c331dacb99be501a515d39bcb7c84d24660314a6ec28e68131b137e6f7e16318170842ce97538cd298fc4cd6b2cc798e0b957f2747e7
-  languageName: node
-  linkType: hard
-
 "asap@npm:^2.0.0, asap@npm:~2.0.3":
   version: 2.0.6
   resolution: "asap@npm:2.0.6"
@@ -7585,7 +7578,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer-from@npm:^1.0.0, buffer-from@npm:^1.1.0":
+"buffer-from@npm:^1.0.0":
   version: 1.1.2
   resolution: "buffer-from@npm:1.1.2"
   checksum: 0448524a562b37d4d7ed9efd91685a5b77a50672c556ea254ac9a6d30e3403a517d8981f10e565db24e8339413b43c97ca2951f10e399c6125a0d8911f5679bb
@@ -8827,13 +8820,6 @@ __metadata:
     asap: ^2.0.0
     wrappy: 1
   checksum: 895389c6aead740d2ab5da4d3466d20fa30f738010a4d3f4dcccc9fc645ca31c9d10b7e1804ae489b1eb02c7986f9f1f34ba132d409b043082a86d9a4e745624
-  languageName: node
-  linkType: hard
-
-"diff@npm:^3.1.0":
-  version: 3.5.0
-  resolution: "diff@npm:3.5.0"
-  checksum: 00842950a6551e26ce495bdbce11047e31667deea546527902661f25cc2e73358967ebc78cf86b1a9736ec3e14286433225f9970678155753a6291c3bca5227b
   languageName: node
   linkType: hard
 
@@ -11077,13 +11063,6 @@ __metadata:
   version: 2.0.3
   resolution: "inherits@npm:2.0.3"
   checksum: 78cb8d7d850d20a5e9a7f3620db31483aa00ad5f722ce03a55b110e5a723539b3716a3b463e2b96ce3fe286f33afc7c131fa2f91407528ba80cea98a7545d4c0
-  languageName: node
-  linkType: hard
-
-"ini@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ini@npm:2.0.0"
-  checksum: e7aadc5fb2e4aefc666d74ee2160c073995a4061556b1b5b4241ecb19ad609243b9cceafe91bae49c219519394bbd31512516cb22a3b1ca6e66d869e0447e84e
   languageName: node
   linkType: hard
 
@@ -15097,7 +15076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.17, source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.20":
+"source-map-support@npm:^0.5.17, source-map-support@npm:~0.5.20":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
   dependencies:
@@ -15860,24 +15839,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "ts-node@npm:7.0.1"
-  dependencies:
-    arrify: ^1.0.0
-    buffer-from: ^1.1.0
-    diff: ^3.1.0
-    make-error: ^1.1.1
-    minimist: ^1.2.0
-    mkdirp: ^0.5.1
-    source-map-support: ^0.5.6
-    yn: ^2.0.0
-  bin:
-    ts-node: dist/bin.js
-  checksum: 07ed6ea1805361828737a767cfd6c57ea6e267ee8679282afb933610af02405e1a87c1f2aea1d38ed8e66b34fcbf6272b6021ab95d78849105d2e57fc283870b
-  languageName: node
-  linkType: hard
-
 "ts-node@npm:^9":
   version: 9.1.1
   resolution: "ts-node@npm:9.1.1"
@@ -15991,16 +15952,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~3.7.3":
-  version: 3.7.7
-  resolution: "typescript@npm:3.7.7"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: b34e8553365e373290053a731d0f9d9184d8f15bb16a0a1b40d1945fee303a778feeba15082f58c5d3150ac6ae22124c567679418ced814f765e1b3cff57907f
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@=4.7.2#~builtin<compat/typescript>":
   version: 4.7.2
   resolution: "typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"
@@ -16008,16 +15959,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 7e2b9a9f4a70fb7616f1b0d986977f8e34a74f046202fa7f24fdee79589598277810fa216b3776c20c0683a9235872c73be34fdb93f67f98c1efaca40999422f
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@~3.7.3#~builtin<compat/typescript>":
-  version: 3.7.7
-  resolution: "typescript@patch:typescript@npm%3A3.7.7#~builtin<compat/typescript>::version=3.7.7&hash=7ad353"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 61283b54e3976aade14e1e1065d978dc9b11539d5a1ffeee3daf066ff095436e0de3f98759af6bcd32a0e4196a50881daf470c5e4a60768748b1b06f1b680096
   languageName: node
   linkType: hard
 
@@ -17092,13 +17033,6 @@ __metadata:
   version: 3.1.1
   resolution: "yn@npm:3.1.1"
   checksum: 2c487b0e149e746ef48cda9f8bad10fc83693cd69d7f9dcd8be4214e985de33a29c9e24f3c0d6bcf2288427040a8947406ab27f7af67ee9456e6b84854f02dd6
-  languageName: node
-  linkType: hard
-
-"yn@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "yn@npm:2.0.0"
-  checksum: 9d49527cb3e9a0948cc057223810bf30607bf04b9ff7666cc1681a6501d660b60d90000c16f9e29311b0f28d8a06222ada565ccdca5f1049cdfefb1908217572
   languageName: node
   linkType: hard
 
