@@ -1,7 +1,6 @@
 import {
   ProSidebar,
   SidebarHeader,
-  SidebarFooter,
   Menu,
   MenuItem,
   SubMenu,
@@ -28,18 +27,7 @@ export function Sidebar() {
         onToggle={() => setToggled(false)}
       >
         <SidebarHeader>
-          <div
-            style={{
-              padding: "24px",
-              textTransform: "uppercase",
-              fontWeight: "bold",
-              fontSize: 14,
-              letterSpacing: "1px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
+          <div class="p-6 uppercase font-bold text-xl overflow-hidden truncate text-center">
             RV App
           </div>
         </SidebarHeader>
@@ -56,35 +44,8 @@ export function Sidebar() {
             </MenuItem>
           </SubMenu>
         </Menu>
-        <SidebarFooter style={{ textAlign: "center" }}>
-          <div
-            className="sidebar-btn-wrapper"
-            style={{
-              padding: "20px 24px",
-            }}
-          >
-            <a
-              href="https://github.com/dmattia/rv-app"
-              target="_blank"
-              className="sidebar-btn"
-              rel="noopener noreferrer"
-              color="white"
-            >
-              <FaGithub />
-              <span
-                style={{
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                }}
-              >
-                View Source
-              </span>
-            </a>
-          </div>
-        </SidebarFooter>
       </ProSidebar>
-      <div className="btn-toggle" onClick={() => setToggled(true)}>
+      <div className="btn-toggle md:hidden" onClick={() => setToggled(true)}>
         <FaBars />
       </div>
     </>

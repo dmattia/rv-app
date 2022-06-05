@@ -7,18 +7,20 @@ import {
 import { AmplifyProvider, Apollo } from "./providers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import "./tailwind.css";
+
 export default function App() {
   return (
     <AmplifyProvider>
       <Apollo>
         <BrowserRouter>
-          <main style={{ height: "100vh", display: "flex" }}>
+          <main class="flex h-screen">
             <Sidebar />
-            <Routes style={{ "flex-direction": "column" }}>
-              <Route exact path="/" element={<UserProfile />} />
+            <Routes>
+              <Route path="/" element={<UserProfile />} />
               <Route path="/destinations">
-                <Route exact path="map" element={<MapComponent />} />
-                <Route exact path="new" element={<CreateDestinationForm />} />
+                <Route path="map" element={<MapComponent />} />
+                <Route path="new" element={<CreateDestinationForm />} />
                 <Route index element={<MapComponent />} />
               </Route>
               <Route element={<p>Not Found</p>} path="*" />
