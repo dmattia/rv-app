@@ -37,10 +37,10 @@ export function Sidebar() {
           </MenuItem>
           <SubMenu title="Destinations" icon={<FaHeart />}>
             <MenuItem>
-              Map <Link to="/destinations/map" />
+              Table <Link to="/destinations/table" />
             </MenuItem>
             <MenuItem>
-              Create <Link to="/destinations/new" />
+              Map <Link to="/destinations/map" />
             </MenuItem>
           </SubMenu>
         </Menu>

@@ -6,3 +6,12 @@ mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
     longitude
   }
 }
+
+query listDestinations {
+  listDestinations {
+    id
+    destinationName
+    latitude
+    longitude
+  }
+}

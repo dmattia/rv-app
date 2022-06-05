@@ -59,6 +59,11 @@ export type CreateOrUpdateDestinationMutationVariables = Exact<{
 
 export type CreateOrUpdateDestinationMutation = { __typename?: 'Mutation', createOrUpdateDestination: { __typename?: 'Destination', id: string, destinationName?: string | null, latitude?: string | null, longitude?: string | null } };
 
+export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, latitude?: string | null, longitude?: string | null }> };
+
 
 export const CreateOrUpdateDestinationDocument = /*#__PURE__*/ gql`
     mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
@@ -70,8 +75,62 @@ export const CreateOrUpdateDestinationDocument = /*#__PURE__*/ gql`
   }
 }
     `;
+
+/**
+ * __useCreateOrUpdateDestinationMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateDestinationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateDestinationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateDestinationMutation, { data, loading, error }] = useCreateOrUpdateDestinationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
 export function useCreateOrUpdateDestinationMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateDestinationMutation, CreateOrUpdateDestinationMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateOrUpdateDestinationMutation, CreateOrUpdateDestinationMutationVariables>(CreateOrUpdateDestinationDocument, options);
       }
 export type CreateOrUpdateDestinationMutationHookResult = ReturnType<typeof useCreateOrUpdateDestinationMutation>;
+export const ListDestinationsDocument = /*#__PURE__*/ gql`
+    query listDestinations {
+  listDestinations {
+    id
+    destinationName
+    latitude
+    longitude
+  }
+}
+    `;
+
+/**
+ * __useListDestinationsQuery__
+ *
+ * To run a query within a React component, call `useListDestinationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListDestinationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListDestinationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListDestinationsQuery(baseOptions?: Apollo.QueryHookOptions<ListDestinationsQuery, ListDestinationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListDestinationsQuery, ListDestinationsQueryVariables>(ListDestinationsDocument, options);
+      }
+export function useListDestinationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListDestinationsQuery, ListDestinationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListDestinationsQuery, ListDestinationsQueryVariables>(ListDestinationsDocument, options);
+        }
+export type ListDestinationsQueryHookResult = ReturnType<typeof useListDestinationsQuery>;
+export type ListDestinationsLazyQueryHookResult = ReturnType<typeof useListDestinationsLazyQuery>;

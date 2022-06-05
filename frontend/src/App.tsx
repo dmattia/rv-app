@@ -1,8 +1,8 @@
 import {
-  CreateDestinationForm,
   MapComponent,
   UserProfile,
   Sidebar,
+  DestinationTable,
 } from "./components";
 import { AmplifyProvider, Apollo } from "./providers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -20,8 +20,8 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<UserProfile />} />
                 <Route path="/destinations">
+                  <Route path="table" element={<DestinationTable />} />
                   <Route path="map" element={<MapComponent />} />
-                  <Route path="new" element={<CreateDestinationForm />} />
                   <Route index element={<MapComponent />} />
                 </Route>
                 <Route element={<p>Not Found</p>} path="*" />
