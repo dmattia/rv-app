@@ -1,16 +1,18 @@
 import { CreateDestinationForm, MapComponent, UserProfile } from "./components";
-import { AmplifyProvider } from "./providers";
+import { AmplifyProvider, Apollo } from "./providers";
 
 export default function App() {
   return (
     <AmplifyProvider>
-      <div>
-        <p>Bri and David's RV Website</p>
+      <Apollo>
+        <div>
+          <p>Bri and David's RV Website</p>
 
-        <UserProfile />
-        <MapComponent />
-        <CreateDestinationForm />
-      </div>
+          <UserProfile />
+          <MapComponent />
+          <CreateDestinationForm />
+        </div>
+      </Apollo>
     </AmplifyProvider>
   );
 }

@@ -1,11 +1,18 @@
-import type {
-  Destination,
-  CreateOrUpdateDestinationInput,
-} from "@rv-app/schema";
+import type { CreateOrUpdateDestinationInput } from "@rv-app/schema";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
 import { Alert } from "@aws-amplify/ui-react";
-import { API } from "aws-amplify";
+import { gql, useMutation } from "@apollo/client";
+
+const CREATE_DESTINATION = gql`
+  mutation MyMutation($input: CreateOrUpdateDestinationInput!) {
+    createOrUpdateDestination(input: $input) {
+      id
+      destinationName
+      latitude
+      longitude
+    }
+  }
+`;
 
 export function CreateDestinationForm() {
   const {
@@ -14,25 +21,14 @@ export function CreateDestinationForm() {
     formState: { errors },
   } = useForm<CreateOrUpdateDestinationInput>();
 
-  const [newDestination, setDestination] = useState<Destination | undefined>();
+  const [createDestination, createdDestination] =
+    useMutation(CREATE_DESTINATION);
   const onSubmit: SubmitHandler<CreateOrUpdateDestinationInput> = async (
     input
   ) => {
-    const {
-      data: { createOrUpdateDestination },
-    } = await API.graphql({
-      query: `
-            mutation MyMutation($input: CreateOrUpdateDestinationInput!) {
-              createOrUpdateDestination(input: $input) {
-                id
-                destinationName
-                latitude
-                longitude
-              }
-            }`.trim(),
+    createDestination({
       variables: { input },
     });
-    setDestination(createOrUpdateDestination);
   };
 
   return (
@@ -57,14 +53,15 @@ export function CreateDestinationForm() {
 
         <input type="submit" />
       </form>
-      {newDestination && (
+      {createdDestination?.data && (
         <Alert
           isDismissible={true}
           hasIcon={true}
           variation="success"
           heading="Success!"
         >
-          Created a new destination with ID: {newDestination.id}
+          Created a new destination with ID:{" "}
+          {createdDestination?.data?.createOrUpdateDestination?.id}
         </Alert>
       )}
     </>
