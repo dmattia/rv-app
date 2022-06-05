@@ -4,8 +4,8 @@
   "devDependencies": {
     "@pulumi/aws": "^5.6.0",
     "@pulumi/pulumi": "^3.32.3",
-    "@rv-app/backend": "workspace:^",
-    "@rv-app/schema": "workspace:^",
+    "@rv-app/backend": "workspace:*",
+    "@rv-app/schema": "workspace:*",
     "@types/node": "=14.14.31",
     "@yarnpkg/esbuild-plugin-pnp": "^3.0.0-rc.6",
     "esbuild": "^0.14.42",
