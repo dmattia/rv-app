@@ -2,4 +2,7 @@ schema: "./src/schema.ts"
 generates:
   ./src/generated/gql-types.ts:
     plugins:
+      - add:
+          content: "/* THIS FILE IS GENERATED. DO NOT EDIT MANUALLY */"
       - typescript
+      - typescript-operations

@@ -10,15 +10,12 @@ import {
 import { useRef, useState, useCallback } from "react";
 import type { MapRef } from "react-map-gl";
 import { useForm, SubmitHandler } from "react-hook-form";
-import type { Destination } from "@rv-app/schema";
+import type {
+  Destination,
+  CreateOrUpdateDestinationInput,
+} from "@rv-app/schema";
 
 import "@aws-amplify/ui-react/styles.css";
-
-type Inputs = {
-  name: string;
-  latitude: string;
-  longitude: string;
-};
 
 Amplify.configure({
   Auth: {
@@ -57,10 +54,12 @@ function App() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<CreateOrUpdateDestinationInput>();
 
   const [newDestination, setDestination] = useState<Destination | undefined>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<CreateOrUpdateDestinationInput> = async (
+    input
+  ) => {
     const {
       data: { createOrUpdateDestination },
     } = await API.graphql({
@@ -73,14 +72,7 @@ function App() {
             longitude
           }
         }`.trim(),
-      variables: {
-        input: {
-          latitude: data.latitude,
-          longitude: data.longitude,
-          destinationName: data.name,
-        },
-      },
-      authMode: "AMAZON_COGNITO_USER_POOLS",
+      variables: { input },
     });
     setDestination(createOrUpdateDestination);
   };
@@ -114,10 +106,10 @@ function App() {
           <h2>Create a destination</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
-              {...register("name", { required: true })}
+              {...register("destinationName", { required: true })}
               placeholder="Destination name"
             />
-            {errors.name && <span>This field is required</span>}
+            {errors.destinationName && <span>This field is required</span>}
             <input
               {...register("latitude", { required: true })}
               placeholder="latitude"
