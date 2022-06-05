@@ -1,17 +1,23 @@
 import { CreateDestinationForm, MapComponent, UserProfile } from "./components";
 import { AmplifyProvider, Apollo } from "./providers";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
   return (
     <AmplifyProvider>
       <Apollo>
-        <div>
-          <p>Bri and David's RV Website</p>
-
-          <UserProfile />
-          <MapComponent />
-          <CreateDestinationForm />
-        </div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<UserProfile />}>
+              <Route index element={<UserProfile />} />
+              <Route path="destinations" element={<MapComponent />}>
+                <Route path="map" element={<MapComponent />} />
+                <Route path="new" element={<CreateDestinationForm />} />
+                <Route index element={<MapComponent />} />
+              </Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </Apollo>
     </AmplifyProvider>
   );
