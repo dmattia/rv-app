@@ -6,7 +6,7 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { FaGem, FaHeart, FaGithub, FaBars } from "react-icons/fa";
+import { FaGem, FaHeart, FaBars } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 import "react-pro-sidebar/dist/css/styles.css";
@@ -27,7 +27,7 @@ export function Sidebar() {
         onToggle={() => setToggled(false)}
       >
         <SidebarHeader>
-          <div class="p-6 uppercase font-bold text-xl overflow-hidden truncate text-center">
+          <div className="p-6 uppercase font-bold text-xl overflow-hidden truncate text-center">
             RV App
           </div>
         </SidebarHeader>

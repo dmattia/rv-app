@@ -14,7 +14,7 @@ export default function App() {
     <AmplifyProvider>
       <Apollo>
         <BrowserRouter>
-          <main class="flex h-screen">
+          <main className="flex h-screen">
             <Sidebar />
             <Routes>
               <Route path="/" element={<UserProfile />} />
