@@ -1,6 +1,6 @@
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
-import type { Destination } from "@rv-app/schema";
+import type { Destination } from "@rv-app/generated-schema";
 
 const client = new DynamoDBClient({});
 

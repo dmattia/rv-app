@@ -5,7 +5,8 @@
     "backend",
     "frontend",
     "infra",
-    "schema"
+    "schema",
+    "generated-schema"
   ],
   "resolutions": {
     "@pulumi/pulumi": "npm:@transcend-io/pulumi@=1.0.5"

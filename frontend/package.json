@@ -13,7 +13,7 @@
     "@aws-amplify/ui-react": "^2.18.3",
     "@aws-sdk/client-cognito-identity": "^3.100.0",
     "@aws-sdk/credential-provider-cognito-identity": "^3.100.0",
-    "@rv-app/schema": "workspace:*",
+    "@rv-app/generated-schema": "workspace:*",
     "amazon-cognito-identity-js": "^5.2.9",
     "amazon-location-helpers": "^1.1.1",
     "aws-amplify": "^4.3.24",

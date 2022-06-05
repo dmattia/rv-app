@@ -1,0 +1,9 @@
+{
+  "name": "@rv-app/generated-schema",
+  "main": "src/generated.ts",
+  "dependencies": {
+    "@apollo/client": "^3.6.6",
+    "graphql": "^16.5.0",
+    "react": "^18.1.0"
+  }
+}

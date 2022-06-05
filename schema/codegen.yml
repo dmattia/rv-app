@@ -1,8 +1,16 @@
 schema: "./src/schema.ts"
+documents: "./src/*.graphql"
 generates:
-  ./src/generated/gql-types.ts:
+  ../generated-schema/src/generated.ts:
     plugins:
       - add:
-          content: "/* THIS FILE IS GENERATED. DO NOT EDIT MANUALLY */"
+          content: "/* THIS FILE IS GENERATED. DO NOT EDIT MANUALLY, run `yarn workspace @rv-app/schema generate` */"
       - typescript
       - typescript-operations
+      - typescript-react-apollo
+    config:
+      withMutationFn: false
+      withResultType: false
+      withMutationOptionsType: false
+      pureMagicComment: true
+      useTypeImports: true

@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.100.0",
-    "@rv-app/schema": "workspace:*",
+    "@rv-app/generated-schema": "workspace:*",
     "aws-lambda": "^1.0.7",
     "express": "=4.17.1",
     "uuid": "^8.3.2"

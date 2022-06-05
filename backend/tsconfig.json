@@ -6,5 +6,5 @@
     "rootDir": "src",
     "types": ["node"]
   },
-  "references": [{ "path": "../schema" }]
+  "references": [{ "path": "../generated-schema" }]
 }

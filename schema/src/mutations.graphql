@@ -1,0 +1,8 @@
+mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
+  createOrUpdateDestination(input: $input) {
+    id
+    destinationName
+    latitude
+    longitude
+  }
+}

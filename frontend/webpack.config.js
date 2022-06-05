@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+  context: __dirname,
   entry: "./src/main.tsx",
   mode: "development",
   plugins: [
@@ -18,8 +19,14 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
         exclude: /node_modules/,
+        use: {
+          loader: require.resolve("ts-loader"),
+          options: {
+            projectReferences: true,
+            transpileOnly: true,
+          },
+        },
       },
       {
         test: /\.css$/i,

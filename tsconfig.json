@@ -5,6 +5,7 @@
   "references": [
     { "path": "backend" },
     { "path": "schema" },
+    { "path": "generated-schema" },
     { "path": "frontend" },
     { "path": "infra" }
   ]

@@ -3,7 +3,7 @@ import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import type {
   CreateOrUpdateDestinationInput,
   Destination,
-} from "@rv-app/schema";
+} from "@rv-app/generated-schema";
 import { v4 } from "uuid";
 
 const client = new DynamoDBClient({});

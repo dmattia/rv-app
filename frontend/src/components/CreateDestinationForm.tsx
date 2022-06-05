@@ -1,18 +1,9 @@
-import type { CreateOrUpdateDestinationInput } from "@rv-app/schema";
+import {
+  CreateOrUpdateDestinationInput,
+  useCreateOrUpdateDestinationMutation,
+} from "@rv-app/generated-schema";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Alert } from "@aws-amplify/ui-react";
-import { gql, useMutation } from "@apollo/client";
-
-const CREATE_DESTINATION = gql`
-  mutation MyMutation($input: CreateOrUpdateDestinationInput!) {
-    createOrUpdateDestination(input: $input) {
-      id
-      destinationName
-      latitude
-      longitude
-    }
-  }
-`;
+import { Alert, Loader } from "@aws-amplify/ui-react";
 
 export function CreateDestinationForm() {
   const {
@@ -21,8 +12,8 @@ export function CreateDestinationForm() {
     formState: { errors },
   } = useForm<CreateOrUpdateDestinationInput>();
 
-  const [createDestination, createdDestination] =
-    useMutation(CREATE_DESTINATION);
+  const [createDestination, { data, loading, error }] =
+    useCreateOrUpdateDestinationMutation();
   const onSubmit: SubmitHandler<CreateOrUpdateDestinationInput> = async (
     input
   ) => {
@@ -51,17 +42,18 @@ export function CreateDestinationForm() {
         />
         {errors.longitude && <span>This field is required</span>}
 
-        <input type="submit" />
+        <input type="submit" disabled={loading || !!error} />
       </form>
-      {createdDestination?.data && (
+      {loading && <Loader />}
+      {data && (
         <Alert
-          isDismissible={true}
+          isDismissible={false}
           hasIcon={true}
           variation="success"
           heading="Success!"
         >
           Created a new destination with ID:{" "}
-          {createdDestination?.data?.createOrUpdateDestination?.id}
+          {data?.createOrUpdateDestination?.id}
         </Alert>
       )}
     </>
