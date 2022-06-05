@@ -16,15 +16,17 @@ export default function App() {
         <BrowserRouter>
           <main className="flex h-screen">
             <Sidebar />
-            <Routes>
-              <Route path="/" element={<UserProfile />} />
-              <Route path="/destinations">
-                <Route path="map" element={<MapComponent />} />
-                <Route path="new" element={<CreateDestinationForm />} />
-                <Route index element={<MapComponent />} />
-              </Route>
-              <Route element={<p>Not Found</p>} path="*" />
-            </Routes>
+            <div className="container mx-auto px-4 flex flex-col">
+              <Routes>
+                <Route path="/" element={<UserProfile />} />
+                <Route path="/destinations">
+                  <Route path="map" element={<MapComponent />} />
+                  <Route path="new" element={<CreateDestinationForm />} />
+                  <Route index element={<MapComponent />} />
+                </Route>
+                <Route element={<p>Not Found</p>} path="*" />
+              </Routes>
+            </div>
           </main>
         </BrowserRouter>
       </Apollo>
