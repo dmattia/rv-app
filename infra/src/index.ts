@@ -62,6 +62,13 @@ const distribution = new aws.cloudfront.Distribution("cdn", {
       locations: ["US"],
     },
   },
+  customErrorResponses: [
+    {
+      errorCode: 404,
+      responseCode: 200,
+      responsePagePath: "/index.html",
+    },
+  ],
 });
 
 // Create a map in the Location service
