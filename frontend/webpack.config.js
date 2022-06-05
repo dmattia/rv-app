@@ -40,8 +40,12 @@ module.exports = {
   devServer: {
     compress: true,
     hot: true,
+    historyApiFallback: {
+      index: "/",
+    },
   },
   output: {
+    publicPath: "/",
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
   },

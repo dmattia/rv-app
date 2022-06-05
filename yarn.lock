@@ -5020,6 +5020,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.4.0":
+  version: 2.11.5
+  resolution: "@popperjs/core@npm:2.11.5"
+  checksum: fd7f9dca3fb716d7426332b6ee283f88d2724c0ab342fb678865a640bad403dfb9eeebd8204a406986162f7e2b33394f104320008b74d0e9066d7322f70ea35d
+  languageName: node
+  linkType: hard
+
 "@protobufjs/aspromise@npm:^1.1.1, @protobufjs/aspromise@npm:^1.1.2":
   version: 1.1.2
   resolution: "@protobufjs/aspromise@npm:1.1.2"
@@ -5651,7 +5658,9 @@ __metadata:
     react: ^18.0.0
     react-dom: ^18.1.0
     react-hook-form: ^7.31.3
+    react-icons: ^4.4.0
     react-map-gl: ^7.0.15
+    react-pro-sidebar: ^0.7.1
     react-router-dom: ^6.3.0
     style-loader: ^3.3.1
     ts-loader: ^9.3.0
@@ -8111,7 +8120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:2.3.1":
+"classnames@npm:2.3.1, classnames@npm:^2.2.6":
   version: 2.3.1
   resolution: "classnames@npm:2.3.1"
   checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
@@ -14167,6 +14176,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-icons@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "react-icons@npm:4.4.0"
+  peerDependencies:
+    react: "*"
+  checksum: dd93a1dcc8ac8a3cf46a2b33e80b586fa967331fa5fcb90d061abf276155a8363a331643e203d67cb9bab4261d00a757da854bcce1fce2c6e4258bf3e33f711b
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -14194,6 +14212,21 @@ __metadata:
   peerDependencies:
     react-native: ">=0.56"
   checksum: 9163368ebd935d897f6ea0f9e95c476aa7608080e3848bb6c6f85db01b9de3498d857795c84df5492d6511a55aebf89492860ac886b652a9a7a3efdb19913f87
+  languageName: node
+  linkType: hard
+
+"react-pro-sidebar@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "react-pro-sidebar@npm:0.7.1"
+  dependencies:
+    "@popperjs/core": ^2.4.0
+    classnames: ^2.2.6
+    react-slidedown: ^2.4.5
+    resize-observer-polyfill: ^1.5.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 9431e1510422769a86a54939271c9ec7468e83913a2251a8386e2cd265b72bafab6b32b6cf65472148403b508cc450c0850b454ea9b0d38309ff592f77faace2
   languageName: node
   linkType: hard
 
@@ -14260,6 +14293,18 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 7be673f5e72104be01e6ab274516bdb932efd93305243170690f6560e3bd1035dd1df3d3c9ce1e0f452638a2529f43a1e77dcf0934fc8031c4783da657be13ca
+  languageName: node
+  linkType: hard
+
+"react-slidedown@npm:^2.4.5":
+  version: 2.4.7
+  resolution: "react-slidedown@npm:2.4.7"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ^16.3.0 || 17
+    react-dom: ^16.3.0 || 17
+  checksum: 335429c288c06608756d3e9b454dfb5460764ba03b14aee9327becdbd699619ab12cb963becb9e23f645a399940e54b658d52f0f54bc39215037652e47cbbc77
   languageName: node
   linkType: hard
 
@@ -14616,6 +14661,13 @@ __metadata:
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
   checksum: eee0e303adffb69be55d1a214e415cf42b7441ae858c76dfc5353148644f6fd6e698926fc4643f510d5c126d12a705e7c8ed7e38061113bdf37547ab356797ff
+  languageName: node
+  linkType: hard
+
+"resize-observer-polyfill@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "resize-observer-polyfill@npm:1.5.1"
+  checksum: 57e7f79489867b00ba43c9c051524a5c8f162a61d5547e99333549afc23e15c44fd43f2f318ea0261ea98c0eb3158cca261e6f48d66e1ed1cd1f340a43977094
   languageName: node
   linkType: hard
 

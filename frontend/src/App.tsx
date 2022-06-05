@@ -1,4 +1,9 @@
-import { CreateDestinationForm, MapComponent, UserProfile } from "./components";
+import {
+  CreateDestinationForm,
+  MapComponent,
+  UserProfile,
+  Sidebar,
+} from "./components";
 import { AmplifyProvider, Apollo } from "./providers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -7,16 +12,18 @@ export default function App() {
     <AmplifyProvider>
       <Apollo>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<UserProfile />}>
-              <Route index element={<UserProfile />} />
-              <Route path="destinations" element={<MapComponent />}>
-                <Route path="map" element={<MapComponent />} />
-                <Route path="new" element={<CreateDestinationForm />} />
+          <main style={{ height: "100vh", display: "flex" }}>
+            <Sidebar />
+            <Routes style={{ "flex-direction": "column" }}>
+              <Route exact path="/" element={<UserProfile />} />
+              <Route path="/destinations">
+                <Route exact path="map" element={<MapComponent />} />
+                <Route exact path="new" element={<CreateDestinationForm />} />
                 <Route index element={<MapComponent />} />
               </Route>
-            </Route>
-          </Routes>
+              <Route element={<p>Not Found</p>} path="*" />
+            </Routes>
+          </main>
         </BrowserRouter>
       </Apollo>
     </AmplifyProvider>
