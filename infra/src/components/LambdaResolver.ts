@@ -1,5 +1,8 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import { build } from "esbuild";
+import { pnpPlugin } from "@yarnpkg/esbuild-plugin-pnp";
+import { join } from "path";
 
 /**
  * Arguments for the ComponentResource
@@ -7,8 +10,8 @@ import * as pulumi from "@pulumi/pulumi";
 interface LambdaResolverArgs {
   /** The name of the resolver */
   name: string;
-  /** The code to deploy */
-  code: pulumi.asset.FileArchive;
+  /** The entrypoint to the resolver*/
+  entrypoint: string;
   /** The AWS permissions the function can use */
   iamPermissions: pulumi.Input<aws.iam.PolicyStatement>[];
   /** Env vars for the function */
@@ -39,6 +42,18 @@ export class LambdaResolver extends pulumi.ComponentResource {
   ) {
     super("rv-app:LambdaResolver", name, {}, opts);
     const defaultOpts = { ...opts, parent: this };
+
+    // Build our lambda code
+    const outputDir = join("dist", inputs.entrypoint);
+    const buildOutput = build({
+      plugins: [pnpPlugin()],
+      bundle: true,
+      entryPoints: [require.resolve(inputs.entrypoint)],
+      outdir: outputDir,
+      minify: true,
+      platform: "node",
+    });
+    const outputDirPromise = buildOutput.then(() => outputDir);
 
     const iamForLambda = new aws.iam.Role(
       `${inputs.name}-role`,
@@ -81,7 +96,7 @@ export class LambdaResolver extends pulumi.ComponentResource {
       name,
       {
         architectures: ["arm64"],
-        code: inputs.code,
+        code: new pulumi.asset.FileArchive(outputDirPromise),
         handler: `index.${inputs.name}`,
         memorySize: 256,
         name: inputs.name,

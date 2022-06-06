@@ -1,7 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import { build } from "esbuild";
-import { pnpPlugin } from "@yarnpkg/esbuild-plugin-pnp";
 import { schema } from "@rv-app/schema";
 import { LambdaResolver } from "./components";
 
@@ -242,23 +240,11 @@ const api = new aws.appsync.GraphQLApi("api", {
   },
 });
 
-// TODO: Can I make each handler build individually?
-// Build our lambda code
-const buildOutput = build({
-  plugins: [pnpPlugin()],
-  bundle: true,
-  entryPoints: [require.resolve("@rv-app/backend")],
-  outdir: "dist",
-  minify: true,
-  platform: "node",
-});
-const outputDir = buildOutput.then(() => "dist");
-
 new LambdaResolver("getDestinationById", {
   name: "getDestinationById",
   type: "Query",
   appSyncApi: api,
-  code: new pulumi.asset.FileArchive(outputDir),
+  entrypoint: "@rv-app/backend/src/queries/getDestinationById",
   iamPermissions: [
     {
       Action: ["dynamodb:GetItem"],
@@ -275,7 +261,7 @@ new LambdaResolver("searchLocation", {
   name: "searchLocation",
   type: "Query",
   appSyncApi: api,
-  code: new pulumi.asset.FileArchive(outputDir),
+  entrypoint: "@rv-app/backend/src/queries/searchLocation",
   iamPermissions: [
     {
       Action: ["geo:SearchPlaceIndexForSuggestions"],
@@ -292,7 +278,7 @@ new LambdaResolver("listDestinations", {
   name: "listDestinations",
   type: "Query",
   appSyncApi: api,
-  code: new pulumi.asset.FileArchive(outputDir),
+  entrypoint: "@rv-app/backend/src/queries/listDestinations",
   iamPermissions: [
     {
       Action: ["dynamodb:Scan"],
@@ -309,7 +295,7 @@ new LambdaResolver("createOrUpdateDestination", {
   name: "createOrUpdateDestination",
   type: "Mutation",
   appSyncApi: api,
-  code: new pulumi.asset.FileArchive(outputDir),
+  entrypoint: "@rv-app/backend/src/mutations/createOrUpdateDestination",
   iamPermissions: [
     {
       Action: ["dynamodb:UpdateItem"],
