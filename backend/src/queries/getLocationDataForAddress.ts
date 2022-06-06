@@ -45,15 +45,11 @@ export async function getLocationDataForAddress(
     region: Region,
     country: Country,
     postalCode: PostalCode,
-    timeZone: {
-      name: JSON.stringify(Results[0].Place),
-      offset: 3,
-    },
-    // timeZone: TimeZone
-    //   ? {
-    //       name: TimeZone.Name,
-    //       offset: TimeZone.Offset,
-    //     }
-    //   : undefined,
+    timeZone: TimeZone
+      ? {
+          name: TimeZone.Name,
+          offset: TimeZone.Offset,
+        }
+      : undefined,
   };
 }

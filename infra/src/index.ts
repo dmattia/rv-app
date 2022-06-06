@@ -83,8 +83,8 @@ const map = new aws.location.Map(
 );
 
 const mapIndex = new aws.location.PlaceIndex("index", {
-  dataSource: "Esri",
-  indexName: "esri",
+  dataSource: "Here",
+  indexName: "here",
 });
 
 // Create the Authentication config
