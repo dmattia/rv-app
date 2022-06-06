@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
-import { LambdaResolver } from "./components";
+import { AppSyncApi } from "./components";
 
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
@@ -207,23 +207,7 @@ const destinations = new aws.dynamodb.Table("destinations", {
   serverSideEncryption: { enabled: true },
 });
 
-const appSyncRole = new aws.iam.Role("appSyncRole", {
-  namePrefix: "appSyncRole",
-  assumeRolePolicy: JSON.stringify({
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Action: "sts:AssumeRole",
-        Effect: "Allow",
-        Principal: {
-          Service: "appsync.amazonaws.com",
-        },
-      },
-    ],
-  }),
-});
-
-const api = new aws.appsync.GraphQLApi("api", {
+const api = new AppSyncApi("api", {
   name: "rv-app-backend",
   authenticationType: "AMAZON_COGNITO_USER_POOLS",
   schema: schema.loc!.source.body,
@@ -234,115 +218,72 @@ const api = new aws.appsync.GraphQLApi("api", {
     defaultAction: "ALLOW",
     userPoolId: pool.id,
   },
-  logConfig: {
-    cloudwatchLogsRoleArn: appSyncRole.arn,
-    excludeVerboseContent: true,
-    fieldLogLevel: "ALL",
-  },
-});
-
-new LambdaResolver("getDestinationById", {
-  name: "getDestinationById",
-  type: "Query",
-  appSyncApi: api,
-  entrypoint: "@rv-app/backend/src/queries/getDestinationById",
-  iamPermissions: [
+  resolvers: [
     {
-      Action: ["dynamodb:GetItem"],
-      Resource: [destinations.arn],
-      Effect: "Allow",
+      name: "getDestinationById",
+      type: "Query",
+      entrypoint: "@rv-app/backend/src/queries/getDestinationById",
+      iamPermissions: [
+        {
+          Action: ["dynamodb:GetItem"],
+          Resource: [destinations.arn],
+          Effect: "Allow",
+        },
+      ],
+    },
+    {
+      name: "searchLocation",
+      type: "Query",
+      entrypoint: "@rv-app/backend/src/queries/searchLocation",
+      iamPermissions: [
+        {
+          Action: ["geo:SearchPlaceIndexForSuggestions"],
+          Resource: [mapIndex.indexArn],
+          Effect: "Allow",
+        },
+      ],
+    },
+    {
+      name: "getLocationDataForAddress",
+      type: "Query",
+      entrypoint: "@rv-app/backend/src/queries/getLocationDataForAddress",
+      iamPermissions: [
+        {
+          Action: ["geo:SearchPlaceIndexForText"],
+          Resource: [mapIndex.indexArn],
+          Effect: "Allow",
+        },
+      ],
+    },
+    {
+      name: "listDestinations",
+      type: "Query",
+      entrypoint: "@rv-app/backend/src/queries/listDestinations",
+      iamPermissions: [
+        {
+          Action: ["dynamodb:Scan"],
+          Resource: [destinations.arn],
+          Effect: "Allow",
+        },
+      ],
+    },
+    {
+      name: "createOrUpdateDestination",
+      type: "Mutation",
+      entrypoint: "@rv-app/backend/src/mutations/createOrUpdateDestination",
+      iamPermissions: [
+        {
+          Action: ["dynamodb:UpdateItem"],
+          Resource: [destinations.arn],
+          Effect: "Allow",
+        },
+      ],
     },
   ],
   environment: {
     DESTINATIONS_TABLE: destinations.name,
-  },
-});
-
-new LambdaResolver("searchLocation", {
-  name: "searchLocation",
-  type: "Query",
-  appSyncApi: api,
-  entrypoint: "@rv-app/backend/src/queries/searchLocation",
-  iamPermissions: [
-    {
-      Action: ["geo:SearchPlaceIndexForSuggestions"],
-      Resource: [mapIndex.indexArn],
-      Effect: "Allow",
-    },
-  ],
-  environment: {
     INDEX_NAME: mapIndex.indexName,
   },
-});
-
-new LambdaResolver("getLocationDataForAddress", {
-  name: "getLocationDataForAddress",
-  type: "Query",
-  appSyncApi: api,
-  entrypoint: "@rv-app/backend/src/queries/getLocationDataForAddress",
-  iamPermissions: [
-    {
-      Action: ["geo:SearchPlaceIndexForText"],
-      Resource: [mapIndex.indexArn],
-      Effect: "Allow",
-    },
-  ],
-  environment: {
-    INDEX_NAME: mapIndex.indexName,
-  },
-});
-
-new LambdaResolver("listDestinations", {
-  name: "listDestinations",
-  type: "Query",
-  appSyncApi: api,
-  entrypoint: "@rv-app/backend/src/queries/listDestinations",
-  iamPermissions: [
-    {
-      Action: ["dynamodb:Scan"],
-      Resource: [destinations.arn],
-      Effect: "Allow",
-    },
-  ],
-  environment: {
-    DESTINATIONS_TABLE: destinations.name,
-  },
-});
-
-new LambdaResolver("createOrUpdateDestination", {
-  name: "createOrUpdateDestination",
-  type: "Mutation",
-  appSyncApi: api,
-  entrypoint: "@rv-app/backend/src/mutations/createOrUpdateDestination",
-  iamPermissions: [
-    {
-      Action: ["dynamodb:UpdateItem"],
-      Resource: [destinations.arn],
-      Effect: "Allow",
-    },
-  ],
-  environment: {
-    DESTINATIONS_TABLE: destinations.name,
-  },
-});
-
-const accountId = aws.getCallerIdentity({}).then(({ accountId }) => accountId);
-const appSyncPolicy = new aws.iam.Policy("appSyncPolicy", {
-  policy: {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Effect: "Allow",
-        Action: ["logs:*"],
-        Resource: pulumi.interpolate`arn:aws:logs:us-east-1:${accountId}:log-group:/aws/appsync/apis/${api.id}`,
-      },
-    ],
-  },
-});
-
-new aws.iam.RolePolicyAttachment("appSyncRolePolicy", {
-  role: appSyncRole,
-  policyArn: appSyncPolicy.arn,
 });
 
 export const mapName = map.mapName;
@@ -352,4 +293,4 @@ export const region = bucket.region;
 export const userPoolId = pool.id;
 export const clientId = client.id;
 export const identityPoolId = identityPool.id;
-export const endpoint = api.uris["GRAPHQL"];
+export const endpoint = api.uri;

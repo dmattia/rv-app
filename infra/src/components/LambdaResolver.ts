@@ -7,7 +7,7 @@ import { join } from "path";
 /**
  * Arguments for the ComponentResource
  */
-interface LambdaResolverArgs {
+export interface LambdaResolverArgs {
   /** The name of the resolver */
   name: string;
   /** The entrypoint to the resolver*/
@@ -25,7 +25,7 @@ interface LambdaResolverArgs {
 }
 
 /**
- * Creates a KMS key with at least the default permissions
+ * Creates an AppSync resolver via a lambda function
  */
 export class LambdaResolver extends pulumi.ComponentResource {
   /**
