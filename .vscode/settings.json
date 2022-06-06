@@ -6,5 +6,6 @@
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.tsserver.log": "normal",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "cSpell.words": ["creds", "VITE"]
+  "cSpell.words": ["creds", "VITE"],
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js"
 }
