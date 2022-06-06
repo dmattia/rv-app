@@ -177,6 +177,7 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
         ],
         Resource: map.mapArn,
       },
+      // TODO: Do we still want this? It is only used on the search bar inside the map
       {
         Effect: "Allow",
         Action: [
@@ -265,6 +266,23 @@ new LambdaResolver("searchLocation", {
   iamPermissions: [
     {
       Action: ["geo:SearchPlaceIndexForSuggestions"],
+      Resource: [mapIndex.indexArn],
+      Effect: "Allow",
+    },
+  ],
+  environment: {
+    INDEX_NAME: mapIndex.indexName,
+  },
+});
+
+new LambdaResolver("getLocationDataForAddress", {
+  name: "getLocationDataForAddress",
+  type: "Query",
+  appSyncApi: api,
+  entrypoint: "@rv-app/backend/src/queries/getLocationDataForAddress",
+  iamPermissions: [
+    {
+      Action: ["geo:SearchPlaceIndexForText"],
       Resource: [mapIndex.indexArn],
       Effect: "Allow",
     },

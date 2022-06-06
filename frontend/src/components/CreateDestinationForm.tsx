@@ -60,14 +60,6 @@ export function CreateDestinationForm() {
           {/*
            * Replace latitude and longitude inputs with an autocompleting location search.
            *
-           * We can search for generic text via:
-           * aws-vault exec personal --region=us-east-1 --no-session -- aws location search-place-index-for-suggestions \
-           *             --index-name esri \
-           *             --text "3913 Some Address Trail" \
-           *             --filter-countries "USA" \
-           *             --language "en" \
-           *             --max-results 3
-           *
            * And we can then lookup the info about an address that the user clicks via:
            * aws-vault exec personal --region=us-east-1 --no-session -- aws location search-place-index-for-text \
            *             --index-name esri \

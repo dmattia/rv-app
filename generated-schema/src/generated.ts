@@ -31,6 +31,19 @@ export type Destination = {
   longitude?: Maybe<Scalars['String']>;
 };
 
+export type LocationInformation = {
+  __typename?: 'LocationInformation';
+  address: Scalars['String'];
+  country?: Maybe<Scalars['String']>;
+  latitude?: Maybe<Scalars['Float']>;
+  longitude?: Maybe<Scalars['Float']>;
+  municipality?: Maybe<Scalars['String']>;
+  postalCode?: Maybe<Scalars['String']>;
+  region?: Maybe<Scalars['String']>;
+  subRegion?: Maybe<Scalars['String']>;
+  timeZone?: Maybe<TimeZone>;
+};
+
 export type LocationSuggestion = {
   __typename?: 'LocationSuggestion';
   address: Scalars['String'];
@@ -49,6 +62,7 @@ export type MutationCreateOrUpdateDestinationArgs = {
 export type Query = {
   __typename?: 'Query';
   getDestinationById: Destination;
+  getLocationDataForAddress: LocationInformation;
   listDestinations: Array<Destination>;
   searchLocation: Array<LocationSuggestion>;
 };
@@ -59,8 +73,19 @@ export type QueryGetDestinationByIdArgs = {
 };
 
 
+export type QueryGetLocationDataForAddressArgs = {
+  query: Scalars['String'];
+};
+
+
 export type QuerySearchLocationArgs = {
   query: Scalars['String'];
+};
+
+export type TimeZone = {
+  __typename?: 'TimeZone';
+  name?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 export type CreateOrUpdateDestinationMutationVariables = Exact<{
@@ -81,6 +106,13 @@ export type SearchLocationQueryVariables = Exact<{
 
 
 export type SearchLocationQuery = { __typename?: 'Query', searchLocation: Array<{ __typename?: 'LocationSuggestion', address: string }> };
+
+export type GetLocationDataForAddressQueryVariables = Exact<{
+  query: Scalars['String'];
+}>;
+
+
+export type GetLocationDataForAddressQuery = { __typename?: 'Query', getLocationDataForAddress: { __typename?: 'LocationInformation', address: string, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, region?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } };
 
 
 export const CreateOrUpdateDestinationDocument = /*#__PURE__*/ gql`
@@ -186,3 +218,48 @@ export function useSearchLocationLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
         }
 export type SearchLocationQueryHookResult = ReturnType<typeof useSearchLocationQuery>;
 export type SearchLocationLazyQueryHookResult = ReturnType<typeof useSearchLocationLazyQuery>;
+export const GetLocationDataForAddressDocument = /*#__PURE__*/ gql`
+    query getLocationDataForAddress($query: String!) {
+  getLocationDataForAddress(query: $query) {
+    address
+    latitude
+    longitude
+    municipality
+    subRegion
+    region
+    country
+    postalCode
+    timeZone {
+      name
+      offset
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetLocationDataForAddressQuery__
+ *
+ * To run a query within a React component, call `useGetLocationDataForAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationDataForAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationDataForAddressQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetLocationDataForAddressQuery(baseOptions: Apollo.QueryHookOptions<GetLocationDataForAddressQuery, GetLocationDataForAddressQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLocationDataForAddressQuery, GetLocationDataForAddressQueryVariables>(GetLocationDataForAddressDocument, options);
+      }
+export function useGetLocationDataForAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLocationDataForAddressQuery, GetLocationDataForAddressQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLocationDataForAddressQuery, GetLocationDataForAddressQueryVariables>(GetLocationDataForAddressDocument, options);
+        }
+export type GetLocationDataForAddressQueryHookResult = ReturnType<typeof useGetLocationDataForAddressQuery>;
+export type GetLocationDataForAddressLazyQueryHookResult = ReturnType<typeof useGetLocationDataForAddressLazyQuery>;

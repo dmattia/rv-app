@@ -4,6 +4,7 @@
     "**/.pnp.*": true
   },
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.tsserver.log": "normal",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "cSpell.words": ["creds", "VITE"]
 }

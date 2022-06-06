@@ -20,10 +20,28 @@ export const schema = gql`
     address: String!
   }
 
+  type TimeZone {
+    name: String
+    offset: Int
+  }
+
+  type LocationInformation {
+    address: String!
+    latitude: Float
+    longitude: Float
+    municipality: String
+    subRegion: String
+    region: String
+    country: String
+    postalCode: String
+    timeZone: TimeZone
+  }
+
   type Query {
     getDestinationById(id: ID!): Destination!
     listDestinations: [Destination!]!
     searchLocation(query: String!): [LocationSuggestion!]!
+    getLocationDataForAddress(query: String!): LocationInformation!
   }
 
   type Mutation {

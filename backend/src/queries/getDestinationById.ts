@@ -1,11 +1,14 @@
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import type { Scalars, Destination } from "@rv-app/generated-schema";
+import type {
+  QueryGetDestinationByIdArgs,
+  Destination,
+} from "@rv-app/generated-schema";
 
 const client = new DynamoDBClient({});
 
 export async function getDestinationById(
-  event: AppSyncResolverEvent<{ id: Scalars["ID"] }>,
+  event: AppSyncResolverEvent<QueryGetDestinationByIdArgs>,
   context: Context
 ): Promise<Destination> {
   const { Item } = await client.send(

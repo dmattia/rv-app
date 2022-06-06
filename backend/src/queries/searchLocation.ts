@@ -3,12 +3,15 @@ import {
   LocationClient,
   SearchPlaceIndexForSuggestionsCommand,
 } from "@aws-sdk/client-location";
-import { LocationSuggestion, Scalars } from "@rv-app/generated-schema";
+import {
+  LocationSuggestion,
+  QuerySearchLocationArgs,
+} from "@rv-app/generated-schema";
 
 const client = new LocationClient({});
 
 export async function searchLocation(
-  event: AppSyncResolverEvent<{ query: Scalars["String"] }>,
+  event: AppSyncResolverEvent<QuerySearchLocationArgs>,
   context: Context
 ): Promise<LocationSuggestion[]> {
   const { Results } = await client.send(

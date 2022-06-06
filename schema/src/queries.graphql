@@ -1,0 +1,31 @@
+query listDestinations {
+  listDestinations {
+    id
+    destinationName
+    latitude
+    longitude
+  }
+}
+
+query searchLocation($query: String!) {
+  searchLocation(query: $query) {
+    address
+  }
+}
+
+query getLocationDataForAddress($query: String!) {
+  getLocationDataForAddress(query: $query) {
+    address
+    latitude
+    longitude
+    municipality
+    subRegion
+    region
+    country
+    postalCode
+    timeZone {
+      name
+      offset
+    }
+  }
+}

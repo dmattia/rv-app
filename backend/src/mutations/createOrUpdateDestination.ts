@@ -1,7 +1,7 @@
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import type {
-  CreateOrUpdateDestinationInput,
+  CreateOrUpdateDestinationMutationVariables,
   Destination,
 } from "@rv-app/generated-schema";
 import { v4 } from "uuid";
@@ -9,7 +9,7 @@ import { v4 } from "uuid";
 const client = new DynamoDBClient({});
 
 export async function createOrUpdateDestination(
-  event: AppSyncResolverEvent<{ input: CreateOrUpdateDestinationInput }>,
+  event: AppSyncResolverEvent<CreateOrUpdateDestinationMutationVariables>,
   context: Context
 ): Promise<Destination> {
   const id = event.arguments.input.id ?? v4();
