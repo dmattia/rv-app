@@ -31,6 +31,11 @@ export type Destination = {
   longitude?: Maybe<Scalars['String']>;
 };
 
+export type LocationSuggestion = {
+  __typename?: 'LocationSuggestion';
+  address: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createOrUpdateDestination: Destination;
@@ -45,11 +50,17 @@ export type Query = {
   __typename?: 'Query';
   getDestinationById: Destination;
   listDestinations: Array<Destination>;
+  searchLocation: Array<LocationSuggestion>;
 };
 
 
 export type QueryGetDestinationByIdArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QuerySearchLocationArgs = {
+  query: Scalars['String'];
 };
 
 export type CreateOrUpdateDestinationMutationVariables = Exact<{
@@ -63,6 +74,13 @@ export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, latitude?: string | null, longitude?: string | null }> };
+
+export type SearchLocationQueryVariables = Exact<{
+  query: Scalars['String'];
+}>;
+
+
+export type SearchLocationQuery = { __typename?: 'Query', searchLocation: Array<{ __typename?: 'LocationSuggestion', address: string }> };
 
 
 export const CreateOrUpdateDestinationDocument = /*#__PURE__*/ gql`
@@ -134,3 +152,37 @@ export function useListDestinationsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
         }
 export type ListDestinationsQueryHookResult = ReturnType<typeof useListDestinationsQuery>;
 export type ListDestinationsLazyQueryHookResult = ReturnType<typeof useListDestinationsLazyQuery>;
+export const SearchLocationDocument = /*#__PURE__*/ gql`
+    query searchLocation($query: String!) {
+  searchLocation(query: $query) {
+    address
+  }
+}
+    `;
+
+/**
+ * __useSearchLocationQuery__
+ *
+ * To run a query within a React component, call `useSearchLocationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchLocationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchLocationQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchLocationQuery(baseOptions: Apollo.QueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
+      }
+export function useSearchLocationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
+        }
+export type SearchLocationQueryHookResult = ReturnType<typeof useSearchLocationQuery>;
+export type SearchLocationLazyQueryHookResult = ReturnType<typeof useSearchLocationLazyQuery>;

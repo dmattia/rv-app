@@ -242,6 +242,7 @@ const api = new aws.appsync.GraphQLApi("api", {
   },
 });
 
+// TODO: Can I make each handler build individually?
 // Build our lambda code
 const buildOutput = build({
   plugins: [pnpPlugin()],
@@ -267,6 +268,23 @@ new LambdaResolver("getDestinationById", {
   ],
   environment: {
     DESTINATIONS_TABLE: destinations.name,
+  },
+});
+
+new LambdaResolver("searchLocation", {
+  name: "searchLocation",
+  type: "Query",
+  appSyncApi: api,
+  code: new pulumi.asset.FileArchive(outputDir),
+  iamPermissions: [
+    {
+      Action: ["geo:SearchPlaceIndexForSuggestions"],
+      Resource: [mapIndex.indexArn],
+      Effect: "Allow",
+    },
+  ],
+  environment: {
+    INDEX_NAME: mapIndex.indexName,
   },
 });
 

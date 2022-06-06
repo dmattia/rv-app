@@ -1036,6 +1036,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-location@npm:^3.100.0":
+  version: 3.100.0
+  resolution: "@aws-sdk/client-location@npm:3.100.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": 2.0.0
+    "@aws-crypto/sha256-js": 2.0.0
+    "@aws-sdk/client-sts": 3.100.0
+    "@aws-sdk/config-resolver": 3.80.0
+    "@aws-sdk/credential-provider-node": 3.100.0
+    "@aws-sdk/fetch-http-handler": 3.78.0
+    "@aws-sdk/hash-node": 3.78.0
+    "@aws-sdk/invalid-dependency": 3.78.0
+    "@aws-sdk/middleware-content-length": 3.78.0
+    "@aws-sdk/middleware-host-header": 3.78.0
+    "@aws-sdk/middleware-logger": 3.78.0
+    "@aws-sdk/middleware-retry": 3.80.0
+    "@aws-sdk/middleware-serde": 3.78.0
+    "@aws-sdk/middleware-signing": 3.78.0
+    "@aws-sdk/middleware-stack": 3.78.0
+    "@aws-sdk/middleware-user-agent": 3.78.0
+    "@aws-sdk/node-config-provider": 3.80.0
+    "@aws-sdk/node-http-handler": 3.94.0
+    "@aws-sdk/protocol-http": 3.78.0
+    "@aws-sdk/smithy-client": 3.99.0
+    "@aws-sdk/types": 3.78.0
+    "@aws-sdk/url-parser": 3.78.0
+    "@aws-sdk/util-base64-browser": 3.58.0
+    "@aws-sdk/util-base64-node": 3.55.0
+    "@aws-sdk/util-body-length-browser": 3.55.0
+    "@aws-sdk/util-body-length-node": 3.55.0
+    "@aws-sdk/util-defaults-mode-browser": 3.99.0
+    "@aws-sdk/util-defaults-mode-node": 3.99.0
+    "@aws-sdk/util-user-agent-browser": 3.78.0
+    "@aws-sdk/util-user-agent-node": 3.80.0
+    "@aws-sdk/util-utf8-browser": 3.55.0
+    "@aws-sdk/util-utf8-node": 3.55.0
+    tslib: ^2.3.1
+  checksum: 665433b567345fc32cf25f7009a6e2e5c38aa31b85b35ca42a8d7d6cbe6d4dd7dc9e51b1af025b460a86280bf2eaa5638710bec337322544f7b2a170c46965a9
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-personalize-events@npm:3.6.1":
   version: 3.6.1
   resolution: "@aws-sdk/client-personalize-events@npm:3.6.1"
@@ -6443,6 +6484,7 @@ __metadata:
   resolution: "@rv-app/backend@workspace:backend"
   dependencies:
     "@aws-sdk/client-dynamodb": ^3.100.0
+    "@aws-sdk/client-location": ^3.100.0
     "@rv-app/generated-schema": "workspace:*"
     "@types/aws-lambda": ^8.10.98
     "@types/express": =4.17.13

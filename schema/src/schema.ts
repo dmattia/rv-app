@@ -16,9 +16,14 @@ export const schema = gql`
     longitude: String!
   }
 
+  type LocationSuggestion {
+    address: String!
+  }
+
   type Query {
     getDestinationById(id: ID!): Destination!
     listDestinations: [Destination!]!
+    searchLocation(query: String!): [LocationSuggestion!]!
   }
 
   type Mutation {
