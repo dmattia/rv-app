@@ -10,7 +10,7 @@ import {
 
 const client = new LocationClient({});
 
-export async function searchLocation(
+export async function getLocationDataForAddress(
   event: AppSyncResolverEvent<QueryGetLocationDataForAddressArgs>,
   context: Context
 ): Promise<LocationInformation> {
@@ -45,11 +45,15 @@ export async function searchLocation(
     region: Region,
     country: Country,
     postalCode: PostalCode,
-    timeZone: TimeZone
-      ? {
-          name: TimeZone.Name,
-          offset: TimeZone.Offset,
-        }
-      : undefined,
+    timeZone: {
+      name: JSON.stringify(Results[0].Place),
+      offset: 3,
+    },
+    // timeZone: TimeZone
+    //   ? {
+    //       name: TimeZone.Name,
+    //       offset: TimeZone.Offset,
+    //     }
+    //   : undefined,
   };
 }

@@ -58,13 +58,7 @@ export function CreateDestinationForm() {
             onChange={(e) => setDestinationName(e.target.value)}
           />
           {/*
-           * Replace latitude and longitude inputs with an autocompleting location search.
-           *
-           * And we can then lookup the info about an address that the user clicks via:
-           * aws-vault exec personal --region=us-east-1 --no-session -- aws location search-place-index-for-text \
-           *             --index-name esri \
-           *             --text "3913 Some Address Trl, Saint Paul, MN, 55122, USA" \
-           *             --max-results 1
+           * Replace latitude and longitude inputs with an autocomplete location search.
            */}
           <Input
             clearable

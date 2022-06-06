@@ -97,7 +97,7 @@ export class LambdaResolver extends pulumi.ComponentResource {
       {
         architectures: ["arm64"],
         code: new pulumi.asset.FileArchive(outputDirPromise),
-        handler: `index.${inputs.name}`,
+        handler: `${inputs.name}.${inputs.name}`,
         memorySize: 256,
         name: inputs.name,
         role: iamForLambda.arn,
