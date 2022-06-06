@@ -3,6 +3,7 @@ import { Modal, Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { MdPlace } from "react-icons/md";
 import { TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
+import { LocationAutocomplete } from "./LocationAutocomplete";
 
 export function CreateDestinationForm() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -57,6 +58,7 @@ export function CreateDestinationForm() {
             contentLeft={<MdPlace />}
             onChange={(e) => setDestinationName(e.target.value)}
           />
+          <LocationAutocomplete />
           {/*
            * Replace latitude and longitude inputs with an autocomplete location search.
            */}
