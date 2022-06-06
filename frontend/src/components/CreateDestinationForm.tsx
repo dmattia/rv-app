@@ -11,7 +11,9 @@ export function CreateDestinationForm() {
   const [longitude, setLongitude] = useState("0");
 
   const [createDestination, { loading, error }] =
-    useCreateOrUpdateDestinationMutation();
+    useCreateOrUpdateDestinationMutation({
+      refetchQueries: ["listDestinations"],
+    });
   const onSubmit = () => {
     createDestination({
       variables: {
