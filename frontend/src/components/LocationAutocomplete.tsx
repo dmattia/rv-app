@@ -1,14 +1,21 @@
 import { Input, Card, Loading } from "@nextui-org/react";
 import { MdPlace } from "react-icons/md";
 import { useState, useEffect } from "react";
-import { useSearchLocationLazyQuery } from "@rv-app/generated-schema";
+import {
+  useSearchLocationLazyQuery,
+  useGetLocationDataForAddressLazyQuery,
+} from "@rv-app/generated-schema";
+import { useIsMount } from "@rv-app/frontend/src/hooks";
 
 export function LocationAutocomplete() {
   const [searchText, setSearchText] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
 
+  const isMount = useIsMount();
   const [searchLocation, { data, loading, error }] =
     useSearchLocationLazyQuery();
+  const [searchAddress, { data: searchAddressData }] =
+    useGetLocationDataForAddressLazyQuery();
 
   useEffect(() => {
     if (searchText) {
@@ -16,18 +23,29 @@ export function LocationAutocomplete() {
     }
   }, [searchText]);
 
-  console.log(selectedAddress);
+  useEffect(() => {
+    if (!isMount) {
+      setSearchText("");
+      searchAddress({ variables: { query: selectedAddress } });
+    }
+  }, [selectedAddress]);
+
+  const disableInput = !!searchAddressData?.getLocationDataForAddress?.address;
 
   return (
     <>
       <Input
-        clearable
+        clearable={!disableInput}
         bordered
         fullWidth
         color="primary"
         size="lg"
         label="Location"
         placeholder="location"
+        value={
+          searchAddressData?.getLocationDataForAddress?.address ?? searchText
+        }
+        disabled={disableInput}
         contentLeft={<MdPlace />}
         onChange={(e) => setSearchText(e.target.value)}
       />
@@ -37,10 +55,10 @@ export function LocationAutocomplete() {
           {error.message}
         </p>
       )}
-      {data?.searchLocation && (
+      {searchText && data?.searchLocation && (
         <Card clickable shadow={false}>
           {data?.searchLocation.map(({ address }, index) => (
-            <>
+            <div key={index}>
               <p
                 className="p-2 text-sm"
                 onClick={() => setSelectedAddress(address)}
@@ -50,7 +68,7 @@ export function LocationAutocomplete() {
               {index != data?.searchLocation.length - 1 && (
                 <hr className="h-0.5 bg-gray-300" />
               )}
-            </>
+            </div>
           ))}
         </Card>
       )}
