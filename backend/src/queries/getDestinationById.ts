@@ -5,6 +5,7 @@ import type {
   Destination,
 } from "@rv-app/generated-schema";
 import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
+import { convertDbRowToGraphqlType } from "@rv-app/backend/src/utils/convertDbRowToGraphqlType";
 
 interface Config {
   dynamoClient: DynamoDBClient;
@@ -22,19 +23,7 @@ export const getDestinationByIdHandler: LambdaHandler<
     })
   );
 
-  if (!Item?.id?.S) {
-    throw Error("Item could not be found");
-  }
-
-  return {
-    id: Item.id.S,
-    destinationName: Item.destinationName.S,
-    locationInformation: {
-      address: "TEST",
-      latitude: Item.latitude.N ? parseFloat(Item.latitude.N) : undefined,
-      longitude: Item.longitude.N ? parseFloat(Item.longitude.N) : undefined,
-    },
-  };
+  return convertDbRowToGraphqlType(Item);
 };
 
 export const getDestinationById = createHandler(

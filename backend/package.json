@@ -1,7 +1,7 @@
 {
   "name": "@rv-app/backend",
   "scripts": {
-    "test": "mocha 'src/tests/*.test.ts'"
+    "test": "mocha 'src/tests/**/*.test.ts'"
   },
   "main": "src/index.ts",
   "devDependencies": {
