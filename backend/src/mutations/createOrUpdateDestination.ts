@@ -1,4 +1,4 @@
-import { Context, AppSyncResolverEvent } from "aws-lambda";
+import { AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import type {
   CreateOrUpdateDestinationMutationVariables,
@@ -6,13 +6,17 @@ import type {
 } from "@rv-app/generated-schema";
 import { v4 } from "uuid";
 import { getEntries } from "@transcend-io/type-utils";
+import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
 
-const client = new DynamoDBClient({});
+interface Config {
+  dynamoClient: DynamoDBClient;
+}
 
-export async function createOrUpdateDestination(
-  event: AppSyncResolverEvent<CreateOrUpdateDestinationMutationVariables>,
-  context: Context
-): Promise<Destination> {
+export const createOrUpdateDestinationHandler: LambdaHandler<
+  AppSyncResolverEvent<CreateOrUpdateDestinationMutationVariables>,
+  Config,
+  Destination
+> = async (event, context, { dynamoClient }) => {
   const {
     id: rawId,
     destinationName,
@@ -31,7 +35,7 @@ export async function createOrUpdateDestination(
   const inputAttributes = getEntries(event.arguments.input).filter(
     ([key]) => key !== "id"
   );
-  const { Attributes } = await client.send(
+  const { Attributes } = await dynamoClient.send(
     new UpdateItemCommand({
       TableName: process.env.DESTINATIONS_TABLE,
       Key: { id: { S: id } },
@@ -76,4 +80,11 @@ export async function createOrUpdateDestination(
       },
     },
   };
-}
+};
+
+export const createOrUpdateDestination = createHandler(
+  createOrUpdateDestinationHandler,
+  () => ({
+    dynamoClient: new DynamoDBClient({}),
+  })
+);

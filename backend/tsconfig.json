@@ -4,7 +4,7 @@
     "outDir": "../build/@rv-app/backend",
     "tsBuildInfoFile": "../build/@rv-app/backend.tsbuildinfo",
     "rootDir": "src",
-    "types": ["node", "mocha"]
+    "types": ["node"]
   },
   "references": [{ "path": "../generated-schema" }]
 }

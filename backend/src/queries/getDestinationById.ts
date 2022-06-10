@@ -1,17 +1,21 @@
-import { Context, AppSyncResolverEvent } from "aws-lambda";
+import { AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 import type {
   QueryGetDestinationByIdArgs,
   Destination,
 } from "@rv-app/generated-schema";
+import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
 
-const client = new DynamoDBClient({});
+interface Config {
+  dynamoClient: DynamoDBClient;
+}
 
-export async function getDestinationById(
-  event: AppSyncResolverEvent<QueryGetDestinationByIdArgs>,
-  context: Context
-): Promise<Destination> {
-  const { Item } = await client.send(
+export const getDestinationByIdHandler: LambdaHandler<
+  AppSyncResolverEvent<QueryGetDestinationByIdArgs>,
+  Config,
+  Destination
+> = async (event, context, { dynamoClient }) => {
+  const { Item } = await dynamoClient.send(
     new GetItemCommand({
       TableName: process.env.DESTINATIONS_TABLE,
       Key: { id: { S: event.arguments.id } },
@@ -31,4 +35,11 @@ export async function getDestinationById(
       longitude: Item.longitude.N ? parseFloat(Item.longitude.N) : undefined,
     },
   };
-}
+};
+
+export const getDestinationById = createHandler(
+  getDestinationByIdHandler,
+  () => ({
+    dynamoClient: new DynamoDBClient({}),
+  })
+);

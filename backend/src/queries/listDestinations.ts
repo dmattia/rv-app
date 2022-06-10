@@ -1,15 +1,15 @@
-import { Context, AppSyncResolverEvent } from "aws-lambda";
+import { AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import type { Destination } from "@rv-app/generated-schema";
 import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
 
-interface ListDestinationConfig {
+interface Config {
   dynamoClient: DynamoDBClient;
 }
 
 export const listDestinationsHandler: LambdaHandler<
   AppSyncResolverEvent<void>,
-  ListDestinationConfig,
+  Config,
   Destination[]
 > = async (event, context, { dynamoClient }) => {
   // TODO: Should Paginate

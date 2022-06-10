@@ -1,4 +1,4 @@
-import { Context, AppSyncResolverEvent } from "aws-lambda";
+import { AppSyncResolverEvent } from "aws-lambda";
 import {
   LocationClient,
   SearchPlaceIndexForSuggestionsCommand,
@@ -7,14 +7,18 @@ import {
   LocationSuggestion,
   QuerySearchLocationArgs,
 } from "@rv-app/generated-schema";
+import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
 
-const client = new LocationClient({});
+interface Config {
+  locationClient: LocationClient;
+}
 
-export async function searchLocation(
-  event: AppSyncResolverEvent<QuerySearchLocationArgs>,
-  context: Context
-): Promise<LocationSuggestion[]> {
-  const { Results } = await client.send(
+export const searchLocationHandler: LambdaHandler<
+  AppSyncResolverEvent<QuerySearchLocationArgs>,
+  Config,
+  LocationSuggestion[]
+> = async (event, context, { locationClient }) => {
+  const { Results } = await locationClient.send(
     new SearchPlaceIndexForSuggestionsCommand({
       IndexName: process.env.INDEX_NAME,
       Text: event.arguments.query,
@@ -27,4 +31,8 @@ export async function searchLocation(
   return (
     Results?.flatMap(({ Text }) => (Text ? [{ address: Text }] : [])) ?? []
   );
-}
+};
+
+export const searchLocation = createHandler(searchLocationHandler, () => ({
+  locationClient: new LocationClient({}),
+}));

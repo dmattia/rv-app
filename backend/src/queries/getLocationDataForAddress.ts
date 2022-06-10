@@ -1,4 +1,4 @@
-import { Context, AppSyncResolverEvent } from "aws-lambda";
+import { AppSyncResolverEvent } from "aws-lambda";
 import {
   LocationClient,
   SearchPlaceIndexForTextCommand,
@@ -7,14 +7,18 @@ import {
   LocationInformation,
   QueryGetLocationDataForAddressArgs,
 } from "@rv-app/generated-schema";
+import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
 
-const client = new LocationClient({});
+interface Config {
+  locationClient: LocationClient;
+}
 
-export async function getLocationDataForAddress(
-  event: AppSyncResolverEvent<QueryGetLocationDataForAddressArgs>,
-  context: Context
-): Promise<LocationInformation> {
-  const { Results } = await client.send(
+export const getLocationDataForAddressHandler: LambdaHandler<
+  AppSyncResolverEvent<QueryGetLocationDataForAddressArgs>,
+  Config,
+  LocationInformation
+> = async (event, context, { locationClient }) => {
+  const { Results } = await locationClient.send(
     new SearchPlaceIndexForTextCommand({
       IndexName: process.env.INDEX_NAME,
       Text: event.arguments.query,
@@ -52,4 +56,11 @@ export async function getLocationDataForAddress(
         }
       : undefined,
   };
-}
+};
+
+export const getLocationDataForAddress = createHandler(
+  getLocationDataForAddressHandler,
+  () => ({
+    locationClient: new LocationClient({}),
+  })
+);
