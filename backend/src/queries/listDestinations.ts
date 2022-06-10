@@ -1,16 +1,11 @@
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import type { Destination } from "@rv-app/generated-schema";
+import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
 
 interface ListDestinationConfig {
   dynamoClient: DynamoDBClient;
 }
-
-export type LambdaHandler<TEvent, TConfig, TResult> = (
-  event: TEvent,
-  context: Context,
-  config: TConfig
-) => Promise<TResult>;
 
 export const listDestinationsHandler: LambdaHandler<
   AppSyncResolverEvent<void>,
@@ -65,10 +60,6 @@ export const listDestinationsHandler: LambdaHandler<
   );
 };
 
-export const listDestinations = (
-  event: AppSyncResolverEvent<void>,
-  context: Context
-) =>
-  listDestinationsHandler(event, context, {
-    dynamoClient: new DynamoDBClient({}),
-  });
+export const listDestinations = createHandler(listDestinationsHandler, () => ({
+  dynamoClient: new DynamoDBClient({}),
+}));
