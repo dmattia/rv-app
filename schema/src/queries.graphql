@@ -2,8 +2,10 @@ query listDestinations {
   listDestinations {
     id
     destinationName
-    latitude
-    longitude
+    locationInformation {
+      latitude
+      longitude
+    }
   }
 }
 
@@ -20,7 +22,7 @@ query getLocationDataForAddress($query: String!) {
     longitude
     municipality
     subRegion
-    region
+    regionName
     country
     postalCode
     timeZone {

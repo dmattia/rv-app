@@ -1,19 +1,39 @@
 import { gql } from "apollo-server";
 
 export const schema = gql`
+  type LocationInformation {
+    address: String
+    latitude: Float
+    longitude: Float
+    municipality: String
+    subRegion: String
+    # region is a reserved word in DynamoDb
+    regionName: String
+    country: String
+    postalCode: String
+    timeZone: TimeZone
+  }
+
   type Destination {
     id: ID!
     # Name is a reserved keyword
     destinationName: String
-    latitude: String
-    longitude: String
+    locationInformation: LocationInformation
   }
 
   input CreateOrUpdateDestinationInput {
     id: String
-    destinationName: String!
-    latitude: String!
-    longitude: String!
+    destinationName: String
+    address: String
+    latitude: Float
+    longitude: Float
+    municipality: String
+    subRegion: String
+    regionName: String
+    country: String
+    postalCode: String
+    timeZoneName: String
+    timeZoneOffset: Int
   }
 
   type LocationSuggestion {
@@ -23,18 +43,6 @@ export const schema = gql`
   type TimeZone {
     name: String
     offset: Int
-  }
-
-  type LocationInformation {
-    address: String!
-    latitude: Float
-    longitude: Float
-    municipality: String
-    subRegion: String
-    region: String
-    country: String
-    postalCode: String
-    timeZone: TimeZone
   }
 
   type Query {

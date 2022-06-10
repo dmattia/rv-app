@@ -6486,6 +6486,7 @@ __metadata:
     "@aws-sdk/client-dynamodb": ^3.100.0
     "@aws-sdk/client-location": ^3.100.0
     "@rv-app/generated-schema": "workspace:*"
+    "@transcend-io/type-utils": ^1.0.5
     "@types/aws-lambda": ^8.10.98
     "@types/express": =4.17.13
     "@types/node": ^17.0.39
@@ -6510,6 +6511,7 @@ __metadata:
     "@nextui-org/react": ^1.0.0-beta.7
     "@rv-app/generated-schema": "workspace:*"
     "@types/dotenv-webpack": ^7
+    "@types/lodash": ^4
     "@types/mapbox-gl": ^2
     "@types/node": ^12.0.0
     "@types/react": ^18.0.0
@@ -6523,6 +6525,7 @@ __metadata:
     dotenv-webpack: ^7.1.0
     graphql: ^16.5.0
     html-webpack-plugin: ^5.5.0
+    lodash: ^4.17.21
     mapbox-gl: ^2.8.2
     maplibre-gl: ^2.1.9
     postcss: ^8.4.14
@@ -6648,6 +6651,16 @@ __metadata:
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
   checksum: ad87447820dd3f24825d2d947ebc03072b20a42bfc96cbafec16bff8bbda6c1a81fcb0be56d5b21968560c5359a0af4038a68ba150c3e1694fe4c109a063bed8
+  languageName: node
+  linkType: hard
+
+"@transcend-io/type-utils@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@transcend-io/type-utils@npm:1.0.5"
+  dependencies:
+    fp-ts: ^2.11.8
+    io-ts: ^2.2.16
+  checksum: 4d1bb9751852f36120872bcd7fde25e18454f0ebb0c655dd4d8c228dd9b49b1da75f11b323e65eb359f504df2fe0084e1ecffdbeadc52e6a1a05163a3cd2fd2b
   languageName: node
   linkType: hard
 
@@ -6900,6 +6913,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e009a2bfb50e90ca9b7c6e8f648f8464067271fd99116f881073fa6fa76dc8d0133181dd65e6614d5fb1220d671d67b0124aef7d97dc02d7e342ab143a47779d
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4":
+  version: 4.14.182
+  resolution: "@types/lodash@npm:4.14.182"
+  checksum: 7dd137aa9dbabd632408bd37009d984655164fa1ecc3f2b6eb94afe35bf0a5852cbab6183148d883e9c73a958b7fec9a9bcf7c8e45d41195add6a18c34958209
   languageName: node
   linkType: hard
 
@@ -11095,6 +11115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fp-ts@npm:^2.11.8":
+  version: 2.12.1
+  resolution: "fp-ts@npm:2.12.1"
+  checksum: 1e20e6b468191640a5f83cd52ccbfb361d27a6afbc47230870e63094b569cd9ae8763d0b9dee50eaed568bce8dd72e32ad1d695161bda8ec73e0296a02359832
+  languageName: node
+  linkType: hard
+
 "fraction.js@npm:^4.2.0":
   version: 4.2.0
   resolution: "fraction.js@npm:4.2.0"
@@ -12323,6 +12350,15 @@ __metadata:
   version: 1.0.0
   resolution: "invert-kv@npm:1.0.0"
   checksum: aebeee31dda3b3d25ffd242e9a050926e7fe5df642d60953ab183aca1a7d1ffb39922eb2618affb0e850cf2923116f0da1345367759d88d097df5da1f1e1590e
+  languageName: node
+  linkType: hard
+
+"io-ts@npm:^2.2.16":
+  version: 2.2.16
+  resolution: "io-ts@npm:2.2.16"
+  peerDependencies:
+    fp-ts: ^2.5.0
+  checksum: 1b5855682e413cc92cfb5c51d0bdb24c99e407ab4e67821a53078f5d8dedbc387840c5b240cb19dd5d542bbdd2e2317ece17674a674f3de561ca0f00ae765bba
   languageName: node
   linkType: hard
 

@@ -4,24 +4,33 @@ import { useState, useEffect } from "react";
 import {
   useSearchLocationLazyQuery,
   useGetLocationDataForAddressLazyQuery,
+  LocationInformation,
 } from "@rv-app/generated-schema";
-import { useIsMount } from "@rv-app/frontend/src/hooks";
+import { useIsMount, useDebounce } from "@rv-app/frontend/src/hooks";
 
-export function LocationAutocomplete() {
+interface LocationAutocompleteProps {
+  onLocationSelected?: (info: LocationInformation) => void;
+}
+
+export function LocationAutocomplete(props: LocationAutocompleteProps) {
   const [searchText, setSearchText] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
 
   const isMount = useIsMount();
   const [searchLocation, { data, loading, error }] =
     useSearchLocationLazyQuery();
-  const [searchAddress, { data: searchAddressData }] =
-    useGetLocationDataForAddressLazyQuery();
+  const [
+    searchAddress,
+    { data: searchAddressData, loading: searchAddressLoading },
+  ] = useGetLocationDataForAddressLazyQuery();
+
+  const debouncedSearchText = useDebounce(searchText, 500);
 
   useEffect(() => {
-    if (searchText) {
-      searchLocation({ variables: { query: searchText } });
+    if (debouncedSearchText) {
+      searchLocation({ variables: { query: debouncedSearchText } });
     }
-  }, [searchText]);
+  }, [debouncedSearchText]);
 
   useEffect(() => {
     if (!isMount) {
@@ -30,25 +39,34 @@ export function LocationAutocomplete() {
     }
   }, [selectedAddress]);
 
-  const disableInput = !!searchAddressData?.getLocationDataForAddress?.address;
+  useEffect(() => {
+    if (searchAddressData && props.onLocationSelected) {
+      props.onLocationSelected(searchAddressData.getLocationDataForAddress);
+    }
+  }, [searchAddressData]);
 
+  const disableInput = !!searchAddressData?.getLocationDataForAddress?.address;
   return (
     <>
-      <Input
-        clearable={!disableInput}
-        bordered
-        fullWidth
-        color="primary"
-        size="lg"
-        label="Location"
-        placeholder="location"
-        value={
-          searchAddressData?.getLocationDataForAddress?.address ?? searchText
-        }
-        disabled={disableInput}
-        contentLeft={<MdPlace />}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
+      {searchAddressLoading ? (
+        <Loading />
+      ) : (
+        <Input
+          clearable={!disableInput}
+          bordered
+          fullWidth
+          color="primary"
+          size="lg"
+          label="Location"
+          placeholder="location"
+          value={
+            searchAddressData?.getLocationDataForAddress?.address ?? searchText
+          }
+          disabled={disableInput}
+          contentLeft={<MdPlace />}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      )}
       {loading && <Loading />}
       {error && (
         <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">

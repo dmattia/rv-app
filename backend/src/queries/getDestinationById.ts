@@ -25,7 +25,10 @@ export async function getDestinationById(
   return {
     id: Item.id.S,
     destinationName: Item.destinationName.S,
-    latitude: Item.latitude.S,
-    longitude: Item.longitude.S,
+    locationInformation: {
+      address: "TEST",
+      latitude: Item.latitude.N ? parseFloat(Item.latitude.N) : undefined,
+      longitude: Item.longitude.N ? parseFloat(Item.longitude.N) : undefined,
+    },
   };
 }

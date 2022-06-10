@@ -17,29 +17,36 @@ export type Scalars = {
 };
 
 export type CreateOrUpdateDestinationInput = {
-  destinationName: Scalars['String'];
+  address?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  destinationName?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
-  latitude: Scalars['String'];
-  longitude: Scalars['String'];
+  latitude?: InputMaybe<Scalars['Float']>;
+  longitude?: InputMaybe<Scalars['Float']>;
+  municipality?: InputMaybe<Scalars['String']>;
+  postalCode?: InputMaybe<Scalars['String']>;
+  regionName?: InputMaybe<Scalars['String']>;
+  subRegion?: InputMaybe<Scalars['String']>;
+  timeZoneName?: InputMaybe<Scalars['String']>;
+  timeZoneOffset?: InputMaybe<Scalars['Int']>;
 };
 
 export type Destination = {
   __typename?: 'Destination';
   destinationName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  latitude?: Maybe<Scalars['String']>;
-  longitude?: Maybe<Scalars['String']>;
+  locationInformation?: Maybe<LocationInformation>;
 };
 
 export type LocationInformation = {
   __typename?: 'LocationInformation';
-  address: Scalars['String'];
+  address?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   latitude?: Maybe<Scalars['Float']>;
   longitude?: Maybe<Scalars['Float']>;
   municipality?: Maybe<Scalars['String']>;
   postalCode?: Maybe<Scalars['String']>;
-  region?: Maybe<Scalars['String']>;
+  regionName?: Maybe<Scalars['String']>;
   subRegion?: Maybe<Scalars['String']>;
   timeZone?: Maybe<TimeZone>;
 };
@@ -93,12 +100,12 @@ export type CreateOrUpdateDestinationMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrUpdateDestinationMutation = { __typename?: 'Mutation', createOrUpdateDestination: { __typename?: 'Destination', id: string, destinationName?: string | null, latitude?: string | null, longitude?: string | null } };
+export type CreateOrUpdateDestinationMutation = { __typename?: 'Mutation', createOrUpdateDestination: { __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', latitude?: number | null, longitude?: number | null } | null } };
 
 export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, latitude?: string | null, longitude?: string | null }> };
+export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', latitude?: number | null, longitude?: number | null } | null }> };
 
 export type SearchLocationQueryVariables = Exact<{
   query: Scalars['String'];
@@ -112,7 +119,7 @@ export type GetLocationDataForAddressQueryVariables = Exact<{
 }>;
 
 
-export type GetLocationDataForAddressQuery = { __typename?: 'Query', getLocationDataForAddress: { __typename?: 'LocationInformation', address: string, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, region?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } };
+export type GetLocationDataForAddressQuery = { __typename?: 'Query', getLocationDataForAddress: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } };
 
 
 export const CreateOrUpdateDestinationDocument = /*#__PURE__*/ gql`
@@ -120,8 +127,10 @@ export const CreateOrUpdateDestinationDocument = /*#__PURE__*/ gql`
   createOrUpdateDestination(input: $input) {
     id
     destinationName
-    latitude
-    longitude
+    locationInformation {
+      latitude
+      longitude
+    }
   }
 }
     `;
@@ -153,8 +162,10 @@ export const ListDestinationsDocument = /*#__PURE__*/ gql`
   listDestinations {
     id
     destinationName
-    latitude
-    longitude
+    locationInformation {
+      latitude
+      longitude
+    }
   }
 }
     `;
@@ -226,7 +237,7 @@ export const GetLocationDataForAddressDocument = /*#__PURE__*/ gql`
     longitude
     municipality
     subRegion
-    region
+    regionName
     country
     postalCode
     timeZone {

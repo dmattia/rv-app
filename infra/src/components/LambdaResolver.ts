@@ -98,13 +98,14 @@ export class LambdaResolver extends pulumi.ComponentResource {
         architectures: ["arm64"],
         code: new pulumi.asset.FileArchive(outputDirPromise),
         handler: `${inputs.name}.${inputs.name}`,
-        memorySize: 256,
+        memorySize: 512,
         name: inputs.name,
         role: iamForLambda.arn,
         runtime: "nodejs16.x",
         environment: {
           variables: inputs.environment,
         },
+        timeout: 10,
         publish: true,
       },
       defaultOpts

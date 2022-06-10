@@ -17,8 +17,8 @@ export function DestinationTable() {
   const tableRows = (data.listDestinations ?? []).map((destination) => (
     <Table.Row key={destination.id}>
       <Table.Cell>{destination.destinationName}</Table.Cell>
-      <Table.Cell>{destination.latitude}</Table.Cell>
-      <Table.Cell>{destination.longitude}</Table.Cell>
+      <Table.Cell>{destination.locationInformation?.latitude}</Table.Cell>
+      <Table.Cell>{destination.locationInformation?.longitude}</Table.Cell>
     </Table.Row>
   ));
 

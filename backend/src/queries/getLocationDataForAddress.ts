@@ -42,7 +42,7 @@ export async function getLocationDataForAddress(
     latitude: Geometry?.Point?.[1],
     municipality: Municipality,
     subRegion: SubRegion,
-    region: Region,
+    regionName: Region,
     country: Country,
     postalCode: PostalCode,
     timeZone: TimeZone

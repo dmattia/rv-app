@@ -8726,6 +8726,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@aws-sdk/client-dynamodb", "npm:3.100.0"],\
             ["@aws-sdk/client-location", "npm:3.100.0"],\
             ["@rv-app/generated-schema", "workspace:generated-schema"],\
+            ["@transcend-io/type-utils", "npm:1.0.5"],\
             ["@types/aws-lambda", "npm:8.10.98"],\
             ["@types/express", "npm:4.17.13"],\
             ["@types/node", "npm:17.0.39"],\
@@ -8752,6 +8753,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nextui-org/react", "virtual:75f53384b479a073449d45d89caa429f60ea7eba7254039dc376876e1b88da0964819d32848c00e8a1245145ebb47a3bbdb6586ad334a0e751c00c1525580648#npm:1.0.0-beta.7"],\
             ["@rv-app/generated-schema", "workspace:generated-schema"],\
             ["@types/dotenv-webpack", "npm:7.0.3"],\
+            ["@types/lodash", "npm:4.14.182"],\
             ["@types/mapbox-gl", "npm:2.7.2"],\
             ["@types/node", "npm:12.20.52"],\
             ["@types/react", "npm:18.0.9"],\
@@ -8765,6 +8767,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dotenv-webpack", "virtual:75f53384b479a073449d45d89caa429f60ea7eba7254039dc376876e1b88da0964819d32848c00e8a1245145ebb47a3bbdb6586ad334a0e751c00c1525580648#npm:7.1.0"],\
             ["graphql", "npm:16.5.0"],\
             ["html-webpack-plugin", "virtual:75f53384b479a073449d45d89caa429f60ea7eba7254039dc376876e1b88da0964819d32848c00e8a1245145ebb47a3bbdb6586ad334a0e751c00c1525580648#npm:5.5.0"],\
+            ["lodash", "npm:4.17.21"],\
             ["mapbox-gl", "npm:2.8.2"],\
             ["maplibre-gl", "npm:2.1.9"],\
             ["postcss", "npm:8.4.14"],\
@@ -9001,6 +9004,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/typescript",\
             "ts-node",\
             "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@transcend-io/type-utils", [\
+        ["npm:1.0.5", {\
+          "packageLocation": "./.yarn/cache/@transcend-io-type-utils-npm-1.0.5-53d562f965-4d1bb97518.zip/node_modules/@transcend-io/type-utils/",\
+          "packageDependencies": [\
+            ["@transcend-io/type-utils", "npm:1.0.5"],\
+            ["fp-ts", "npm:2.12.1"],\
+            ["io-ts", "virtual:53d562f9656f9223c4532e7e2b6feefabcf4bfa2c0659bc8d6557c1f9633b17688cca8b3d2effb8a926da81d6d2f2353092c812bd38f1a03f5ff9a9a3e1b3408#npm:2.2.16"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9298,6 +9312,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/keyv", "npm:3.1.4"],\
             ["@types/node", "npm:17.0.35"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.182", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.182-1073aac722-7dd137aa9d.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.182"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14322,6 +14345,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["fp-ts", [\
+        ["npm:2.12.1", {\
+          "packageLocation": "./.yarn/cache/fp-ts-npm-2.12.1-8cb5201f64-1e20e6b468.zip/node_modules/fp-ts/",\
+          "packageDependencies": [\
+            ["fp-ts", "npm:2.12.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["fraction.js", [\
         ["npm:4.2.0", {\
           "packageLocation": "./.yarn/cache/fraction.js-npm-4.2.0-28efe4afc7-8c76a6e21d.zip/node_modules/fraction.js/",\
@@ -15766,6 +15798,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/invert-kv-npm-1.0.0-114e48e289-aebeee31dd.zip/node_modules/invert-kv/",\
           "packageDependencies": [\
             ["invert-kv", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["io-ts", [\
+        ["npm:2.2.16", {\
+          "packageLocation": "./.yarn/cache/io-ts-npm-2.2.16-b76df10271-1b5855682e.zip/node_modules/io-ts/",\
+          "packageDependencies": [\
+            ["io-ts", "npm:2.2.16"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:53d562f9656f9223c4532e7e2b6feefabcf4bfa2c0659bc8d6557c1f9633b17688cca8b3d2effb8a926da81d6d2f2353092c812bd38f1a03f5ff9a9a3e1b3408#npm:2.2.16", {\
+          "packageLocation": "./.yarn/__virtual__/io-ts-virtual-981fdbc7ba/0/cache/io-ts-npm-2.2.16-b76df10271-1b5855682e.zip/node_modules/io-ts/",\
+          "packageDependencies": [\
+            ["io-ts", "virtual:53d562f9656f9223c4532e7e2b6feefabcf4bfa2c0659bc8d6557c1f9633b17688cca8b3d2effb8a926da81d6d2f2353092c812bd38f1a03f5ff9a9a3e1b3408#npm:2.2.16"],\
+            ["@types/fp-ts", null],\
+            ["fp-ts", "npm:2.12.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/fp-ts",\
+            "fp-ts"\
           ],\
           "linkType": "HARD"\
         }]\

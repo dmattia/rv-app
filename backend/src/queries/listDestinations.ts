@@ -16,17 +16,42 @@ export async function listDestinations(
   );
 
   return (
-    Items?.map(({ id, destinationName, latitude, longitude }) => {
-      if (!id.S) {
-        throw Error("Found invalid destination");
-      }
+    Items?.map(
+      ({
+        id,
+        destinationName,
+        latitude,
+        longitude,
+        municipality,
+        subRegion,
+        regionName,
+        postalCode,
+        timeZoneName,
+        timeZoneOffset,
+      }) => {
+        if (!id.S) {
+          throw Error("Found invalid destination");
+        }
 
-      return {
-        id: id.S,
-        destinationName: destinationName.S,
-        latitude: latitude.S,
-        longitude: longitude.S,
-      };
-    }) ?? []
+        return {
+          id: id?.S,
+          destinationName: destinationName?.S,
+          locationInformation: {
+            latitude: latitude?.N ? parseFloat(latitude?.N) : undefined,
+            longitude: longitude?.N ? parseFloat(longitude?.N) : undefined,
+            municipality: municipality?.S,
+            subRegion: subRegion?.S,
+            regionName: regionName?.S,
+            postalCode: postalCode?.S,
+            timeZone: {
+              offset: timeZoneOffset?.N
+                ? parseInt(timeZoneOffset?.N, 10)
+                : undefined,
+              name: timeZoneName?.S,
+            },
+          },
+        };
+      }
+    ) ?? []
   );
 }

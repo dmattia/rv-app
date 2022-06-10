@@ -1,15 +1,18 @@
-import { useCreateOrUpdateDestinationMutation } from "@rv-app/generated-schema";
+import {
+  useCreateOrUpdateDestinationMutation,
+  LocationInformation,
+} from "@rv-app/generated-schema";
 import { Modal, Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { MdPlace } from "react-icons/md";
-import { TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { LocationAutocomplete } from "./LocationAutocomplete";
 
 export function CreateDestinationForm() {
   const [modalVisible, setModalVisible] = useState(false);
   const [destinationName, setDestinationName] = useState("");
-  const [latitude, setLatitude] = useState("0");
-  const [longitude, setLongitude] = useState("0");
+  const [locationInformation, setLocationInfo] = useState<
+    LocationInformation | undefined
+  >(undefined);
 
   const [createDestination, { loading, error }] =
     useCreateOrUpdateDestinationMutation({
@@ -20,8 +23,16 @@ export function CreateDestinationForm() {
       variables: {
         input: {
           destinationName,
-          latitude,
-          longitude,
+          address: locationInformation?.address,
+          latitude: locationInformation?.latitude,
+          longitude: locationInformation?.longitude,
+          municipality: locationInformation?.municipality,
+          subRegion: locationInformation?.subRegion,
+          regionName: locationInformation?.regionName,
+          country: locationInformation?.country,
+          postalCode: locationInformation?.postalCode,
+          timeZoneName: locationInformation?.timeZone?.name,
+          timeZoneOffset: locationInformation?.timeZone?.offset,
         },
       },
     });
@@ -58,33 +69,8 @@ export function CreateDestinationForm() {
             contentLeft={<MdPlace />}
             onChange={(e) => setDestinationName(e.target.value)}
           />
-          <LocationAutocomplete />
-          {/*
-           * Replace latitude and longitude inputs with an autocomplete location search.
-           */}
-          <Input
-            clearable
-            disabled={loading}
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            label="Latitude"
-            placeholder="latitude"
-            contentLeft={<TbWorldLatitude />}
-            onChange={(e) => setLatitude(e.target.value)}
-          />
-          <Input
-            clearable
-            disabled={loading}
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            label="Longitude"
-            placeholder="longitude"
-            contentLeft={<TbWorldLongitude />}
-            onChange={(e) => setLongitude(e.target.value)}
+          <LocationAutocomplete
+            onLocationSelected={(info) => setLocationInfo(info)}
           />
         </Modal.Body>
         <Modal.Footer>
