@@ -2,14 +2,23 @@ import { Context, AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import type { Destination } from "@rv-app/generated-schema";
 
-const client = new DynamoDBClient({});
+interface ListDestinationConfig {
+  dynamoClient: DynamoDBClient;
+}
 
-export async function listDestinations(
-  event: AppSyncResolverEvent<void>,
-  context: Context
-): Promise<Destination[]> {
+export type LambdaHandler<TEvent, TConfig, TResult> = (
+  event: TEvent,
+  context: Context,
+  config: TConfig
+) => Promise<TResult>;
+
+export const listDestinationsHandler: LambdaHandler<
+  AppSyncResolverEvent<void>,
+  ListDestinationConfig,
+  Destination[]
+> = async (event, context, { dynamoClient }) => {
   // TODO: Should Paginate
-  const { Items } = await client.send(
+  const { Items } = await dynamoClient.send(
     new ScanCommand({
       TableName: process.env.DESTINATIONS_TABLE,
     })
@@ -54,4 +63,12 @@ export async function listDestinations(
       }
     ) ?? []
   );
-}
+};
+
+export const listDestinations = (
+  event: AppSyncResolverEvent<void>,
+  context: Context
+) =>
+  listDestinationsHandler(event, context, {
+    dynamoClient: new DynamoDBClient({}),
+  });
