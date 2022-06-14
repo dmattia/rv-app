@@ -1,9 +1,8 @@
-import assert from "assert";
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import sinon from "sinon";
 
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
+import { AwsClientStub, mockClient } from "aws-sdk-client-mock";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -37,7 +36,7 @@ describe("listDestinations", () => {
 
   const runHandler = () =>
     listDestinationsHandler({} as AppSyncResolverEvent<void>, {} as Context, {
-      dynamoClient: dbClientStub,
+      dynamoClient: dbClient,
     });
 
   it("returns nothing when no rows are in the db", async () => {

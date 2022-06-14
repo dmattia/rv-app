@@ -59,6 +59,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@types/events", "npm:3.0.0"],\
+            ["@types/mocha", "npm:9.1.1"],\
             ["@types/prettier", "npm:2.6.3"],\
             ["@types/punycode", "npm:2.1.0"],\
             ["buffer", "npm:6.0.3"],\
@@ -8744,11 +8745,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@aws-sdk/client-location", "npm:3.100.0"],\
             ["@rv-app/generated-schema", "workspace:generated-schema"],\
             ["@transcend-io/type-utils", "npm:1.0.5"],\
-            ["@types/aws-lambda", "npm:8.10.98"],\
+            ["@types/aws-lambda", "npm:8.10.100"],\
             ["@types/chai", "npm:4.3.1"],\
             ["@types/chai-as-promised", "npm:7.1.5"],\
             ["@types/express", "npm:4.17.13"],\
+            ["@types/mocha", "npm:8.2.3"],\
             ["@types/node", "npm:17.0.39"],\
+            ["@types/sinon", "npm:10.0.11"],\
             ["@types/uuid", "npm:8.3.4"],\
             ["aws-lambda", "npm:1.0.7"],\
             ["aws-sdk-client-mock", "virtual:3609885524b61e9abf11b8c23baa685bbb50fc6b2c8f6fb7b3c7468120fc58c9cedc8f96c1ece9fcb8566417377322764dbb6e24fd9c13f6cd19fd4793a662bf#npm:0.6.2"],\
@@ -8854,6 +8857,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@rv-app/root", "workspace:."],\
             ["@types/events", "npm:3.0.0"],\
+            ["@types/mocha", "npm:9.1.1"],\
             ["@types/prettier", "npm:2.6.3"],\
             ["@types/punycode", "npm:2.1.0"],\
             ["buffer", "npm:6.0.3"],\
@@ -9169,10 +9173,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/aws-lambda", [\
-        ["npm:8.10.98", {\
-          "packageLocation": "./.yarn/cache/@types-aws-lambda-npm-8.10.98-1e5c6f1b85-dad5d2ba33.zip/node_modules/@types/aws-lambda/",\
+        ["npm:8.10.100", {\
+          "packageLocation": "./.yarn/cache/@types-aws-lambda-npm-8.10.100-2a9b8d8b4f-458cc9928e.zip/node_modules/@types/aws-lambda/",\
           "packageDependencies": [\
-            ["@types/aws-lambda", "npm:8.10.98"]\
+            ["@types/aws-lambda", "npm:8.10.100"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9476,6 +9480,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/mocha", [\
+        ["npm:8.2.3", {\
+          "packageLocation": "./.yarn/cache/@types-mocha-npm-8.2.3-7aff51fdb4-b43ed1b642.zip/node_modules/@types/mocha/",\
+          "packageDependencies": [\
+            ["@types/mocha", "npm:8.2.3"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:9.1.1", {\
+          "packageLocation": "./.yarn/cache/@types-mocha-npm-9.1.1-9646576ed0-516077c0ac.zip/node_modules/@types/mocha/",\
+          "packageDependencies": [\
+            ["@types/mocha", "npm:9.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/node", [\
         ["npm:10.17.60", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-10.17.60-63ac1f669f-2cdb3a77d0.zip/node_modules/@types/node/",\
@@ -9664,6 +9684,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/sinon", "npm:10.0.10"],\
             ["@sinonjs/fake-timers", "npm:7.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:10.0.11", {\
+          "packageLocation": "./.yarn/cache/@types-sinon-npm-10.0.11-fa47601eb4-196f3e2698.zip/node_modules/@types/sinon/",\
+          "packageDependencies": [\
+            ["@types/sinon", "npm:10.0.11"],\
+            ["@types/sinonjs__fake-timers", "npm:8.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/sinonjs__fake-timers", [\
+        ["npm:8.1.2", {\
+          "packageLocation": "./.yarn/cache/@types-sinonjs__fake-timers-npm-8.1.2-278832251f-bbc73a5ab6.zip/node_modules/@types/sinonjs__fake-timers/",\
+          "packageDependencies": [\
+            ["@types/sinonjs__fake-timers", "npm:8.1.2"]\
           ],\
           "linkType": "HARD"\
         }]\

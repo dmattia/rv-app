@@ -1,4 +1,3 @@
-import assert from "assert";
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import sinon from "sinon";
 
@@ -6,16 +5,12 @@ import {
   LocationClient,
   SearchPlaceIndexForSuggestionsCommand,
 } from "@aws-sdk/client-location";
-import { mockClient } from "aws-sdk-client-mock";
+import { AwsClientStub, mockClient } from "aws-sdk-client-mock";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import type {
-  QuerySearchLocationArgs,
-  Destination,
-} from "@rv-app/generated-schema";
+import type { QuerySearchLocationArgs } from "@rv-app/generated-schema";
 
 import { searchLocationHandler } from "@rv-app/backend/src/queries/searchLocation";
-// import {} from "@rv-app/backend/src/tests/mockData";
 
 const sandbox = sinon.createSandbox();
 
@@ -45,9 +40,7 @@ describe("searchLocation", () => {
         arguments: { query: "some query text" },
       } as AppSyncResolverEvent<QuerySearchLocationArgs>,
       {} as Context,
-      {
-        locationClient: locationClientStub,
-      }
+      { locationClient }
     );
 
   it("errors when the location service is not accessible", async () => {

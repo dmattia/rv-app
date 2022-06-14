@@ -6506,11 +6506,13 @@ __metadata:
     "@aws-sdk/client-location": ^3.100.0
     "@rv-app/generated-schema": "workspace:*"
     "@transcend-io/type-utils": ^1.0.5
-    "@types/aws-lambda": ^8.10.98
+    "@types/aws-lambda": ^8.10.78
     "@types/chai": ^4
     "@types/chai-as-promised": ^7
     "@types/express": =4.17.13
+    "@types/mocha": ^8.2.2
     "@types/node": ^17.0.39
+    "@types/sinon": ^10.0.11
     "@types/uuid": ^8
     aws-lambda: ^1.0.7
     aws-sdk-client-mock: ^0.6.2
@@ -6605,6 +6607,7 @@ __metadata:
   resolution: "@rv-app/root@workspace:."
   dependencies:
     "@types/events": ^3
+    "@types/mocha": ^9.1.1
     "@types/prettier": ^2
     "@types/punycode": ^2
     buffer: ^6.0.3
@@ -6798,10 +6801,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/aws-lambda@npm:^8.10.98":
-  version: 8.10.98
-  resolution: "@types/aws-lambda@npm:8.10.98"
-  checksum: dad5d2ba3374a9b5401c826a9a9f8341c0c871d5b5033012067c26c2f8865a98f097c7e1c7f077e7887c2f84b4a450fb4b24cf03f41850379dc89a3e8c5be7da
+"@types/aws-lambda@npm:^8.10.78":
+  version: 8.10.100
+  resolution: "@types/aws-lambda@npm:8.10.100"
+  checksum: 458cc9928ee8844376ee509b557cc8c7cf936c0c85f2d9569dc7f6ca2912e876906c0dd9e07f76d17ba2836e039492de32f05b3af56f93612425e2a42ad7f98a
   languageName: node
   linkType: hard
 
@@ -7060,6 +7063,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mocha@npm:^8.2.2":
+  version: 8.2.3
+  resolution: "@types/mocha@npm:8.2.3"
+  checksum: b43ed1b642a2ee62bf10792a07d5d21d66ab8b4d2cf5d822c8a7643e77b90009aecc000eefab5f6ddc9eb69004192f84119a6f97a8499e1a13ea082e7a5e71bf
+  languageName: node
+  linkType: hard
+
+"@types/mocha@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "@types/mocha@npm:9.1.1"
+  checksum: 516077c0acd9806dc78317f88aaac0df5aaf0bdc2f63dfdadeabdf0b0137953b6ca65472e6ff7c30bc93ce4e0ae76eae70e8d46764b9a8eae4877a928b6ef49a
+  languageName: node
+  linkType: hard
+
 "@types/node-fetch@npm:^2.5.10":
   version: 2.6.1
   resolution: "@types/node-fetch@npm:2.6.1"
@@ -7222,6 +7239,22 @@ __metadata:
   dependencies:
     "@sinonjs/fake-timers": ^7.1.0
   checksum: 3169f8a53adcabeb44418f6cf3340c565653044164d9deb87602747142f0ee7a1d51be9dc2d2840aa77d6358c76e90c58ba0815f358724f67241f5e71d2bc12d
+  languageName: node
+  linkType: hard
+
+"@types/sinon@npm:^10.0.11":
+  version: 10.0.11
+  resolution: "@types/sinon@npm:10.0.11"
+  dependencies:
+    "@types/sinonjs__fake-timers": "*"
+  checksum: 196f3e26985dca5dfb593592e4b64463e536c047a9f43aa2b328b16024a3b0e3fb27b7a3f3972c6ef75749f55012737eb6c63a1c2e9782b7fe5cbbd25f75fd62
+  languageName: node
+  linkType: hard
+
+"@types/sinonjs__fake-timers@npm:*":
+  version: 8.1.2
+  resolution: "@types/sinonjs__fake-timers@npm:8.1.2"
+  checksum: bbc73a5ab6c0ec974929392f3d6e1e8db4ebad97ec506d785301e1c3d8a4f98a35b1aa95b97035daef02886fd8efd7788a2fa3ced2ec7105988bfd8dce61eedd
   languageName: node
   linkType: hard
 

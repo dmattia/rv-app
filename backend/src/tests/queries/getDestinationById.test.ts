@@ -1,15 +1,11 @@
-import assert from "assert";
 import { Context, AppSyncResolverEvent } from "aws-lambda";
 import sinon from "sinon";
 
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
+import { AwsClientStub, mockClient } from "aws-sdk-client-mock";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import type {
-  QueryGetDestinationByIdArgs,
-  Destination,
-} from "@rv-app/generated-schema";
+import type { QueryGetDestinationByIdArgs } from "@rv-app/generated-schema";
 
 import { getDestinationByIdHandler } from "@rv-app/backend/src/queries/getDestinationById";
 import {
@@ -46,9 +42,7 @@ describe("getDestinationById", () => {
         arguments: { id: FAKE_ID },
       } as AppSyncResolverEvent<QueryGetDestinationByIdArgs>,
       {} as Context,
-      {
-        dynamoClient: dbClientStub,
-      }
+      { dynamoClient: dbClient }
     );
 
   it("errors when the db is not accessible", async () => {
