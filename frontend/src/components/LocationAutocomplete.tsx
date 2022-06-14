@@ -7,6 +7,7 @@ import {
   LocationInformation,
 } from "@rv-app/generated-schema";
 import { useIsMount, useDebounce } from "@rv-app/frontend/src/hooks";
+import { getEntries } from "@transcend-io/type-utils";
 
 interface LocationAutocompleteProps {
   onLocationSelected?: (info: LocationInformation) => void;
@@ -41,7 +42,12 @@ export function LocationAutocomplete(props: LocationAutocompleteProps) {
 
   useEffect(() => {
     if (searchAddressData && props.onLocationSelected) {
-      props.onLocationSelected(searchAddressData.getLocationDataForAddress);
+      const nonNullFields = Object.fromEntries(
+        getEntries(searchAddressData.getLocationDataForAddress).filter(
+          ([_, val]) => val != null
+        )
+      );
+      props.onLocationSelected(nonNullFields);
     }
   }, [searchAddressData]);
 

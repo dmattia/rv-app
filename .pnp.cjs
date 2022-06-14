@@ -8779,6 +8779,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@aws-sdk/credential-provider-cognito-identity", "npm:3.100.0"],\
             ["@nextui-org/react", "virtual:75f53384b479a073449d45d89caa429f60ea7eba7254039dc376876e1b88da0964819d32848c00e8a1245145ebb47a3bbdb6586ad334a0e751c00c1525580648#npm:1.0.0-beta.7"],\
             ["@rv-app/generated-schema", "workspace:generated-schema"],\
+            ["@transcend-io/type-utils", "npm:1.0.5"],\
             ["@types/dotenv-webpack", "npm:7.0.3"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/mapbox-gl", "npm:2.7.2"],\

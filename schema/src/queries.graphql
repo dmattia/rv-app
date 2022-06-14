@@ -3,8 +3,18 @@ query listDestinations {
     id
     destinationName
     locationInformation {
+      address
       latitude
       longitude
+      municipality
+      subRegion
+      regionName
+      country
+      postalCode
+      timeZone {
+        name
+        offset
+      }
     }
   }
 }

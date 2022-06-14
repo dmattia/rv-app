@@ -6538,6 +6538,7 @@ __metadata:
     "@aws-sdk/credential-provider-cognito-identity": ^3.100.0
     "@nextui-org/react": ^1.0.0-beta.7
     "@rv-app/generated-schema": "workspace:*"
+    "@transcend-io/type-utils": ^1.0.5
     "@types/dotenv-webpack": ^7
     "@types/lodash": ^4
     "@types/mapbox-gl": ^2

@@ -11,6 +11,7 @@ export function convertDbRowToGraphqlType(
   const {
     id,
     destinationName,
+    address,
     latitude,
     longitude,
     municipality,
@@ -29,6 +30,7 @@ export function convertDbRowToGraphqlType(
     id: id.S,
     destinationName: destinationName?.S,
     locationInformation: {
+      address: address?.S,
       latitude: latitude?.N ? parseFloat(latitude?.N) : undefined,
       longitude: longitude?.N ? parseFloat(longitude?.N) : undefined,
       municipality: municipality?.S,

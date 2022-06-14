@@ -105,7 +105,7 @@ export type CreateOrUpdateDestinationMutation = { __typename?: 'Mutation', creat
 export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', latitude?: number | null, longitude?: number | null } | null }> };
+export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } | null }> };
 
 export type SearchLocationQueryVariables = Exact<{
   query: Scalars['String'];
@@ -163,8 +163,18 @@ export const ListDestinationsDocument = /*#__PURE__*/ gql`
     id
     destinationName
     locationInformation {
+      address
       latitude
       longitude
+      municipality
+      subRegion
+      regionName
+      country
+      postalCode
+      timeZone {
+        name
+        offset
+      }
     }
   }
 }

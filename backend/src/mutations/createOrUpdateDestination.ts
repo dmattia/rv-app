@@ -40,15 +40,15 @@ export const createOrUpdateDestinationHandler: LambdaHandler<
       TableName: process.env.DESTINATIONS_TABLE,
       Key: { id: { S: id } },
       UpdateExpression: `SET ${inputAttributes
-        .map(([name, val]) => (val != undefined ? `${name} = :${name}` : ""))
+        .map(([name, val]) => (val != null ? `${name} = :${name}` : ""))
         .join(",")}`,
       ExpressionAttributeValues: Object.fromEntries(
         inputAttributes.flatMap(([name, val]) =>
-          val != undefined
+          val != null
             ? [
                 [
                   `:${name}`,
-                  typeof val === "string" ? { S: val } : { N: val.toString() },
+                  typeof val === "string" ? { S: val } : { N: val?.toString() },
                 ],
               ]
             : []
