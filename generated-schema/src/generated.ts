@@ -59,11 +59,17 @@ export type LocationSuggestion = {
 export type Mutation = {
   __typename?: 'Mutation';
   createOrUpdateDestination: Destination;
+  deleteDestination: Scalars['ID'];
 };
 
 
 export type MutationCreateOrUpdateDestinationArgs = {
   input: CreateOrUpdateDestinationInput;
+};
+
+
+export type MutationDeleteDestinationArgs = {
+  id: Scalars['ID'];
 };
 
 export type Query = {
@@ -101,6 +107,13 @@ export type CreateOrUpdateDestinationMutationVariables = Exact<{
 
 
 export type CreateOrUpdateDestinationMutation = { __typename?: 'Mutation', createOrUpdateDestination: { __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', latitude?: number | null, longitude?: number | null } | null } };
+
+export type DeleteDestinationMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteDestinationMutation = { __typename?: 'Mutation', deleteDestination: string };
 
 export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -157,6 +170,34 @@ export function useCreateOrUpdateDestinationMutation(baseOptions?: Apollo.Mutati
         return Apollo.useMutation<CreateOrUpdateDestinationMutation, CreateOrUpdateDestinationMutationVariables>(CreateOrUpdateDestinationDocument, options);
       }
 export type CreateOrUpdateDestinationMutationHookResult = ReturnType<typeof useCreateOrUpdateDestinationMutation>;
+export const DeleteDestinationDocument = /*#__PURE__*/ gql`
+    mutation deleteDestination($id: ID!) {
+  deleteDestination(id: $id)
+}
+    `;
+
+/**
+ * __useDeleteDestinationMutation__
+ *
+ * To run a mutation, you first call `useDeleteDestinationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDestinationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDestinationMutation, { data, loading, error }] = useDeleteDestinationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteDestinationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteDestinationMutation, DeleteDestinationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteDestinationMutation, DeleteDestinationMutationVariables>(DeleteDestinationDocument, options);
+      }
+export type DeleteDestinationMutationHookResult = ReturnType<typeof useDeleteDestinationMutation>;
 export const ListDestinationsDocument = /*#__PURE__*/ gql`
     query listDestinations {
   listDestinations {

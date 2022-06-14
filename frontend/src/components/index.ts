@@ -1,4 +1,4 @@
-export * from "./CreateDestinationForm";
+export * from "./CreateOrUpdateDestinationForm";
 export * from "./MapComponent";
 export * from "./UserProfile";
 export * from "./Sidebar";

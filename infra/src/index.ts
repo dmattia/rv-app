@@ -279,6 +279,18 @@ const api = new AppSyncApi("api", {
         },
       ],
     },
+    {
+      name: "deleteDestination",
+      type: "Mutation",
+      entrypoint: "@rv-app/backend/src/mutations/deleteDestination",
+      iamPermissions: [
+        {
+          Action: ["dynamodb:DeleteItem"],
+          Resource: [destinations.arn],
+          Effect: "Allow",
+        },
+      ],
+    },
   ],
   environment: {
     DESTINATIONS_TABLE: destinations.name,

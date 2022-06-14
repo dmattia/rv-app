@@ -8,3 +8,7 @@ mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
     }
   }
 }
+
+mutation deleteDestination($id: ID!) {
+  deleteDestination(id: $id)
+}

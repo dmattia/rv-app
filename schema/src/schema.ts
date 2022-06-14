@@ -56,6 +56,7 @@ export const schema = gql`
     createOrUpdateDestination(
       input: CreateOrUpdateDestinationInput!
     ): Destination!
+    deleteDestination(id: ID!): ID!
   }
 
   schema {
