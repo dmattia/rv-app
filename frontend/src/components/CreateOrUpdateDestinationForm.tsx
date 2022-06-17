@@ -3,7 +3,12 @@ import {
   LocationInformation,
   DestinationCategory,
 } from "@rv-app/generated-schema";
-import { Input, Dropdown } from "@nextui-org/react";
+import {
+  Input,
+  Dropdown,
+  StyledInputBlockLabel,
+  useTheme,
+} from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { MdPlace } from "react-icons/md";
 import { LocationAutocomplete } from "./LocationAutocomplete";
@@ -25,6 +30,8 @@ export interface CreateOrUpdateDestinationFormProps {
 export function CreateOrUpdateDestinationForm(
   props: CreateOrUpdateDestinationFormProps
 ) {
+  const { theme } = useTheme();
+
   const [destinationName, setDestinationName] = useState(
     props.initialData?.destinationName ?? ""
   );
@@ -84,8 +91,14 @@ export function CreateOrUpdateDestinationForm(
       <LocationAutocomplete
         onLocationSelected={(info) => setLocationInfo(info)}
       />
+      <StyledInputBlockLabel
+        className="nextui-input-block-label"
+        style={{ color: theme?.colors.primary.value }}
+      >
+        Category
+      </StyledInputBlockLabel>
       <Dropdown>
-        <Dropdown.Button flat css={{ tt: "capitalize" }}>
+        <Dropdown.Button flat bordered>
           {category}
         </Dropdown.Button>
         <Dropdown.Menu
