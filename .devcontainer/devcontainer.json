@@ -1,0 +1,17 @@
+{
+  "name": "RV App",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"],
+      "settings": {
+        "extensions.ignoreRecommendations": true,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": { "zsh": { "path": "/bin/zsh" } }
+      }
+    }
+  },
+  "otherPortsAttributes": { "onAutoForward": "silent" }
+}

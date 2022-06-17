@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: RvApp
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+
+    volumes:
+      - ..:/workspace:cached
+      - shell-history:/commandhistory
+    command: /bin/bash -c "sleep infinity"
+    network_mode: "host"
+
+volumes:
+  shell-history:
