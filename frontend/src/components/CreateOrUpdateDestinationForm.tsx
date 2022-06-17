@@ -2,6 +2,7 @@ import {
   CreateOrUpdateDestinationMutationVariables,
   LocationInformation,
   DestinationCategory,
+  Priority,
 } from "@rv-app/generated-schema";
 import {
   Input,
@@ -20,6 +21,7 @@ export interface CreateOrUpdateDestinationFormProps {
     destinationName?: string | null;
     locationInformation?: LocationInformation | null;
     category?: DestinationCategory;
+    priority?: Priority;
   };
 
   loading?: boolean;
@@ -41,6 +43,9 @@ export function CreateOrUpdateDestinationForm(
   const [category, setCategory] = useState<DestinationCategory>(
     props.initialData?.category ?? DestinationCategory.Other
   );
+  const [priority, setPriority] = useState<Priority | undefined>(
+    props.initialData?.priority
+  );
 
   useEffect(() => {
     if (!props.onChange) {
@@ -60,18 +65,15 @@ export function CreateOrUpdateDestinationForm(
       postalCode: locationInformation?.postalCode,
       timeZoneName: locationInformation?.timeZone?.name,
       timeZoneOffset: locationInformation?.timeZone?.offset,
-      category: category,
+      category,
+      priority,
     };
     const nonNullFields = Object.fromEntries(
       getEntries(fields).filter(([_, val]) => val !== null && val !== undefined)
     );
 
     props.onChange({ input: nonNullFields });
-  }, [destinationName, locationInformation, category]);
-
-  useEffect(() => {
-    console.log(`Category is now ${category}`);
-  }, [category]);
+  }, [destinationName, locationInformation, category, priority]);
 
   return (
     <>
@@ -91,6 +93,8 @@ export function CreateOrUpdateDestinationForm(
       <LocationAutocomplete
         onLocationSelected={(info) => setLocationInfo(info)}
       />
+
+      {/* Category dropdown */}
       <StyledInputBlockLabel
         className="nextui-input-block-label"
         style={{ color: theme?.colors.primary.value }}
@@ -111,6 +115,31 @@ export function CreateOrUpdateDestinationForm(
         >
           {getValues(DestinationCategory).map((category) => (
             <Dropdown.Item key={category}>{category}</Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+
+      {/* Priority dropdown */}
+      <StyledInputBlockLabel
+        className="nextui-input-block-label"
+        style={{ color: theme?.colors.primary.value }}
+      >
+        Priority
+      </StyledInputBlockLabel>
+      <Dropdown>
+        <Dropdown.Button flat bordered>
+          Priority
+        </Dropdown.Button>
+        <Dropdown.Menu
+          disallowEmptySelection
+          selectionMode="single"
+          selectedKeys={priority ? new Set([priority]) : undefined}
+          onSelectionChange={(priorities) =>
+            setPriority([...priorities][0] as Priority | undefined)
+          }
+        >
+          {getValues(Priority).map((priority) => (
+            <Dropdown.Item key={priority}>{priority}</Dropdown.Item>
           ))}
         </Dropdown.Menu>
       </Dropdown>

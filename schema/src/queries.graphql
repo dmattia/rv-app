@@ -3,6 +3,7 @@ query listDestinations {
     id
     category
     destinationName
+    priority
     locationInformation {
       address
       latitude

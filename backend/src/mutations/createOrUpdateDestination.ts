@@ -4,6 +4,7 @@ import {
   CreateOrUpdateDestinationMutationVariables,
   Destination,
   DestinationCategory,
+  Priority,
 } from "@rv-app/generated-schema";
 import { v4 } from "uuid";
 import { getEntries } from "@transcend-io/type-utils";
@@ -24,6 +25,7 @@ export const createOrUpdateDestinationHandler: LambdaHandler<
     latitude,
     longitude,
     category,
+    priority,
     municipality,
     subRegion,
     regionName,
@@ -59,14 +61,19 @@ export const createOrUpdateDestinationHandler: LambdaHandler<
     })
   );
 
+  // Convert strings to enums
   const finalCategory = Attributes?.category?.S ?? category;
   const categoryEnum = finalCategory
     ? (finalCategory as DestinationCategory)
     : DestinationCategory.Other;
+  const finalPriority = Attributes?.priority?.S ?? priority;
+  const priorityEnum = finalPriority ? (finalPriority as Priority) : null;
+
   return {
     id,
     destinationName: Attributes?.destinationName?.S ?? destinationName,
     category: categoryEnum,
+    priority: priorityEnum,
     locationInformation: {
       latitude: Attributes?.latitude?.N
         ? parseFloat(Attributes?.latitude?.N)

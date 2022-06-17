@@ -14,6 +14,14 @@ export const schema = gql`
     timeZone: TimeZone
   }
 
+  enum Priority {
+    LOWEST
+    LOW
+    MEDIUM
+    HIGH
+    HIGHEST
+  }
+
   enum DestinationCategory {
     FRIENDS_AND_FAMILY
     FOOD_AND_DRINK
@@ -32,6 +40,7 @@ export const schema = gql`
     destinationName: String
     locationInformation: LocationInformation
     category: DestinationCategory
+    priority: Priority
   }
 
   input CreateOrUpdateDestinationInput {
@@ -48,6 +57,7 @@ export const schema = gql`
     timeZoneName: String
     timeZoneOffset: Int
     category: DestinationCategory
+    priority: Priority
   }
 
   type LocationSuggestion {

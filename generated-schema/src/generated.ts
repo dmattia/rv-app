@@ -26,6 +26,7 @@ export type CreateOrUpdateDestinationInput = {
   longitude?: InputMaybe<Scalars['Float']>;
   municipality?: InputMaybe<Scalars['String']>;
   postalCode?: InputMaybe<Scalars['String']>;
+  priority?: InputMaybe<Priority>;
   regionName?: InputMaybe<Scalars['String']>;
   subRegion?: InputMaybe<Scalars['String']>;
   timeZoneName?: InputMaybe<Scalars['String']>;
@@ -38,6 +39,7 @@ export type Destination = {
   destinationName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   locationInformation?: Maybe<LocationInformation>;
+  priority?: Maybe<Priority>;
 };
 
 export enum DestinationCategory {
@@ -86,6 +88,14 @@ export type MutationDeleteDestinationArgs = {
   id: Scalars['ID'];
 };
 
+export enum Priority {
+  High = 'HIGH',
+  Highest = 'HIGHEST',
+  Low = 'LOW',
+  Lowest = 'LOWEST',
+  Medium = 'MEDIUM'
+}
+
 export type Query = {
   __typename?: 'Query';
   getDestinationById: Destination;
@@ -132,7 +142,7 @@ export type DeleteDestinationMutation = { __typename?: 'Mutation', deleteDestina
 export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, category?: DestinationCategory | null, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } | null }> };
+export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, category?: DestinationCategory | null, destinationName?: string | null, priority?: Priority | null, locationInformation?: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } | null }> };
 
 export type SearchLocationQueryVariables = Exact<{
   query: Scalars['String'];
@@ -218,6 +228,7 @@ export const ListDestinationsDocument = /*#__PURE__*/ gql`
     id
     category
     destinationName
+    priority
     locationInformation {
       address
       latitude
