@@ -1,5 +1,5 @@
 import type { GetItemOutput } from "@aws-sdk/client-dynamodb";
-import type { Destination } from "@rv-app/generated-schema";
+import { Destination, DestinationCategory } from "@rv-app/generated-schema";
 
 export function convertDbRowToGraphqlType(
   row: GetItemOutput["Item"]
@@ -10,6 +10,7 @@ export function convertDbRowToGraphqlType(
 
   const {
     id,
+    category,
     destinationName,
     address,
     latitude,
@@ -29,6 +30,9 @@ export function convertDbRowToGraphqlType(
   return {
     id: id.S,
     destinationName: destinationName?.S,
+    category: category?.S
+      ? (category?.S as DestinationCategory)
+      : DestinationCategory.Other,
     locationInformation: {
       address: address?.S,
       latitude: latitude?.N ? parseFloat(latitude?.N) : undefined,

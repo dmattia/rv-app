@@ -18,6 +18,7 @@ export type Scalars = {
 
 export type CreateOrUpdateDestinationInput = {
   address?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<DestinationCategory>;
   country?: InputMaybe<Scalars['String']>;
   destinationName?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
@@ -33,10 +34,23 @@ export type CreateOrUpdateDestinationInput = {
 
 export type Destination = {
   __typename?: 'Destination';
+  category?: Maybe<DestinationCategory>;
   destinationName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   locationInformation?: Maybe<LocationInformation>;
 };
+
+export enum DestinationCategory {
+  Cultural = 'CULTURAL',
+  DogThings = 'DOG_THINGS',
+  FoodAndDrink = 'FOOD_AND_DRINK',
+  FriendsAndFamily = 'FRIENDS_AND_FAMILY',
+  Hike = 'HIKE',
+  NatureThings = 'NATURE_THINGS',
+  Other = 'OTHER',
+  PlaceToStay = 'PLACE_TO_STAY',
+  Shopping = 'SHOPPING'
+}
 
 export type LocationInformation = {
   __typename?: 'LocationInformation';
@@ -118,7 +132,7 @@ export type DeleteDestinationMutation = { __typename?: 'Mutation', deleteDestina
 export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } | null }> };
+export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, category?: DestinationCategory | null, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } | null }> };
 
 export type SearchLocationQueryVariables = Exact<{
   query: Scalars['String'];
@@ -202,6 +216,7 @@ export const ListDestinationsDocument = /*#__PURE__*/ gql`
     query listDestinations {
   listDestinations {
     id
+    category
     destinationName
     locationInformation {
       address

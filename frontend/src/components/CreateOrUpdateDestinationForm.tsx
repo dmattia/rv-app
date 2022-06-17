@@ -1,18 +1,20 @@
 import {
   CreateOrUpdateDestinationMutationVariables,
   LocationInformation,
+  DestinationCategory,
 } from "@rv-app/generated-schema";
-import { Input } from "@nextui-org/react";
+import { Input, Dropdown } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { MdPlace } from "react-icons/md";
 import { LocationAutocomplete } from "./LocationAutocomplete";
-import { getEntries } from "@transcend-io/type-utils";
+import { getEntries, getValues } from "@transcend-io/type-utils";
 
 export interface CreateOrUpdateDestinationFormProps {
   initialData?: {
     id?: string;
     destinationName?: string | null;
     locationInformation?: LocationInformation | null;
+    category?: DestinationCategory;
   };
 
   loading?: boolean;
@@ -29,6 +31,9 @@ export function CreateOrUpdateDestinationForm(
   const [locationInformation, setLocationInfo] = useState<
     LocationInformation | undefined
   >(props.initialData?.locationInformation ?? undefined);
+  const [category, setCategory] = useState<DestinationCategory>(
+    props.initialData?.category ?? DestinationCategory.Other
+  );
 
   useEffect(() => {
     if (!props.onChange) {
@@ -48,13 +53,18 @@ export function CreateOrUpdateDestinationForm(
       postalCode: locationInformation?.postalCode,
       timeZoneName: locationInformation?.timeZone?.name,
       timeZoneOffset: locationInformation?.timeZone?.offset,
+      category: category,
     };
     const nonNullFields = Object.fromEntries(
       getEntries(fields).filter(([_, val]) => val !== null && val !== undefined)
     );
 
     props.onChange({ input: nonNullFields });
-  }, [destinationName, locationInformation]);
+  }, [destinationName, locationInformation, category]);
+
+  useEffect(() => {
+    console.log(`Category is now ${category}`);
+  }, [category]);
 
   return (
     <>
@@ -74,6 +84,23 @@ export function CreateOrUpdateDestinationForm(
       <LocationAutocomplete
         onLocationSelected={(info) => setLocationInfo(info)}
       />
+      <Dropdown>
+        <Dropdown.Button flat css={{ tt: "capitalize" }}>
+          {category}
+        </Dropdown.Button>
+        <Dropdown.Menu
+          disallowEmptySelection
+          selectionMode="single"
+          selectedKeys={new Set([category])}
+          onSelectionChange={(categories) =>
+            setCategory([...categories][0] as DestinationCategory)
+          }
+        >
+          {getValues(DestinationCategory).map((category) => (
+            <Dropdown.Item key={category}>{category}</Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
     </>
   );
 }

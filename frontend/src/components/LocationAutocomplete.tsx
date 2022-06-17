@@ -74,7 +74,7 @@ export function LocationAutocomplete(props: LocationAutocompleteProps) {
         </p>
       )}
       {searchText && data?.searchLocation && (
-        <Card clickable shadow={false}>
+        <Card isPressable variant="flat">
           {data?.searchLocation.map(({ address }, index) => (
             <div key={index}>
               <p

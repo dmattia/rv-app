@@ -14,11 +14,24 @@ export const schema = gql`
     timeZone: TimeZone
   }
 
+  enum DestinationCategory {
+    FRIENDS_AND_FAMILY
+    FOOD_AND_DRINK
+    NATURE_THINGS
+    HIKE
+    PLACE_TO_STAY
+    CULTURAL
+    DOG_THINGS
+    SHOPPING
+    OTHER
+  }
+
   type Destination {
     id: ID!
     # Name is a reserved keyword
     destinationName: String
     locationInformation: LocationInformation
+    category: DestinationCategory
   }
 
   input CreateOrUpdateDestinationInput {
@@ -34,6 +47,7 @@ export const schema = gql`
     postalCode: String
     timeZoneName: String
     timeZoneOffset: Int
+    category: DestinationCategory
   }
 
   type LocationSuggestion {

@@ -61,7 +61,7 @@ export function DestinationTable() {
   }
 
   const tableRows = (data.listDestinations ?? []).map(
-    ({ id, destinationName, locationInformation }) => (
+    ({ id, destinationName, locationInformation, category }) => (
       <Table.Row key={id}>
         <Table.Cell>{destinationName}</Table.Cell>
         <Table.Cell>{locationInformation?.address}</Table.Cell>
@@ -76,6 +76,7 @@ export function DestinationTable() {
           {locationInformation?.timeZone?.name} (
           {locationInformation?.timeZone?.offset})
         </Table.Cell>
+        <Table.Cell>{category}</Table.Cell>
         <Table.Cell>
           <Row justify="center" align="center">
             <Col css={{ d: "flex" }}>
@@ -97,6 +98,7 @@ export function DestinationTable() {
                       id,
                       locationInformation,
                       destinationName,
+                      category: category ?? undefined,
                     });
                     setModalVisible(true);
                   }}
@@ -169,6 +171,7 @@ export function DestinationTable() {
           <Table.Column>Region</Table.Column>
           <Table.Column>SubRegion</Table.Column>
           <Table.Column>timeZone</Table.Column>
+          <Table.Column>category</Table.Column>
           <Table.Column hideHeader={true}>actions</Table.Column>
         </Table.Header>
         <Table.Body>{tableRows}</Table.Body>

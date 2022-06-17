@@ -1,8 +1,9 @@
 import { AppSyncResolverEvent } from "aws-lambda";
 import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
-import type {
+import {
   CreateOrUpdateDestinationMutationVariables,
   Destination,
+  DestinationCategory,
 } from "@rv-app/generated-schema";
 import { v4 } from "uuid";
 import { getEntries } from "@transcend-io/type-utils";
@@ -22,6 +23,7 @@ export const createOrUpdateDestinationHandler: LambdaHandler<
     destinationName,
     latitude,
     longitude,
+    category,
     municipality,
     subRegion,
     regionName,
@@ -57,9 +59,14 @@ export const createOrUpdateDestinationHandler: LambdaHandler<
     })
   );
 
+  const finalCategory = Attributes?.category?.S ?? category;
+  const categoryEnum = finalCategory
+    ? (finalCategory as DestinationCategory)
+    : DestinationCategory.Other;
   return {
     id,
     destinationName: Attributes?.destinationName?.S ?? destinationName,
+    category: categoryEnum,
     locationInformation: {
       latitude: Attributes?.latitude?.N
         ? parseFloat(Attributes?.latitude?.N)

@@ -1,6 +1,7 @@
 query listDestinations {
   listDestinations {
     id
+    category
     destinationName
     locationInformation {
       address
