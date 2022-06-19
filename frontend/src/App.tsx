@@ -16,7 +16,7 @@ export default function App() {
         <BrowserRouter>
           <main className="flex h-screen">
             <Sidebar />
-            <div className="container mx-auto px-4 flex flex-col">
+            <div className="container overflow-x-auto mx-auto px-4 flex flex-col">
               <Routes>
                 <Route path="/" element={<UserProfile />} />
                 <Route path="/destinations">

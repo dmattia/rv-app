@@ -34,7 +34,7 @@ export function MapComponent() {
         initialViewState={{
           latitude: 37.8,
           longitude: -122.4,
-          zoom: 2,
+          zoom: 5,
         }}
         ref={mapRef}
       >
