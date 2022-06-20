@@ -57,7 +57,9 @@ const CustomMapView = forwardRef<MapRef, MapViewProps>(
     const styleProps = useMemo<React.CSSProperties>(
       () => ({
         position: "relative",
-        width: "100%",
+        width: "90%",
+        marginLeft: "auto",
+        marginRight: "auto",
         ...style,
       }),
       [style]
