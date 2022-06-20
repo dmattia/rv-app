@@ -9,6 +9,12 @@ mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
   }
 }
 
+mutation updateDeviceLocation($input: UpdateDeviceLocationInput!) {
+  updateDeviceLocation(input: $input) {
+    success
+  }
+}
+
 mutation deleteDestination($id: ID!) {
   deleteDestination(id: $id)
 }

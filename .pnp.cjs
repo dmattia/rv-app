@@ -6760,13 +6760,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@pulumi/aws", "npm:5.6.0"],\
             ["@pulumi/pulumi", [\
               "@transcend-io/pulumi",\
-              "virtual:e98adc9cab845cb63b15085b9663a859acc38408e3578f4b0153cd5c82c912b22531c49dd8dad375c08b42534e4efe1f65aa92c941d367df9f239c41e29d2789#npm:1.0.5"\
+              "virtual:bf4e95d426075a534503f52aae46103e31ac6bf248decd308cdf25f9b3363f661b8b53b60204aaf2854b43b1ab7d4d321cf32cd1d5f748cc45913e14fac3b1c9#npm:1.0.5"\
             ]],\
             ["aws-sdk", "npm:2.1145.0"],\
             ["builtin-modules", "npm:3.0.0"],\
             ["mime", "npm:2.6.0"],\
             ["read-package-tree", "npm:5.3.1"],\
             ["resolve", "patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@pulumi/aws-native", [\
+        ["npm:0.19.0", {\
+          "packageLocation": "./.yarn/unplugged/@pulumi-aws-native-npm-0.19.0-bf4e95d426/node_modules/@pulumi/aws-native/",\
+          "packageDependencies": [\
+            ["@pulumi/aws-native", "npm:0.19.0"],\
+            ["@pulumi/pulumi", [\
+              "@transcend-io/pulumi",\
+              "virtual:bf4e95d426075a534503f52aae46103e31ac6bf248decd308cdf25f9b3363f661b8b53b60204aaf2854b43b1ab7d4d321cf32cd1d5f748cc45913e14fac3b1c9#npm:1.0.5"\
+            ]],\
+            ["@types/glob", "npm:5.0.37"],\
+            ["@types/node-fetch", "npm:2.6.2"],\
+            ["@types/tmp", "npm:0.0.33"],\
+            ["glob", "npm:7.2.3"],\
+            ["node-fetch", "virtual:001a51c96ce37a97cf30fc526c6f9fb47f465af86bde09772059c3ed8c47512dac2528879b10b46a196f19ffb613ae2a7fc96758c4dd43cdcc1260aceb7e1779#npm:2.6.7"],\
+            ["shell-quote", "npm:1.7.3"],\
+            ["tmp", "npm:0.0.33"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9371,6 +9391,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@rv-app/infra", "workspace:infra"],\
             ["@pulumi/aws", "npm:5.6.0"],\
+            ["@pulumi/aws-native", "npm:0.19.0"],\
             ["@pulumi/pulumi", [\
               "@transcend-io/pulumi",\
               "virtual:8cf029b51a60dd6500adf3c7e3d746f249dfafb991fa8c1b17e29b3f5ddf8989e7d217e8c5585bf69953130e0f6eae066bdf0823227d31145ad776a10e322f56#npm:1.0.5"\
@@ -9590,10 +9611,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["virtual:e98adc9cab845cb63b15085b9663a859acc38408e3578f4b0153cd5c82c912b22531c49dd8dad375c08b42534e4efe1f65aa92c941d367df9f239c41e29d2789#npm:1.0.5", {\
-          "packageLocation": "./.yarn/__virtual__/@transcend-io-pulumi-virtual-54a2360017/0/cache/@transcend-io-pulumi-npm-1.0.5-60a5d0f402-5d94e8473a.zip/node_modules/@transcend-io/pulumi/",\
+        ["virtual:bf4e95d426075a534503f52aae46103e31ac6bf248decd308cdf25f9b3363f661b8b53b60204aaf2854b43b1ab7d4d321cf32cd1d5f748cc45913e14fac3b1c9#npm:1.0.5", {\
+          "packageLocation": "./.yarn/__virtual__/@transcend-io-pulumi-virtual-b4b28bf4f1/0/cache/@transcend-io-pulumi-npm-1.0.5-60a5d0f402-5d94e8473a.zip/node_modules/@transcend-io/pulumi/",\
           "packageDependencies": [\
-            ["@transcend-io/pulumi", "virtual:e98adc9cab845cb63b15085b9663a859acc38408e3578f4b0153cd5c82c912b22531c49dd8dad375c08b42534e4efe1f65aa92c941d367df9f239c41e29d2789#npm:1.0.5"],\
+            ["@transcend-io/pulumi", "virtual:bf4e95d426075a534503f52aae46103e31ac6bf248decd308cdf25f9b3363f661b8b53b60204aaf2854b43b1ab7d4d321cf32cd1d5f748cc45913e14fac3b1c9#npm:1.0.5"],\
             ["@grpc/grpc-js", "npm:1.3.8"],\
             ["@logdna/tail-file", "npm:2.2.0"],\
             ["@pulumi/query", "npm:0.3.0"],\
@@ -10027,6 +10048,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/glob", [\
+        ["npm:5.0.37", {\
+          "packageLocation": "./.yarn/cache/@types-glob-npm-5.0.37-50d7fb0c69-88683c3bfc.zip/node_modules/@types/glob/",\
+          "packageDependencies": [\
+            ["@types/glob", "npm:5.0.37"],\
+            ["@types/minimatch", "npm:3.0.5"],\
+            ["@types/node", "npm:17.0.35"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/html-minifier-terser", [\
         ["npm:6.1.0", {\
           "packageLocation": "./.yarn/cache/@types-html-minifier-terser-npm-6.1.0-707ea07fcb-eb843f6a8d.zip/node_modules/@types/html-minifier-terser/",\
@@ -10140,6 +10172,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/minimatch", [\
+        ["npm:3.0.5", {\
+          "packageLocation": "./.yarn/cache/@types-minimatch-npm-3.0.5-802bb0797f-c41d136f67.zip/node_modules/@types/minimatch/",\
+          "packageDependencies": [\
+            ["@types/minimatch", "npm:3.0.5"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/mocha", [\
         ["npm:8.2.3", {\
           "packageLocation": "./.yarn/cache/@types-mocha-npm-8.2.3-7aff51fdb4-b43ed1b642.zip/node_modules/@types/mocha/",\
@@ -10198,6 +10239,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-fetch-npm-2.6.1-cb57369c1c-a3e5d7f413.zip/node_modules/@types/node-fetch/",\
           "packageDependencies": [\
             ["@types/node-fetch", "npm:2.6.1"],\
+            ["@types/node", "npm:17.0.35"],\
+            ["form-data", "npm:3.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.6.2", {\
+          "packageLocation": "./.yarn/cache/@types-node-fetch-npm-2.6.2-f96c00879e-6f73b14700.zip/node_modules/@types/node-fetch/",\
+          "packageDependencies": [\
+            ["@types/node-fetch", "npm:2.6.2"],\
             ["@types/node", "npm:17.0.35"],\
             ["form-data", "npm:3.0.1"]\
           ],\
@@ -10362,6 +10412,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/sockjs", "npm:0.3.33"],\
             ["@types/node", "npm:17.0.35"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/tmp", [\
+        ["npm:0.0.33", {\
+          "packageLocation": "./.yarn/cache/@types-tmp-npm-0.0.33-070918943f-b6963af740.zip/node_modules/@types/tmp/",\
+          "packageDependencies": [\
+            ["@types/tmp", "npm:0.0.33"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -21901,6 +21960,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/shebang-regex-npm-3.0.0-899a0cd65e-1a2bcae50d.zip/node_modules/shebang-regex/",\
           "packageDependencies": [\
             ["shebang-regex", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["shell-quote", [\
+        ["npm:1.7.3", {\
+          "packageLocation": "./.yarn/cache/shell-quote-npm-1.7.3-76a78a6d77-aca58e73a3.zip/node_modules/shell-quote/",\
+          "packageDependencies": [\
+            ["shell-quote", "npm:1.7.3"]\
           ],\
           "linkType": "HARD"\
         }]\

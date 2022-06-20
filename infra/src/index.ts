@@ -2,6 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
 import { AppSyncApi } from "./components";
+import * as awsNative from "@pulumi/aws-native";
 
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
@@ -85,6 +86,12 @@ const map = new aws.location.Map(
 const mapIndex = new aws.location.PlaceIndex("index", {
   dataSource: "Here",
   indexName: "here",
+});
+
+// Create a tracker for tracking device locations
+const tracker = new awsNative.location.Tracker("tracker", {
+  description: "Tracks the RV goin round dat country",
+  trackerName: "RvTracker",
 });
 
 // Create the Authentication config
@@ -291,10 +298,23 @@ const api = new AppSyncApi("api", {
         },
       ],
     },
+    {
+      name: "updateDeviceLocation",
+      type: "Mutation",
+      entrypoint: "@rv-app/backend/src/mutations/updateDeviceLocation",
+      iamPermissions: [
+        {
+          Action: ["geo:BatchUpdateDevicePosition"],
+          Resource: [tracker.arn],
+          Effect: "Allow",
+        },
+      ],
+    },
   ],
   environment: {
     DESTINATIONS_TABLE: destinations.name,
     INDEX_NAME: mapIndex.indexName,
+    TRACKER_NAME: tracker.trackerName,
   },
 });
 

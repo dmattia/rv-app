@@ -69,6 +69,17 @@ export const schema = gql`
     offset: Int
   }
 
+  input UpdateDeviceLocationInput {
+    accuracy: Int
+    latitude: Float!
+    longitude: Float!
+    deviceName: String
+  }
+
+  type UpdateDeviceLocationOutput {
+    success: Boolean
+  }
+
   type Query {
     getDestinationById(id: ID!): Destination!
     listDestinations: [Destination!]!
@@ -80,6 +91,9 @@ export const schema = gql`
     createOrUpdateDestination(
       input: CreateOrUpdateDestinationInput!
     ): Destination!
+    updateDeviceLocation(
+      input: UpdateDeviceLocationInput!
+    ): UpdateDeviceLocationOutput!
     deleteDestination(id: ID!): ID!
   }
 

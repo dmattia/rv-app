@@ -45,7 +45,9 @@ export function MapComponent() {
           <DestinationMarker key={destination.id} destination={destination} />
         ))}
       </CustomMapView>
-      <Button onClick={flyHome}>Fly Home</Button>
+      <Button className="my-3 w-44" onClick={flyHome}>
+        Fly Home
+      </Button>
     </>
   );
 }
