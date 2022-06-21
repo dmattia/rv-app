@@ -5449,6 +5449,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pulumi/command@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@pulumi/command@npm:0.3.0"
+  dependencies:
+    "@pulumi/pulumi": ^3.0.0
+  checksum: ce0a151d96d267f41e51f6cd055ea7234b970c999ca17b90c592118a2d525eeebeb2e208ca704ba9532664f973df99b5407b67e436a005b763e6c76c51cbcc48
+  languageName: node
+  linkType: hard
+
 "@pulumi/pulumi@npm:@transcend-io/pulumi@=1.0.5":
   version: 1.0.5
   resolution: "@transcend-io/pulumi@npm:1.0.5"
@@ -6963,6 +6972,7 @@ __metadata:
   dependencies:
     "@pulumi/aws": ^5.6.0
     "@pulumi/aws-native": ^0.19.0
+    "@pulumi/command": ^0.3.0
     "@pulumi/pulumi": ^3.32.3
     "@rv-app/backend": "workspace:*"
     "@rv-app/schema": "workspace:*"

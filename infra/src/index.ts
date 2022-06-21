@@ -3,6 +3,9 @@ import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
 import { AppSyncApi } from "./components";
 import * as awsNative from "@pulumi/aws-native";
+import { local } from "@pulumi/command";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
@@ -92,6 +95,35 @@ const mapIndex = new aws.location.PlaceIndex("index", {
 const tracker = new awsNative.location.Tracker("tracker", {
   description: "Tracks the RV goin round dat country",
   trackerName: "RvTracker",
+});
+
+const geofenceCollection = new awsNative.location.GeofenceCollection("states", {
+  collectionName: "us_states",
+  description: "Each US State + DC and Puerto Rico",
+});
+
+const statePolygons = JSON.parse(
+  readFileSync("../resources/geofences/converted.geojson", "utf8")
+);
+statePolygons.features.forEach((feature: any) => {
+  const id = `${feature.properties.name.replaceAll(" ", "-")}_${feature.id}`;
+  new local.Command(
+    `us_states_${id}`,
+    {
+      create: `aws location put-geofence --collection-name "$COLLECTION" --geofence-id "$ID" --geometry "$GEOMETRY"`,
+      environment: {
+        COLLECTION: geofenceCollection.collectionName,
+        ID: id,
+        GEOMETRY: JSON.stringify({ Polygon: feature.geometry.coordinates }),
+      },
+    },
+    { replaceOnChanges: ["environment"] }
+  );
+});
+
+new awsNative.location.TrackerConsumer("us_states", {
+  trackerName: tracker.trackerName,
+  consumerArn: geofenceCollection.collectionArn,
 });
 
 // Create the Authentication config
@@ -326,3 +358,5 @@ export const userPoolId = pool.id;
 export const clientId = client.id;
 export const identityPoolId = identityPool.id;
 export const endpoint = api.uri;
+// DO NOT SUBMIT
+// export const geofenceCommandOtput = geofenceCommand.stdout.apply(raw => JSON.parse(raw).Errors);

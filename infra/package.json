@@ -4,6 +4,7 @@
   "devDependencies": {
     "@pulumi/aws": "^5.6.0",
     "@pulumi/aws-native": "^0.19.0",
+    "@pulumi/command": "^0.3.0",
     "@pulumi/pulumi": "^3.32.3",
     "@rv-app/backend": "workspace:*",
     "@rv-app/schema": "workspace:*",

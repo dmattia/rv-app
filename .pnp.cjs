@@ -6791,6 +6791,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@pulumi/command", [\
+        ["npm:0.3.0", {\
+          "packageLocation": "./.yarn/unplugged/@pulumi-command-npm-0.3.0-7c2c10bab0/node_modules/@pulumi/command/",\
+          "packageDependencies": [\
+            ["@pulumi/command", "npm:0.3.0"],\
+            ["@pulumi/pulumi", [\
+              "@transcend-io/pulumi",\
+              "virtual:bf4e95d426075a534503f52aae46103e31ac6bf248decd308cdf25f9b3363f661b8b53b60204aaf2854b43b1ab7d4d321cf32cd1d5f748cc45913e14fac3b1c9#npm:1.0.5"\
+            ]]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@pulumi/query", [\
         ["npm:0.3.0", {\
           "packageLocation": "./.yarn/cache/@pulumi-query-npm-0.3.0-4e8f67313b-4e579c5693.zip/node_modules/@pulumi/query/",\
@@ -9392,6 +9405,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@rv-app/infra", "workspace:infra"],\
             ["@pulumi/aws", "npm:5.6.0"],\
             ["@pulumi/aws-native", "npm:0.19.0"],\
+            ["@pulumi/command", "npm:0.3.0"],\
             ["@pulumi/pulumi", [\
               "@transcend-io/pulumi",\
               "virtual:8cf029b51a60dd6500adf3c7e3d746f249dfafb991fa8c1b17e29b3f5ddf8989e7d217e8c5585bf69953130e0f6eae066bdf0823227d31145ad776a10e322f56#npm:1.0.5"\
