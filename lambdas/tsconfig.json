@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../build/@rv-app/lambdas",
+    "tsBuildInfoFile": "../build/@rv-app/lambdas.tsbuildinfo",
+    "rootDir": "src",
+    "types": ["node", "mocha"]
+  },
+  "references": []
+}

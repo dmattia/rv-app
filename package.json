@@ -6,7 +6,8 @@
     "frontend",
     "infra",
     "schema",
-    "generated-schema"
+    "generated-schema",
+    "lambdas"
   ],
   "resolutions": {
     "@pulumi/pulumi": "npm:@transcend-io/pulumi@=1.0.5"

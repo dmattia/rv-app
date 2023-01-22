@@ -1,11 +1,10 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
-import { AppSyncApi } from "./components";
+import { AppSyncApi, LambdaCron } from "./components";
 import * as awsNative from "@pulumi/aws-native";
 import { local } from "@pulumi/command";
 import { readFileSync } from "fs";
-import { join } from "path";
 
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
@@ -350,6 +349,17 @@ const api = new AppSyncApi("api", {
   },
 });
 
+// Create scheduled cron jobs
+new LambdaCron("findOpenCampgrounds", {
+  name: "findOpenCampgrounds",
+  entrypoint: "@rv-app/lambdas/src/searchCampgrounds",
+  iamPermissions: [],
+  schedule: "rate(3 minutes)",
+  environment: {
+    DESTINATIONS_TABLE: destinations.name,
+  },
+});
+
 export const mapName = map.mapName;
 export const mapIndexName = mapIndex.indexName;
 export const cdnDomain = distribution.domainName;
@@ -359,4 +369,4 @@ export const clientId = client.id;
 export const identityPoolId = identityPool.id;
 export const endpoint = api.uri;
 // DO NOT SUBMIT
-// export const geofenceCommandOtput = geofenceCommand.stdout.apply(raw => JSON.parse(raw).Errors);
+// export const geofenceCommandOutput = geofenceCommand.stdout.apply(raw => JSON.parse(raw).Errors);

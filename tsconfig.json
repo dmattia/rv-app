@@ -7,6 +7,7 @@
     { "path": "schema" },
     { "path": "generated-schema" },
     { "path": "frontend" },
-    { "path": "infra" }
+    { "path": "infra" },
+    { "path": "lambdas" }
   ]
 }

@@ -37,6 +37,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:infra"\
       },\
       {\
+        "name": "@rv-app/lambdas",\
+        "reference": "workspace:lambdas"\
+      },\
+      {\
         "name": "@rv-app/schema",\
         "reference": "workspace:schema"\
       }\
@@ -48,6 +52,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@rv-app/frontend", ["workspace:frontend"]],\
       ["@rv-app/generated-schema", ["workspace:generated-schema"]],\
       ["@rv-app/infra", ["workspace:infra"]],\
+      ["@rv-app/lambdas", ["workspace:lambdas"]],\
       ["@rv-app/root", ["workspace:."]],\
       ["@rv-app/schema", ["workspace:schema"]]\
     ],\
@@ -9418,6 +9423,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-node", "virtual:8cf029b51a60dd6500adf3c7e3d746f249dfafb991fa8c1b17e29b3f5ddf8989e7d217e8c5585bf69953130e0f6eae066bdf0823227d31145ad776a10e322f56#npm:10.4.0"],\
             ["tslib", "npm:2.3.0"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@rv-app/lambdas", [\
+        ["workspace:lambdas", {\
+          "packageLocation": "./lambdas/",\
+          "packageDependencies": [\
+            ["@rv-app/lambdas", "workspace:lambdas"],\
+            ["@aws-sdk/client-dynamodb", "npm:3.100.0"],\
+            ["@aws-sdk/client-location", "npm:3.100.0"],\
+            ["@transcend-io/type-utils", "npm:1.0.5"],\
+            ["@types/aws-lambda", "npm:8.10.100"],\
+            ["@types/chai", "npm:4.3.1"],\
+            ["@types/chai-as-promised", "npm:7.1.5"],\
+            ["@types/express", "npm:4.17.13"],\
+            ["@types/mocha", "npm:8.2.3"],\
+            ["@types/node", "npm:17.0.39"],\
+            ["@types/sinon", "npm:10.0.11"],\
+            ["@types/uuid", "npm:8.3.4"],\
+            ["aws-lambda", "npm:1.0.7"],\
+            ["aws-sdk-client-mock", "virtual:3609885524b61e9abf11b8c23baa685bbb50fc6b2c8f6fb7b3c7468120fc58c9cedc8f96c1ece9fcb8566417377322764dbb6e24fd9c13f6cd19fd4793a662bf#npm:0.6.2"],\
+            ["chai", "npm:4.3.6"],\
+            ["chai-as-promised", "virtual:3609885524b61e9abf11b8c23baa685bbb50fc6b2c8f6fb7b3c7468120fc58c9cedc8f96c1ece9fcb8566417377322764dbb6e24fd9c13f6cd19fd4793a662bf#npm:7.1.1"],\
+            ["express", "npm:4.17.1"],\
+            ["mocha", "npm:10.0.0"],\
+            ["sinon", "npm:14.0.0"],\
+            ["ts-node", "virtual:3609885524b61e9abf11b8c23baa685bbb50fc6b2c8f6fb7b3c7468120fc58c9cedc8f96c1ece9fcb8566417377322764dbb6e24fd9c13f6cd19fd4793a662bf#npm:10.4.0"],\
+            ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"],\
+            ["uuid", "npm:8.3.2"]\
           ],\
           "linkType": "SOFT"\
         }]\
