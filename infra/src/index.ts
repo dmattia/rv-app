@@ -350,18 +350,15 @@ const api = new AppSyncApi("api", {
 });
 
 // Create scheduled cron jobs
-new LambdaCron(
-  "findOpenCampgrounds",
-  {
-    name: "findOpenCampgrounds",
-    entrypoint: "@rv-app/lambdas/src/searchCampgrounds",
-    iamPermissions: [],
-    schedule: "rate(3 minutes)",
-    environment: {
-      DESTINATIONS_TABLE: destinations.name,
-    },
+new LambdaCron("findOpenCampgrounds", {
+  name: "findOpenCampgrounds",
+  entrypoint: "@rv-app/lambdas/src/searchCampgrounds",
+  iamPermissions: [],
+  schedule: "rate(3 minutes)",
+  environment: {
+    DESTINATIONS_TABLE: destinations.name,
   },
-);
+});
 
 export const mapName = map.mapName;
 export const mapIndexName = mapIndex.indexName;
