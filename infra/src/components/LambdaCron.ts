@@ -151,7 +151,6 @@ export class LambdaCron extends pulumi.ComponentResource {
       {
         arn: lambda.arn,
         rule: rule.name,
-        targetId: schedule.eventTargetName,
       },
       defaultOpts
     );
