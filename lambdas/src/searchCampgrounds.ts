@@ -1,8 +1,6 @@
 import { AppSyncResolverEvent } from "aws-lambda";
-import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
-import type { Destination } from "@rv-app/generated-schema";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { LambdaHandler, createHandler } from "@rv-app/lambdas/src/types";
-import { convertDbRowToGraphqlType } from "@rv-app/lambdas/src/utils/convertDbRowToGraphqlType";
 
 interface Config {
   dynamoClient: DynamoDBClient;
@@ -11,7 +9,7 @@ interface Config {
 export const searchCampgroundsHandler: LambdaHandler<
   AppSyncResolverEvent<void>,
   Config,
-  Destination[]
+  void
 > = async (event, context, { dynamoClient }) => {
   console.log("test");
 };
