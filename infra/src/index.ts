@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
-import { AppSyncApi, LambdaResolver } from "./components";
+import { AppSyncApi, LambdaCron } from "./components";
 import * as awsNative from "@pulumi/aws-native";
 import { local } from "@pulumi/command";
 import { readFileSync } from "fs";
@@ -350,7 +350,7 @@ const api = new AppSyncApi("api", {
 });
 
 // Create scheduled cron jobs
-new LambdaResolver(
+new LambdaCron(
   "findOpenCampgrounds",
   {
     name: "findOpenCampgrounds",
@@ -361,7 +361,6 @@ new LambdaResolver(
       DESTINATIONS_TABLE: destinations.name,
     },
   },
-  defaultOpts
 );
 
 export const mapName = map.mapName;
