@@ -11,6 +11,7 @@ runs:
           .yarn/unplugged
           .yarn/install-state.gz
           .pnp.cjs
+          node_modules
         key: yarn-${{ hashFiles('**/yarn.lock', '**/package.json') }}
         restore-keys: yarn-
     - run: yarn install --immutable
