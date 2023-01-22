@@ -13,9 +13,12 @@ export const searchCampgroundsHandler: LambdaHandler<
   Config,
   Destination[]
 > = async (event, context, { dynamoClient }) => {
-  console.log('test');
+  console.log("test");
 };
 
-export const searchCampgrounds = createHandler(searchCampgroundsHandler, () => ({
-  dynamoClient: new DynamoDBClient({}),
-}));
+export const searchCampgrounds = createHandler(
+  searchCampgroundsHandler,
+  () => ({
+    dynamoClient: new DynamoDBClient({}),
+  })
+);

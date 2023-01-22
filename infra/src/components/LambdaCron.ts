@@ -130,19 +130,19 @@ export class LambdaCron extends pulumi.ComponentResource {
         scheduleExpression: inputs.schedule,
         name: name,
       },
-      defaultOpts,
+      defaultOpts
     );
 
     // Ensure there are perms for the cron to trigger the lambda
     new aws.lambda.Permission(
       `${name}-perm`,
       {
-        principal: 'events.amazonaws.com',
+        principal: "events.amazonaws.com",
         function: lambda,
-        action: 'lambda:invokeFunction',
+        action: "lambda:invokeFunction",
         sourceArn: rule.arn,
       },
-      defaultOpts,
+      defaultOpts
     );
 
     // Connect the cron to the lambda
@@ -153,7 +153,7 @@ export class LambdaCron extends pulumi.ComponentResource {
         rule: rule.name,
         targetId: schedule.eventTargetName,
       },
-      defaultOpts,
+      defaultOpts
     );
 
     this.registerOutputs();

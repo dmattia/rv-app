@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
-import { AppSyncApi } from "./components";
+import { AppSyncApi, LambdaResolver } from "./components";
 import * as awsNative from "@pulumi/aws-native";
 import { local } from "@pulumi/command";
 import { readFileSync } from "fs";
@@ -351,13 +351,13 @@ const api = new AppSyncApi("api", {
 
 // Create scheduled cron jobs
 new LambdaResolver(
-  'findOpenCampgrounds',
+  "findOpenCampgrounds",
   {
-    name: 'findOpenCampgrounds',
+    name: "findOpenCampgrounds",
     entrypoint: "@rv-app/lambdas/src/searchCampgrounds",
     iamPermissions: [],
-    schedule: 'rate(3 minutes)'
-    environment: environment: {
+    schedule: "rate(3 minutes)",
+    environment: {
       DESTINATIONS_TABLE: destinations.name,
     },
   },
