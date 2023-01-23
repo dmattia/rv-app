@@ -21,6 +21,15 @@ query listDestinations {
   }
 }
 
+query listRecreationGovSubs {
+  listRecreationGovSubs {
+    id
+    campsiteId
+    campsiteName
+    datesToWatch
+  }
+}
+
 query searchLocation($query: String!) {
   searchLocation(query: $query) {
     address

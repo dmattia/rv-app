@@ -33,6 +33,13 @@ export type CreateOrUpdateDestinationInput = {
   timeZoneOffset?: InputMaybe<Scalars['Int']>;
 };
 
+export type CreateOrUpdateRecGovSubInput = {
+  campsiteId: Scalars['String'];
+  campsiteName: Scalars['String'];
+  datesToWatch: Array<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type Destination = {
   __typename?: 'Destination';
   category?: Maybe<DestinationCategory>;
@@ -75,6 +82,7 @@ export type LocationSuggestion = {
 export type Mutation = {
   __typename?: 'Mutation';
   createOrUpdateDestination: Destination;
+  createOrUpdateRecGovSub: RecreationGovSubscription;
   deleteDestination: Scalars['ID'];
   updateDeviceLocation: UpdateDeviceLocationOutput;
 };
@@ -82,6 +90,11 @@ export type Mutation = {
 
 export type MutationCreateOrUpdateDestinationArgs = {
   input: CreateOrUpdateDestinationInput;
+};
+
+
+export type MutationCreateOrUpdateRecGovSubArgs = {
+  input: CreateOrUpdateRecGovSubInput;
 };
 
 
@@ -107,6 +120,7 @@ export type Query = {
   getDestinationById: Destination;
   getLocationDataForAddress: LocationInformation;
   listDestinations: Array<Destination>;
+  listRecreationGovSubs: Array<RecreationGovSubscription>;
   searchLocation: Array<LocationSuggestion>;
 };
 
@@ -123,6 +137,14 @@ export type QueryGetLocationDataForAddressArgs = {
 
 export type QuerySearchLocationArgs = {
   query: Scalars['String'];
+};
+
+export type RecreationGovSubscription = {
+  __typename?: 'RecreationGovSubscription';
+  campsiteId: Scalars['String'];
+  campsiteName: Scalars['String'];
+  datesToWatch: Array<Scalars['String']>;
+  id: Scalars['ID'];
 };
 
 export type TimeZone = {
@@ -150,6 +172,13 @@ export type CreateOrUpdateDestinationMutationVariables = Exact<{
 
 export type CreateOrUpdateDestinationMutation = { __typename?: 'Mutation', createOrUpdateDestination: { __typename?: 'Destination', id: string, destinationName?: string | null, locationInformation?: { __typename?: 'LocationInformation', latitude?: number | null, longitude?: number | null } | null } };
 
+export type CreateOrUpdateRecGovSubMutationVariables = Exact<{
+  input: CreateOrUpdateRecGovSubInput;
+}>;
+
+
+export type CreateOrUpdateRecGovSubMutation = { __typename?: 'Mutation', createOrUpdateRecGovSub: { __typename?: 'RecreationGovSubscription', id: string, campsiteId: string, datesToWatch: Array<string>, campsiteName: string } };
+
 export type UpdateDeviceLocationMutationVariables = Exact<{
   input: UpdateDeviceLocationInput;
 }>;
@@ -168,6 +197,11 @@ export type ListDestinationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ListDestinationsQuery = { __typename?: 'Query', listDestinations: Array<{ __typename?: 'Destination', id: string, category?: DestinationCategory | null, destinationName?: string | null, priority?: Priority | null, locationInformation?: { __typename?: 'LocationInformation', address?: string | null, latitude?: number | null, longitude?: number | null, municipality?: string | null, subRegion?: string | null, regionName?: string | null, country?: string | null, postalCode?: string | null, timeZone?: { __typename?: 'TimeZone', name?: string | null, offset?: number | null } | null } | null }> };
+
+export type ListRecreationGovSubsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListRecreationGovSubsQuery = { __typename?: 'Query', listRecreationGovSubs: Array<{ __typename?: 'RecreationGovSubscription', id: string, campsiteId: string, campsiteName: string, datesToWatch: Array<string> }> };
 
 export type SearchLocationQueryVariables = Exact<{
   query: Scalars['String'];
@@ -219,6 +253,39 @@ export function useCreateOrUpdateDestinationMutation(baseOptions?: Apollo.Mutati
         return Apollo.useMutation<CreateOrUpdateDestinationMutation, CreateOrUpdateDestinationMutationVariables>(CreateOrUpdateDestinationDocument, options);
       }
 export type CreateOrUpdateDestinationMutationHookResult = ReturnType<typeof useCreateOrUpdateDestinationMutation>;
+export const CreateOrUpdateRecGovSubDocument = /*#__PURE__*/ gql`
+    mutation createOrUpdateRecGovSub($input: CreateOrUpdateRecGovSubInput!) {
+  createOrUpdateRecGovSub(input: $input) {
+    id
+    campsiteId
+    datesToWatch
+    campsiteName
+  }
+}
+    `;
+
+/**
+ * __useCreateOrUpdateRecGovSubMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateRecGovSubMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateRecGovSubMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateRecGovSubMutation, { data, loading, error }] = useCreateOrUpdateRecGovSubMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateRecGovSubMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateRecGovSubMutation, CreateOrUpdateRecGovSubMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateRecGovSubMutation, CreateOrUpdateRecGovSubMutationVariables>(CreateOrUpdateRecGovSubDocument, options);
+      }
+export type CreateOrUpdateRecGovSubMutationHookResult = ReturnType<typeof useCreateOrUpdateRecGovSubMutation>;
 export const UpdateDeviceLocationDocument = /*#__PURE__*/ gql`
     mutation updateDeviceLocation($input: UpdateDeviceLocationInput!) {
   updateDeviceLocation(input: $input) {
@@ -327,6 +394,42 @@ export function useListDestinationsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
         }
 export type ListDestinationsQueryHookResult = ReturnType<typeof useListDestinationsQuery>;
 export type ListDestinationsLazyQueryHookResult = ReturnType<typeof useListDestinationsLazyQuery>;
+export const ListRecreationGovSubsDocument = /*#__PURE__*/ gql`
+    query listRecreationGovSubs {
+  listRecreationGovSubs {
+    id
+    campsiteId
+    campsiteName
+    datesToWatch
+  }
+}
+    `;
+
+/**
+ * __useListRecreationGovSubsQuery__
+ *
+ * To run a query within a React component, call `useListRecreationGovSubsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListRecreationGovSubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListRecreationGovSubsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListRecreationGovSubsQuery(baseOptions?: Apollo.QueryHookOptions<ListRecreationGovSubsQuery, ListRecreationGovSubsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListRecreationGovSubsQuery, ListRecreationGovSubsQueryVariables>(ListRecreationGovSubsDocument, options);
+      }
+export function useListRecreationGovSubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListRecreationGovSubsQuery, ListRecreationGovSubsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListRecreationGovSubsQuery, ListRecreationGovSubsQueryVariables>(ListRecreationGovSubsDocument, options);
+        }
+export type ListRecreationGovSubsQueryHookResult = ReturnType<typeof useListRecreationGovSubsQuery>;
+export type ListRecreationGovSubsLazyQueryHookResult = ReturnType<typeof useListRecreationGovSubsLazyQuery>;
 export const SearchLocationDocument = /*#__PURE__*/ gql`
     query searchLocation($query: String!) {
   searchLocation(query: $query) {

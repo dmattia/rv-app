@@ -9,6 +9,15 @@ mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
   }
 }
 
+mutation createOrUpdateRecGovSub($input: CreateOrUpdateRecGovSubInput!) {
+  createOrUpdateRecGovSub(input: $input) {
+    id
+    campsiteId
+    datesToWatch
+    campsiteName
+  }
+}
+
 mutation updateDeviceLocation($input: UpdateDeviceLocationInput!) {
   updateDeviceLocation(input: $input) {
     success

@@ -5,7 +5,7 @@ import {
   Priority,
 } from "@rv-app/generated-schema";
 
-export function convertDbRowToGraphqlType(
+export function convertDestinationRowToGraphqlType(
   row: GetItemOutput["Item"]
 ): Destination {
   if (!row) {

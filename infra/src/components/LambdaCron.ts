@@ -20,6 +20,8 @@ export interface LambdaCronArgs {
   }>;
   /** The scheduling expression. For example, cron(0 20 * * ? *) or rate(5 minutes) */
   schedule: string;
+  /** Overrides for lambda params */
+  overrides?: Partial<aws.lambda.FunctionArgs>;
 }
 
 /**
@@ -79,12 +81,13 @@ export class LambdaCron extends pulumi.ComponentResource {
         memorySize: 512,
         name: inputs.name,
         role: iamForLambda.arn,
-        runtime: "nodejs16.x",
+        runtime: "nodejs14.x",
         environment: {
           variables: inputs.environment,
         },
         timeout: 10,
         publish: true,
+        ...(inputs.overrides ?? {}),
       },
       defaultOpts
     );
@@ -154,6 +157,12 @@ export class LambdaCron extends pulumi.ComponentResource {
       },
       defaultOpts
     );
+
+    new aws.lambda.FunctionEventInvokeConfig(name, {
+      functionName: lambda.name,
+      maximumEventAgeInSeconds: 60,
+      maximumRetryAttempts: 0,
+    });
 
     this.registerOutputs();
   }

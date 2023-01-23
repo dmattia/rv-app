@@ -13,5 +13,6 @@
       }
     }
   },
-  "otherPortsAttributes": { "onAutoForward": "silent" }
+  "otherPortsAttributes": { "onAutoForward": "silent" },
+  "remoteUser": "root"
 }

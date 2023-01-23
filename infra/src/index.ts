@@ -105,7 +105,7 @@ const statePolygons = JSON.parse(
   readFileSync("../resources/geofences/converted.geojson", "utf8")
 );
 statePolygons.features.forEach((feature: any) => {
-  const id = `${feature.properties.name.replaceAll(" ", "-")}_${feature.id}`;
+  const id = `${feature.properties.name.replace(/ /g, "-")}_${feature.id}`;
   new local.Command(
     `us_states_${id}`,
     {
@@ -235,15 +235,33 @@ new aws.cognito.IdentityPoolRoleAttachment("mainIdentityPoolRoleAttachment", {
   },
 });
 
-// Dynamo DB table to hold data for the GraphQL endpoint
-const destinations = new aws.dynamodb.Table("destinations", {
+const commonTableParams = {
   hashKey: "id",
-  name: "destinations",
   attributes: [{ name: "id", type: "S" }],
   billingMode: "PAY_PER_REQUEST",
   pointInTimeRecovery: { enabled: false },
   serverSideEncryption: { enabled: true },
+};
+
+const destinations = new aws.dynamodb.Table("destinations", {
+  ...commonTableParams,
+  name: "destinations",
 });
+
+const recreationGovSubs = new aws.dynamodb.Table("recreationGovSubs", {
+  ...commonTableParams,
+  name: "recreationGovSubs",
+});
+
+const recreationGovSubsKnownAvailability = new aws.dynamodb.Table(
+  "recreationGovSubsKnownAvailability",
+  {
+    ...commonTableParams,
+    name: "recreationGovSubsKnownAvailability",
+    attributes: [{ name: "campId:date", type: "S" }],
+    hashKey: "campId:date",
+  }
+);
 
 const api = new AppSyncApi("api", {
   name: "rv-app-backend",
@@ -306,6 +324,30 @@ const api = new AppSyncApi("api", {
       ],
     },
     {
+      name: "listRecreationGovSubs",
+      type: "Query",
+      entrypoint: "@rv-app/backend/src/queries/listRecreationGovSubs",
+      iamPermissions: [
+        {
+          Action: ["dynamodb:Scan"],
+          Resource: [recreationGovSubs.arn],
+          Effect: "Allow",
+        },
+      ],
+    },
+    {
+      name: "createOrUpdateRecGovSub",
+      type: "Mutation",
+      entrypoint: "@rv-app/backend/src/mutations/createOrUpdateRecGovSub",
+      iamPermissions: [
+        {
+          Action: ["dynamodb:UpdateItem"],
+          Resource: [recreationGovSubs.arn],
+          Effect: "Allow",
+        },
+      ],
+    },
+    {
       name: "createOrUpdateDestination",
       type: "Mutation",
       entrypoint: "@rv-app/backend/src/mutations/createOrUpdateDestination",
@@ -344,20 +386,58 @@ const api = new AppSyncApi("api", {
   ],
   environment: {
     DESTINATIONS_TABLE: destinations.name,
+    RECREATION_GOV_TABLE: recreationGovSubs.name,
     INDEX_NAME: mapIndex.indexName,
     TRACKER_NAME: tracker.trackerName,
   },
 });
 
+// Create Twilio secrets to be accessed in the lambda
+const twilioSecrets = [
+  "TWILIO_ACCOUNT_SID",
+  "TWILIO_AUTH_TOKEN",
+  "TWILIO_PHONE_NUMBER",
+  "RECIPIENT_NUMBERS",
+].map(
+  (name) =>
+    new aws.ssm.Parameter(name, {
+      name,
+      type: "SecureString",
+      value: process.env[name]!,
+    })
+);
+
 // Create scheduled cron jobs
-new LambdaCron("findOpenCampgrounds", {
-  name: "findOpenCampgrounds",
+new LambdaCron("searchCampgrounds", {
+  name: "searchCampgrounds",
   entrypoint: "@rv-app/lambdas/src/searchCampgrounds",
-  iamPermissions: [],
-  schedule: "rate(3 minutes)",
+  iamPermissions: [
+    {
+      Action: ["dynamodb:scan"],
+      Resource: [recreationGovSubs.arn, recreationGovSubsKnownAvailability.arn],
+      Effect: "Allow",
+    },
+    {
+      Action: [
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+      ],
+      Resource: [recreationGovSubsKnownAvailability.arn],
+      Effect: "Allow",
+    },
+    {
+      Action: ["ssm:GetParameters"],
+      Resource: twilioSecrets.map((secret) => secret.arn),
+      Effect: "Allow",
+    },
+  ],
+  schedule: "rate(1 minute)",
   environment: {
-    DESTINATIONS_TABLE: destinations.name,
+    RECREATION_GOV_TABLE: recreationGovSubs.name,
+    KNOWN_INFO_TABLE: recreationGovSubsKnownAvailability.name,
   },
+  overrides: { timeout: 50 },
 });
 
 export const mapName = map.mapName;
@@ -368,5 +448,3 @@ export const userPoolId = pool.id;
 export const clientId = client.id;
 export const identityPoolId = identityPool.id;
 export const endpoint = api.uri;
-// DO NOT SUBMIT
-// export const geofenceCommandOutput = geofenceCommand.stdout.apply(raw => JSON.parse(raw).Errors);
