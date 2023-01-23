@@ -80,9 +80,24 @@ export const schema = gql`
     success: Boolean
   }
 
+  type RecreationGovSubscription {
+    id: ID!
+    campsiteId: String!
+    datesToWatch: [String!]!
+    campsiteName: String!
+  }
+
+  input CreateOrUpdateRecGovSubInput {
+    id: ID
+    campsiteId: String!
+    datesToWatch: [String!]!
+    campsiteName: String!
+  }
+
   type Query {
     getDestinationById(id: ID!): Destination!
     listDestinations: [Destination!]!
+    listRecreationGovSubs: [RecreationGovSubscription!]!
     searchLocation(query: String!): [LocationSuggestion!]!
     getLocationDataForAddress(query: String!): LocationInformation!
   }
@@ -91,6 +106,9 @@ export const schema = gql`
     createOrUpdateDestination(
       input: CreateOrUpdateDestinationInput!
     ): Destination!
+    createOrUpdateRecGovSub(
+      input: CreateOrUpdateRecGovSubInput!
+    ): RecreationGovSubscription!
     updateDeviceLocation(
       input: UpdateDeviceLocationInput!
     ): UpdateDeviceLocationOutput!

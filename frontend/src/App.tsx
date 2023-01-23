@@ -3,6 +3,7 @@ import {
   UserProfile,
   Sidebar,
   DestinationTable,
+  RecreationGov,
 } from "./components";
 import { AmplifyProvider, Apollo } from "./providers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,6 +25,7 @@ export default function App() {
                   <Route path="map" element={<MapComponent />} />
                   <Route index element={<MapComponent />} />
                 </Route>
+                <Route path="/recreation" element={<RecreationGov />} />
                 <Route element={<p>Not Found</p>} path="*" />
               </Routes>
             </div>

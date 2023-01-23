@@ -6,7 +6,7 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { FaGem, FaHeart, FaBars } from "react-icons/fa";
+import { FaGem, FaHeart, FaBars, FaCaravan } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 import "react-pro-sidebar/dist/css/styles.css";
@@ -43,6 +43,9 @@ export function Sidebar() {
               Map <Link to="/destinations/map" />
             </MenuItem>
           </SubMenu>
+          <MenuItem icon={<FaCaravan />}>
+            Recreation.gov Subs <Link to="/recreation" />
+          </MenuItem>
         </Menu>
       </ProSidebar>
       <div className="btn-toggle md:hidden" onClick={() => setToggled(true)}>

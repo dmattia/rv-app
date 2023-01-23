@@ -3,11 +3,11 @@ ARG VARIANT=14-bullseye
 FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-${VARIANT}
 
 RUN chsh -s /bin/zsh
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip" \
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && unzip awscliv2.zip \
     && sudo ./aws/install \
     && rm -rf awscliv2.zip ./aws
-RUN curl -fsSL https://get.pulumi.com | sh -s -- --version 3.14.0 \
+RUN curl -fsSL https://get.pulumi.com | sh -s -- --version 3.38.0 \
   && /root/.pulumi/bin/pulumi plugin install resource aws-native v0.12.0 \
   && NEW_PATH="$PATH:/root/.pulumi/bin" \
   && echo "export PATH=$NEW_PATH" >> "/root/.zshrc"

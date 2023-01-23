@@ -5,7 +5,7 @@ import type {
   Destination,
 } from "@rv-app/generated-schema";
 import { LambdaHandler, createHandler } from "@rv-app/backend/src/types";
-import { convertDbRowToGraphqlType } from "@rv-app/backend/src/utils/convertDbRowToGraphqlType";
+import { convertDestinationRowToGraphqlType } from "@rv-app/backend/src/utils/convertDestinationRowToGraphqlType";
 
 interface Config {
   dynamoClient: DynamoDBClient;
@@ -23,7 +23,7 @@ export const getDestinationByIdHandler: LambdaHandler<
     })
   );
 
-  return convertDbRowToGraphqlType(Item);
+  return convertDestinationRowToGraphqlType(Item);
 };
 
 export const getDestinationById = createHandler(

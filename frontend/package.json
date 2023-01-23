@@ -5,7 +5,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "webpack serve --config webpack.config.js",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --progress --config webpack.config.js"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
@@ -20,7 +20,6 @@
     "amazon-location-helpers": "^1.1.1",
     "aws-amplify": "^4.3.24",
     "graphql": "^16.5.0",
-    "lodash": "^4.17.21",
     "mapbox-gl": "^2.9.0",
     "maplibre-gl": "1.15.3",
     "maplibre-gl-js-amplify": "^1.6.0",
@@ -35,7 +34,6 @@
   },
   "devDependencies": {
     "@types/dotenv-webpack": "^7",
-    "@types/lodash": "^4",
     "@types/mapbox-gl": "^2",
     "@types/node": "^12.0.0",
     "@types/react": "^18.0.0",

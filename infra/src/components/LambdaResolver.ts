@@ -101,10 +101,8 @@ export class LambdaResolver extends pulumi.ComponentResource {
         memorySize: 512,
         name: inputs.name,
         role: iamForLambda.arn,
-        runtime: "nodejs16.x",
-        environment: {
-          variables: inputs.environment,
-        },
+        runtime: "nodejs14.x",
+        environment: { variables: inputs.environment },
         timeout: 10,
         publish: true,
       },
