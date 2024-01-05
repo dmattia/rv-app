@@ -1,7 +1,4 @@
-import {
-  Sidebar,
-  RecreationGov,
-} from "./components";
+import { Sidebar, RecreationGov } from "./components";
 import { AmplifyProvider, Apollo } from "./providers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
