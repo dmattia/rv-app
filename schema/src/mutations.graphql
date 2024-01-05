@@ -1,14 +1,3 @@
-mutation createOrUpdateDestination($input: CreateOrUpdateDestinationInput!) {
-  createOrUpdateDestination(input: $input) {
-    id
-    destinationName
-    locationInformation {
-      latitude
-      longitude
-    }
-  }
-}
-
 mutation createOrUpdateRecGovSub($input: CreateOrUpdateRecGovSubInput!) {
   createOrUpdateRecGovSub(input: $input) {
     id
@@ -16,14 +5,4 @@ mutation createOrUpdateRecGovSub($input: CreateOrUpdateRecGovSubInput!) {
     datesToWatch
     campsiteName
   }
-}
-
-mutation updateDeviceLocation($input: UpdateDeviceLocationInput!) {
-  updateDeviceLocation(input: $input) {
-    success
-  }
-}
-
-mutation deleteDestination($id: ID!) {
-  deleteDestination(id: $id)
 }
