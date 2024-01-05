@@ -1,54 +1,8 @@
-query listDestinations {
-  listDestinations {
-    id
-    category
-    destinationName
-    priority
-    locationInformation {
-      address
-      latitude
-      longitude
-      municipality
-      subRegion
-      regionName
-      country
-      postalCode
-      timeZone {
-        name
-        offset
-      }
-    }
-  }
-}
-
 query listRecreationGovSubs {
   listRecreationGovSubs {
     id
     campsiteId
     campsiteName
     datesToWatch
-  }
-}
-
-query searchLocation($query: String!) {
-  searchLocation(query: $query) {
-    address
-  }
-}
-
-query getLocationDataForAddress($query: String!) {
-  getLocationDataForAddress(query: $query) {
-    address
-    latitude
-    longitude
-    municipality
-    subRegion
-    regionName
-    country
-    postalCode
-    timeZone {
-      name
-      offset
-    }
   }
 }

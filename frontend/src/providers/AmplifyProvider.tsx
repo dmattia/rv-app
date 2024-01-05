@@ -11,24 +11,6 @@ Amplify.configure({
     userPoolWebClientId: process.env.RV_APP_COGNITO_CLIENT_ID,
     mandatorySignIn: true,
   },
-  // See: https://docs.amplify.aws/lib/geo/existing-resources/q/platform/js/#authorization-permissions
-  geo: {
-    AmazonLocationService: {
-      maps: {
-        items: {
-          [process.env.RV_APP_MAP_NAME as string]: {
-            style: "VectorEsriStreets",
-          },
-        },
-        default: process.env.RV_APP_MAP_NAME,
-      },
-      search_indices: {
-        items: [process.env.RV_APP_SEARCH_INDEX],
-        default: process.env.RV_APP_SEARCH_INDEX,
-      },
-      region: process.env.RV_APP_AWS_REGION,
-    },
-  },
   aws_appsync_graphqlEndpoint: process.env.RV_APP_API_ENDPOINT,
   aws_appsync_region: process.env.RV_APP_AWS_REGION,
   aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",

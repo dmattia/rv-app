@@ -2,9 +2,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { schema } from "@rv-app/schema";
 import { AppSyncApi, LambdaCron } from "./components";
-import * as awsNative from "@pulumi/aws-native";
-import { local } from "@pulumi/command";
-import { readFileSync } from "fs";
 
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
@@ -70,59 +67,6 @@ const distribution = new aws.cloudfront.Distribution("cdn", {
       responsePagePath: "/index.html",
     },
   ],
-});
-
-// Create a map in the Location service
-const map = new aws.location.Map(
-  "main-map",
-  {
-    mapName: "rv-app-primary",
-    description: "Primary map for the app",
-    configuration: {
-      style: "VectorEsriStreets",
-    },
-  },
-  { deleteBeforeReplace: true }
-);
-
-const mapIndex = new aws.location.PlaceIndex("index", {
-  dataSource: "Here",
-  indexName: "here",
-});
-
-// Create a tracker for tracking device locations
-const tracker = new awsNative.location.Tracker("tracker", {
-  description: "Tracks the RV goin round dat country",
-  trackerName: "RvTracker",
-});
-
-const geofenceCollection = new awsNative.location.GeofenceCollection("states", {
-  collectionName: "us_states",
-  description: "Each US State + DC and Puerto Rico",
-});
-
-const statePolygons = JSON.parse(
-  readFileSync("../resources/geofences/converted.geojson", "utf8")
-);
-statePolygons.features.forEach((feature: any) => {
-  const id = `${feature.properties.name.replace(/ /g, "-")}_${feature.id}`;
-  new local.Command(
-    `us_states_${id}`,
-    {
-      create: `aws location put-geofence --collection-name "$COLLECTION" --geofence-id "$ID" --geometry "$GEOMETRY"`,
-      environment: {
-        COLLECTION: geofenceCollection.collectionName,
-        ID: id,
-        GEOMETRY: JSON.stringify({ Polygon: feature.geometry.coordinates }),
-      },
-    },
-    { replaceOnChanges: ["environment"] }
-  );
-});
-
-new awsNative.location.TrackerConsumer("us_states", {
-  trackerName: tracker.trackerName,
-  consumerArn: geofenceCollection.collectionArn,
 });
 
 // Create the Authentication config
@@ -205,25 +149,6 @@ new aws.iam.RolePolicy("authenticatedRolePolicy", {
         Action: ["cognito-sync:*", "cognito-identity:*"],
         Resource: "*",
       },
-      {
-        Effect: "Allow",
-        Action: [
-          "geo:GetMapTile",
-          "geo:GetMapSprites",
-          "geo:GetMapGlyphs",
-          "geo:GetMapStyleDescriptor",
-        ],
-        Resource: map.mapArn,
-      },
-      // TODO: Do we still want this? It is only used on the search bar inside the map
-      {
-        Effect: "Allow",
-        Action: [
-          "geo:SearchPlaceIndexForPosition",
-          "geo:SearchPlaceIndexForText",
-        ],
-        Resource: mapIndex.indexArn,
-      },
     ],
   },
 });
@@ -242,11 +167,6 @@ const commonTableParams = {
   pointInTimeRecovery: { enabled: false },
   serverSideEncryption: { enabled: true },
 };
-
-const destinations = new aws.dynamodb.Table("destinations", {
-  ...commonTableParams,
-  name: "destinations",
-});
 
 const recreationGovSubs = new aws.dynamodb.Table("recreationGovSubs", {
   ...commonTableParams,
@@ -276,54 +196,6 @@ const api = new AppSyncApi("api", {
   },
   resolvers: [
     {
-      name: "getDestinationById",
-      type: "Query",
-      entrypoint: "@rv-app/backend/src/queries/getDestinationById",
-      iamPermissions: [
-        {
-          Action: ["dynamodb:GetItem"],
-          Resource: [destinations.arn],
-          Effect: "Allow",
-        },
-      ],
-    },
-    {
-      name: "searchLocation",
-      type: "Query",
-      entrypoint: "@rv-app/backend/src/queries/searchLocation",
-      iamPermissions: [
-        {
-          Action: ["geo:SearchPlaceIndexForSuggestions"],
-          Resource: [mapIndex.indexArn],
-          Effect: "Allow",
-        },
-      ],
-    },
-    {
-      name: "getLocationDataForAddress",
-      type: "Query",
-      entrypoint: "@rv-app/backend/src/queries/getLocationDataForAddress",
-      iamPermissions: [
-        {
-          Action: ["geo:SearchPlaceIndexForText"],
-          Resource: [mapIndex.indexArn],
-          Effect: "Allow",
-        },
-      ],
-    },
-    {
-      name: "listDestinations",
-      type: "Query",
-      entrypoint: "@rv-app/backend/src/queries/listDestinations",
-      iamPermissions: [
-        {
-          Action: ["dynamodb:Scan"],
-          Resource: [destinations.arn],
-          Effect: "Allow",
-        },
-      ],
-    },
-    {
       name: "listRecreationGovSubs",
       type: "Query",
       entrypoint: "@rv-app/backend/src/queries/listRecreationGovSubs",
@@ -347,48 +219,9 @@ const api = new AppSyncApi("api", {
         },
       ],
     },
-    {
-      name: "createOrUpdateDestination",
-      type: "Mutation",
-      entrypoint: "@rv-app/backend/src/mutations/createOrUpdateDestination",
-      iamPermissions: [
-        {
-          Action: ["dynamodb:UpdateItem"],
-          Resource: [destinations.arn],
-          Effect: "Allow",
-        },
-      ],
-    },
-    {
-      name: "deleteDestination",
-      type: "Mutation",
-      entrypoint: "@rv-app/backend/src/mutations/deleteDestination",
-      iamPermissions: [
-        {
-          Action: ["dynamodb:DeleteItem"],
-          Resource: [destinations.arn],
-          Effect: "Allow",
-        },
-      ],
-    },
-    {
-      name: "updateDeviceLocation",
-      type: "Mutation",
-      entrypoint: "@rv-app/backend/src/mutations/updateDeviceLocation",
-      iamPermissions: [
-        {
-          Action: ["geo:BatchUpdateDevicePosition"],
-          Resource: [tracker.arn],
-          Effect: "Allow",
-        },
-      ],
-    },
   ],
   environment: {
-    DESTINATIONS_TABLE: destinations.name,
     RECREATION_GOV_TABLE: recreationGovSubs.name,
-    INDEX_NAME: mapIndex.indexName,
-    TRACKER_NAME: tracker.trackerName,
   },
 });
 
@@ -440,8 +273,6 @@ new LambdaCron("searchCampgrounds", {
   overrides: { timeout: 50 },
 });
 
-export const mapName = map.mapName;
-export const mapIndexName = mapIndex.indexName;
 export const cdnDomain = distribution.domainName;
 export const region = bucket.region;
 export const userPoolId = pool.id;
