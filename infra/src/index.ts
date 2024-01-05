@@ -6,11 +6,30 @@ import { AppSyncApi, LambdaCron } from "./components";
 // Create the frontend infra
 const bucket = new aws.s3.Bucket("website-contents", {
   bucket: `rv-app-origin-bucket`,
-  acl: "public-read",
   website: {
     indexDocument: "index.html",
     errorDocument: "index.html",
   },
+  serverSideEncryptionConfiguration: {
+    rule: {
+      applyServerSideEncryptionByDefault: {
+        sseAlgorithm: 'AES256',
+      },
+      bucketKeyEnabled: false,
+    }
+  }
+});
+
+new aws.s3.BucketPublicAccessBlock('block', {
+  bucket: bucket.bucket,
+  blockPublicAcls: false,
+  blockPublicPolicy: false,
+  ignorePublicAcls: false,
+  restrictPublicBuckets: false,
+});
+
+new aws.s3.BucketPolicy('policy', {
+  bucket: bucket.bucket,
   policy: JSON.stringify({
     Version: "2012-10-17",
     Statement: [
@@ -18,7 +37,7 @@ const bucket = new aws.s3.Bucket("website-contents", {
         Effect: "Allow",
         Principal: "*",
         Action: ["s3:GetObject"],
-        Resource: [`arn:aws:s3:::rv-app-origin-bucket/*`],
+        Resource: `arn:aws:s3:::rv-app-origin-bucket/*`,
       },
     ],
   }),
@@ -72,6 +91,7 @@ const distribution = new aws.cloudfront.Distribution("cdn", {
 // Create the Authentication config
 const pool = new aws.cognito.UserPool("pool", {
   name: "rv-app",
+  mfaConfiguration: 'OFF',
   passwordPolicy: {
     minimumLength: 14,
     requireLowercase: true,
@@ -80,7 +100,19 @@ const pool = new aws.cognito.UserPool("pool", {
     requireUppercase: true,
     temporaryPasswordValidityDays: 7,
   },
-});
+  accountRecoverySetting: {
+    recoveryMechanisms: [
+      {
+        name: 'verified_email',
+        priority: 1,
+      },
+      {
+        name: 'verified_phone_number',
+        priority: 2,
+      }
+    ]
+  }
+}, { ignoreChanges: ['*', 'accountRecoverySetting'] });
 
 const client = new aws.cognito.UserPoolClient("client", {
   name: "rv-app",

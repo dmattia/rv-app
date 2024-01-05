@@ -23,3 +23,8 @@ export enum Month {
   NOVEMBER = "11",
   DECEMBER = "12",
 }
+
+export interface MonthAndYear {
+  year: number;
+  month: Month;
+}

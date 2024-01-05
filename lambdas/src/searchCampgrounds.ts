@@ -1,6 +1,6 @@
 import { AppSyncResolverEvent } from "aws-lambda";
 import { LambdaHandler, createHandler } from "@rv-app/lambdas/src/types";
-import { findAvailableSitesForCampground, Month, sendMessage } from "./utils";
+import { findAvailableSitesForCampground, Month, MonthAndYear, sendMessage } from "./utils";
 import {
   DynamoDBClient,
   ScanCommand,
@@ -54,15 +54,20 @@ export const searchCampgroundsHandler: LambdaHandler<
   await mapSeries(
     (SubscriptionItems ?? []).map(convertSubscriptionRowToGraphqlType),
     async ({ campsiteId, campsiteName, datesToWatch }) => {
-      console.log(
+      console.info(
         `Checking ${campsiteName} for availability on [${datesToWatch.join(
           ", "
         )}]`
       );
 
-      const monthsToCheck = [
-        ...new Set(datesToWatch.map((date) => date.split("-")[1] as Month)),
-      ];
+      let monthsToCheck: MonthAndYear[] = [];
+      datesToWatch.forEach(dateString => {
+        const year = parseInt(dateString.split("-")[0], 10);
+        const month = dateString.split('-')[1] as Month;
+        if (!monthsToCheck.some(existingMonth => existingMonth.month === month && existingMonth.year === year)) {
+          monthsToCheck.push({ month, year });
+        }
+      });
       const campgrounds = await findAvailableSitesForCampground(
         campsiteId,
         monthsToCheck

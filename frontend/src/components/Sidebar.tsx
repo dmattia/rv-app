@@ -3,10 +3,9 @@ import {
   SidebarHeader,
   Menu,
   MenuItem,
-  SubMenu,
 } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { FaGem, FaHeart, FaBars, FaCaravan } from "react-icons/fa";
+import { FaBars, FaCaravan } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 import "react-pro-sidebar/dist/css/styles.css";
@@ -28,23 +27,12 @@ export function Sidebar() {
       >
         <SidebarHeader>
           <div className="p-6 uppercase font-bold text-xl overflow-hidden truncate text-center">
-            RV App
+            Recreation.gov App
           </div>
         </SidebarHeader>
         <Menu iconShape="square">
-          <MenuItem icon={<FaGem />}>
-            Profile <Link to="/" />
-          </MenuItem>
-          <SubMenu title="Destinations" icon={<FaHeart />}>
-            <MenuItem>
-              Table <Link to="/destinations/table" />
-            </MenuItem>
-            <MenuItem>
-              Map <Link to="/destinations/map" />
-            </MenuItem>
-          </SubMenu>
           <MenuItem icon={<FaCaravan />}>
-            Recreation.gov Subs <Link to="/recreation" />
+            Recreation.gov Subs <Link to="/" />
           </MenuItem>
         </Menu>
       </ProSidebar>

@@ -13,7 +13,7 @@ export default function App() {
             <Sidebar />
             <div className="container overflow-x-auto mx-auto px-4 flex flex-col">
               <Routes>
-                <Route path="/recreation" element={<RecreationGov />} />
+                <Route path="/" element={<RecreationGov />} />
                 <Route element={<p>Not Found</p>} path="*" />
               </Routes>
             </div>

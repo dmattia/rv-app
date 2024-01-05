@@ -23,18 +23,16 @@ jobs:
 
       # Install Pulumi and deploy the infra code
       - uses: pulumi/action-install-pulumi-cli@v1.0.1
-      - run: yarn workspace @rv-app/infra exec pulumi up --stack prod --yes --refresh
+      - run: yarn workspace @rv-app/infra exec pulumi up --stack dev --yes --refresh
 
       # Set the env vars that the frontend needs
       - run: |
           rm frontend/.env
-          echo "RV_APP_USER_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output userPoolId --stack prod)" >> frontend/.env
-          echo "RV_APP_AWS_REGION=$(yarn workspace @rv-app/infra exec pulumi stack output region --stack prod)" >> frontend/.env
-          echo "RV_APP_COGNITO_CLIENT_ID=$(yarn workspace @rv-app/infra exec pulumi stack output clientId --stack prod)" >> frontend/.env
-          echo "RV_APP_IDENTITY_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output identityPoolId --stack prod)" >> frontend/.env
-          echo "RV_APP_MAP_NAME=$(yarn workspace @rv-app/infra exec pulumi stack output mapName --stack prod)" >> frontend/.env
-          echo "RV_APP_SEARCH_INDEX=$(yarn workspace @rv-app/infra exec pulumi stack output mapIndexName --stack prod)" >> frontend/.env
-          echo "RV_APP_API_ENDPOINT=$(yarn workspace @rv-app/infra exec pulumi stack output endpoint --stack prod)" >> frontend/.env
+          echo "RV_APP_USER_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output userPoolId --stack dev)" >> frontend/.env
+          echo "RV_APP_AWS_REGION=$(yarn workspace @rv-app/infra exec pulumi stack output region --stack dev)" >> frontend/.env
+          echo "RV_APP_COGNITO_CLIENT_ID=$(yarn workspace @rv-app/infra exec pulumi stack output clientId --stack dev)" >> frontend/.env
+          echo "RV_APP_IDENTITY_POOL_ID=$(yarn workspace @rv-app/infra exec pulumi stack output identityPoolId --stack dev)" >> frontend/.env
+          echo "RV_APP_API_ENDPOINT=$(yarn workspace @rv-app/infra exec pulumi stack output endpoint --stack dev)" >> frontend/.env
           cat frontend/.env
 
       # Build and deploy the frontend code

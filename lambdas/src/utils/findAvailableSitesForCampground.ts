@@ -2,11 +2,11 @@ import got from "got";
 import { mapSeries } from "bluebird";
 
 import { fetchCampsite } from "./fetchCampsite";
-import { Month } from "./types";
+import { MonthAndYear, Month } from "./types";
 
 export async function findAvailableSitesForCampground(
   id: string,
-  months: Month[] = [
+  months: MonthAndYear[] = [
     Month.JANUARY,
     Month.FEBRUARY,
     Month.MARCH,
@@ -19,12 +19,15 @@ export async function findAvailableSitesForCampground(
     Month.OCTOBER,
     Month.NOVEMBER,
     Month.DECEMBER,
-  ]
+  ].map(month => ({ month, year: new Date().getFullYear() }))
 ): Promise<Map<string, string[]>> {
   // Fetch the campsite information by month
   const monthlyCampgrounds = await mapSeries(months, async (month) => {
+    const url = `https://www.recreation.gov/api/camps/availability/campground/${id}/month?start_date=${month.year}-${month.month}-01T00%3A00%3A00.000Z`;
+    console.info(`For month ${month.month} in year ${month.year} in campground ${id}, checking at ${url}`);
+
     const { body, statusCode } = await got.get(
-      `https://www.recreation.gov/api/camps/availability/campground/${id}/month?start_date=2023-${month}-01T00%3A00%3A00.000Z`,
+      url,
       // Recreation.gov seems to use 403 for rate limiting
       { retry: { limit: 5, statusCodes: [403] } }
     );
@@ -39,12 +42,18 @@ export async function findAvailableSitesForCampground(
       .flatMap(({ campsite_id, availabilities }: any) => {
         const openDates = Object.entries(availabilities)
           .filter(
-            ([_, availabilityStatus]) => "Available" === availabilityStatus
+            ([_, availabilityStatus]) => ["Open", "Available"].includes(availabilityStatus as string)
           )
           .map(([date]) => date.replace(/T.*/, ""));
         if (!openDates.length) {
           return [];
         }
+
+        // DO NOT SUBMIT
+        console.info(JSON.stringify({
+          id: campsite_id as string,
+          availableDates: openDates,
+        }, null, 2));
 
         return [
           {
@@ -62,9 +71,18 @@ export async function findAvailableSitesForCampground(
     )
   );
   const filledCampsites = await mapSeries([...allCampgrounds], fetchCampsite);
-  const workingCampgrounds = new Set(
-    filledCampsites.filter(({ worksForUs }) => worksForUs).map(({ id }) => id)
-  );
+  const workingCampgrounds = new Set<string>();
+  filledCampsites.forEach(campsite => {
+    if (campsite.worksForUs && !workingCampgrounds.has(campsite.id)) {
+      workingCampgrounds.add(id);
+    }
+  });
+
+  // DO NOT SUBMIT
+  console.info(`WorkingCampgrounds has size ${workingCampgrounds.size}`);
+  [...workingCampgrounds].forEach(campsite => {
+    console.info(`Found: ${id}`)
+  });
 
   // Combine all of the results
   const results = new Map<string, string[]>();
